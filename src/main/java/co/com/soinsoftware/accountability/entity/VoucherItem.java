@@ -5,12 +5,12 @@ import java.util.Date;
 
 /**
  * @author Carlos Rodriguez
- * @since 11/07/2016
+ * @since 01/08/2016
  * @version 1.0
  */
-public class VoucherItem implements Serializable {
+public class Voucheritem implements Serializable, Comparable<Voucheritem> {
 
-	private static final long serialVersionUID = 4883869463797105443L;
+	private static final long serialVersionUID = -276429389355358114L;
 
 	private Integer id;
 
@@ -32,11 +32,11 @@ public class VoucherItem implements Serializable {
 
 	private boolean enabled;
 
-	public VoucherItem() {
+	public Voucheritem() {
 		super();
 	}
 
-	public VoucherItem(final Uap uap, final Voucher voucher,
+	public Voucheritem(final Uap uap, final Voucher voucher,
 			final long debtvalue, final long creditvalue, final Date creation,
 			final Date updated, final boolean enabled) {
 		this.uap = uap;
@@ -48,7 +48,7 @@ public class VoucherItem implements Serializable {
 		this.enabled = enabled;
 	}
 
-	public VoucherItem(final Uap uap, final Voucher voucher,
+	public Voucheritem(final Uap uap, final Voucher voucher,
 			final String concept, final String source, final long debtvalue,
 			final long creditvalue, final Date creation, final Date updated,
 			final boolean enabled) {
@@ -141,5 +141,45 @@ public class VoucherItem implements Serializable {
 
 	public void setEnabled(final boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((uap == null) ? 0 : uap.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Voucheritem other = (Voucheritem) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (uap == null) {
+			if (other.uap != null)
+				return false;
+		} else if (!uap.equals(other.uap))
+			return false;
+		return true;
+	}
+
+	@Override
+	public int compareTo(final Voucheritem other) {
+		final String firstName = (this.uap.getName() != null) ? this.uap
+				.getName() : "";
+		final String secondName = (other.uap.getName() != null) ? other.uap
+				.getName() : "";
+		return firstName.compareToIgnoreCase(secondName);
 	}
 }

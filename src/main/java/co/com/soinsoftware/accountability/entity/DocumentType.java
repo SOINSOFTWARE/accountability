@@ -7,12 +7,12 @@ import java.util.Set;
 
 /**
  * @author Carlos Rodriguez
- * @since 11/07/2016
+ * @since 01/08/2016
  * @version 1.0
  */
-public class DocumentType implements Serializable {
+public class Documenttype implements Serializable, Comparable<Documenttype> {
 
-	private static final long serialVersionUID = -2459280932490223684L;
+	private static final long serialVersionUID = 2985365392235699612L;
 
 	private Integer id;
 
@@ -26,11 +26,11 @@ public class DocumentType implements Serializable {
 
 	private Set<Company> companies = new HashSet<>(0);
 
-	public DocumentType() {
+	public Documenttype() {
 		super();
 	}
 
-	public DocumentType(final String name, final Date creation,
+	public Documenttype(final String name, final Date creation,
 			final Date updated, final boolean enabled) {
 		this.name = name;
 		this.creation = creation;
@@ -38,7 +38,7 @@ public class DocumentType implements Serializable {
 		this.enabled = enabled;
 	}
 
-	public DocumentType(final String name, final Date creation,
+	public Documenttype(final String name, final Date creation,
 			final Date updated, final boolean enabled,
 			final Set<Company> companies) {
 		this.name = name;
@@ -94,5 +94,43 @@ public class DocumentType implements Serializable {
 
 	public void setCompanies(final Set<Company> companies) {
 		this.companies = companies;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Documenttype other = (Documenttype) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
+
+	@Override
+	public int compareTo(final Documenttype other) {
+		final String firstName = (this.name != null) ? this.name : "";
+		final String secondName = (other.name != null) ? other.name : "";
+		return firstName.compareToIgnoreCase(secondName);
 	}
 }

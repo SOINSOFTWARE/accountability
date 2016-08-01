@@ -7,12 +7,12 @@ import java.util.Set;
 
 /**
  * @author Carlos Rodriguez
- * @since 11/07/2016
+ * @since 01/08/2016
  * @version 1.0
  */
-public class VoucherType implements Serializable {
+public class Vouchertype implements Serializable, Comparable<Vouchertype> {
 
-	private static final long serialVersionUID = 6493161125701577855L;
+	private static final long serialVersionUID = -1066837084117495273L;
 
 	private Integer id;
 
@@ -34,11 +34,11 @@ public class VoucherType implements Serializable {
 
 	private Set<Voucher> vouchers = new HashSet<>(0);
 
-	public VoucherType() {
+	public Vouchertype() {
 		super();
 	}
 
-	public VoucherType(final String code, final String name,
+	public Vouchertype(final String code, final String name,
 			final long numberfrom, final long numberto,
 			final long numbercurrent, final Date creation, final Date updated,
 			final boolean enabled) {
@@ -52,7 +52,7 @@ public class VoucherType implements Serializable {
 		this.enabled = enabled;
 	}
 
-	public VoucherType(final String code, final String name,
+	public Vouchertype(final String code, final String name,
 			final long numberfrom, final long numberto,
 			final long numbercurrent, final Date creation, final Date updated,
 			final boolean enabled, final Set<Voucher> vouchers) {
@@ -145,5 +145,12 @@ public class VoucherType implements Serializable {
 
 	public void setVouchers(final Set<Voucher> vouchers) {
 		this.vouchers = vouchers;
+	}
+
+	@Override
+	public int compareTo(final Vouchertype other) {
+		final String firstName = (this.name != null) ? this.name : "";
+		final String secondName = (other.name != null) ? other.name : "";
+		return firstName.compareToIgnoreCase(secondName);
 	}
 }

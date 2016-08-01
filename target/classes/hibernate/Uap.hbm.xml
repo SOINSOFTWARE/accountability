@@ -1,41 +1,51 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 11-jul-2016 10:30:55 by Hibernate Tools 4.3.1 -->
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 01-ago-2016 9:35:16 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-  <class catalog="accountability" name="co.com.soinsoftware.accountability.entity.Uap" optimistic-lock="version" table="uap">
-    <id name="id" type="java.lang.Integer">
-      <column name="id"/>
-      <generator class="identity"/>
-    </id>
-    <property name="code" type="long">
-      <column name="code" not-null="true"/>
-    </property>
-    <property name="name" type="string">
-      <column length="60" name="name" not-null="true"/>
-    </property>
-    <property name="debt" type="boolean">
-      <column name="debt" not-null="true"/>
-    </property>
-    <property name="credit" type="boolean">
-      <column name="credit" not-null="true"/>
-    </property>
-    <property name="editable" type="boolean">
-      <column name="editable" not-null="true"/>
-    </property>
-    <property name="creation" type="timestamp">
-      <column length="19" name="creation" not-null="true"/>
-    </property>
-    <property name="updated" type="timestamp">
-      <column length="19" name="updated" not-null="true"/>
-    </property>
-    <property name="enabled" type="boolean">
-      <column name="enabled" not-null="true"/>
-    </property>
-    <set fetch="select" inverse="true" lazy="true" name="voucherItems" table="voucheritem">
-      <key>
-        <column name="iduap" not-null="true"/>
-      </key>
-      <one-to-many class="co.com.soinsoftware.accountability.entity.VoucherItem"/>
-    </set>
-  </class>
+    <class name="co.com.soinsoftware.accountability.entity.Uap" table="uap" catalog="accountability" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="uap" class="co.com.soinsoftware.accountability.entity.Uap" fetch="select">
+            <column name="idparent" />
+        </many-to-one>
+        <property name="code" type="long">
+            <column name="code" not-null="true" />
+        </property>
+        <property name="name" type="string">
+            <column name="name" length="60" not-null="true" />
+        </property>
+        <property name="debt" type="boolean">
+            <column name="debt" not-null="true" />
+        </property>
+        <property name="credit" type="boolean">
+            <column name="credit" not-null="true" />
+        </property>
+        <property name="editable" type="boolean">
+            <column name="editable" not-null="true" />
+        </property>
+        <property name="creation" type="timestamp">
+            <column name="creation" length="19" not-null="true" />
+        </property>
+        <property name="updated" type="timestamp">
+            <column name="updated" length="19" not-null="true" />
+        </property>
+        <property name="enabled" type="boolean">
+            <column name="enabled" not-null="true" />
+        </property>
+        <set name="uaps" table="uap" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idparent" />
+            </key>
+            <one-to-many class="co.com.soinsoftware.accountability.entity.Uap" />
+        </set>
+        <set name="voucheritems" table="voucheritem" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="iduap" not-null="true" />
+            </key>
+            <one-to-many class="co.com.soinsoftware.accountability.entity.Voucheritem" />
+        </set>
+    </class>
 </hibernate-mapping>

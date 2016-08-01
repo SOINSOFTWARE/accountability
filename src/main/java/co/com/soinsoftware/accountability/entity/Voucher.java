@@ -7,16 +7,16 @@ import java.util.Set;
 
 /**
  * @author Carlos Rodriguez
- * @since 11/07/2016
+ * @since 01/08/2016
  * @version 1.0
  */
-public class Voucher implements Serializable {
+public class Voucher implements Serializable, Comparable<Voucher> {
 
-	private static final long serialVersionUID = 3294069498667196432L;
+	private static final long serialVersionUID = 9215534973517337662L;
 
 	private Integer id;
 
-	private VoucherType voucherType;
+	private Vouchertype vouchertype;
 
 	private Date voucherdate;
 
@@ -26,30 +26,30 @@ public class Voucher implements Serializable {
 
 	private boolean enabled;
 
-	private Set<VoucherItem> voucherItems = new HashSet<>(0);
+	private Set<Voucheritem> voucheritems = new HashSet<>(0);
 
 	public Voucher() {
 		super();
 	}
 
-	public Voucher(final VoucherType voucherType, final Date voucherdate,
+	public Voucher(final Vouchertype vouchertype, final Date voucherdate,
 			final Date creation, final Date updated, final boolean enabled) {
-		this.voucherType = voucherType;
+		this.vouchertype = vouchertype;
 		this.voucherdate = voucherdate;
 		this.creation = creation;
 		this.updated = updated;
 		this.enabled = enabled;
 	}
 
-	public Voucher(final VoucherType voucherType, final Date voucherdate,
+	public Voucher(final Vouchertype vouchertype, final Date voucherdate,
 			final Date creation, final Date updated, final boolean enabled,
-			final Set<VoucherItem> voucherItems) {
-		this.voucherType = voucherType;
+			final Set<Voucheritem> voucheritems) {
+		this.vouchertype = vouchertype;
 		this.voucherdate = voucherdate;
 		this.creation = creation;
 		this.updated = updated;
 		this.enabled = enabled;
-		this.voucherItems = voucherItems;
+		this.voucheritems = voucheritems;
 	}
 
 	public Integer getId() {
@@ -60,12 +60,12 @@ public class Voucher implements Serializable {
 		this.id = id;
 	}
 
-	public VoucherType getVoucherType() {
-		return this.voucherType;
+	public Vouchertype getVouchertype() {
+		return this.vouchertype;
 	}
 
-	public void setVoucherType(final VoucherType voucherType) {
-		this.voucherType = voucherType;
+	public void setVouchertype(final Vouchertype vouchertype) {
+		this.vouchertype = vouchertype;
 	}
 
 	public Date getVoucherdate() {
@@ -100,11 +100,59 @@ public class Voucher implements Serializable {
 		this.enabled = enabled;
 	}
 
-	public Set<VoucherItem> getVoucherItems() {
-		return this.voucherItems;
+	public Set<Voucheritem> getVoucheritems() {
+		return this.voucheritems;
 	}
 
-	public void setVoucherItems(final Set<VoucherItem> voucherItems) {
-		this.voucherItems = voucherItems;
+	public void setVoucheritems(Set<Voucheritem> voucheritems) {
+		this.voucheritems = voucheritems;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result
+				+ ((voucherdate == null) ? 0 : voucherdate.hashCode());
+		result = prime * result
+				+ ((vouchertype == null) ? 0 : vouchertype.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Voucher other = (Voucher) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (voucherdate == null) {
+			if (other.voucherdate != null)
+				return false;
+		} else if (!voucherdate.equals(other.voucherdate))
+			return false;
+		if (vouchertype == null) {
+			if (other.vouchertype != null)
+				return false;
+		} else if (!vouchertype.equals(other.vouchertype))
+			return false;
+		return true;
+	}
+
+	@Override
+	public int compareTo(final Voucher other) {
+		final Date firstDate = (this.voucherdate != null) ? this.voucherdate
+				: new Date();
+		final Date secondDate = (other.voucherdate != null) ? other.voucherdate
+				: new Date();
+		return firstDate.compareTo(secondDate);
 	}
 }

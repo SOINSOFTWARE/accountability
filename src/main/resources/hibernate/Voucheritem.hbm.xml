@@ -1,38 +1,39 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 11-jul-2016 10:30:55 by Hibernate Tools 4.3.1 -->
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 01-ago-2016 9:35:16 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-  <class catalog="accountability" name="co.com.soinsoftware.accountability.entity.VoucherItem" optimistic-lock="version" table="voucheritem">
-    <id name="id" type="java.lang.Integer">
-      <column name="id"/>
-      <generator class="identity"/>
-    </id>
-    <many-to-one class="co.com.soinsoftware.accountability.entity.Uap" fetch="select" name="uap">
-      <column name="iduap" not-null="true"/>
-    </many-to-one>
-    <many-to-one class="co.com.soinsoftware.accountability.entity.Voucher" fetch="select" name="voucher">
-      <column name="idvoucher" not-null="true"/>
-    </many-to-one>
-    <property name="concept" type="string">
-      <column length="60" name="concept"/>
-    </property>
-    <property name="source" type="string">
-      <column length="60" name="source"/>
-    </property>
-    <property name="debtvalue" type="long">
-      <column name="debtvalue" not-null="true"/>
-    </property>
-    <property name="creditvalue" type="long">
-      <column name="creditvalue" not-null="true"/>
-    </property>
-    <property name="creation" type="timestamp">
-      <column length="19" name="creation" not-null="true"/>
-    </property>
-    <property name="updated" type="timestamp">
-      <column length="19" name="updated" not-null="true"/>
-    </property>
-    <property name="enabled" type="boolean">
-      <column name="enabled" not-null="true"/>
-    </property>
-  </class>
+    <class name="co.com.soinsoftware.accountability.entity.Voucheritem" table="voucheritem" catalog="accountability" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="uap" class="co.com.soinsoftware.accountability.entity.Uap" fetch="select">
+            <column name="iduap" not-null="true" />
+        </many-to-one>
+        <many-to-one name="voucher" class="co.com.soinsoftware.accountability.entity.Voucher" fetch="select">
+            <column name="idvoucher" not-null="true" />
+        </many-to-one>
+        <property name="concept" type="string">
+            <column name="concept" length="60" />
+        </property>
+        <property name="source" type="string">
+            <column name="source" length="60" />
+        </property>
+        <property name="debtvalue" type="long">
+            <column name="debtvalue" not-null="true" />
+        </property>
+        <property name="creditvalue" type="long">
+            <column name="creditvalue" not-null="true" />
+        </property>
+        <property name="creation" type="timestamp">
+            <column name="creation" length="19" not-null="true" />
+        </property>
+        <property name="updated" type="timestamp">
+            <column name="updated" length="19" not-null="true" />
+        </property>
+        <property name="enabled" type="boolean">
+            <column name="enabled" not-null="true" />
+        </property>
+    </class>
 </hibernate-mapping>

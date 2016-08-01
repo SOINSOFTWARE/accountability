@@ -7,14 +7,16 @@ import java.util.Set;
 
 /**
  * @author Carlos Rodriguez
- * @since 11/07/2016
+ * @since 01/08/2016
  * @version 1.0
  */
-public class Uap implements Serializable {
+public class Uap implements Serializable, Comparable<Uap> {
 
-	private static final long serialVersionUID = -3246500608853506551L;
+	private static final long serialVersionUID = 7873071882028195499L;
 
 	private Integer id;
+
+	private Uap uap;
 
 	private long code;
 
@@ -32,7 +34,9 @@ public class Uap implements Serializable {
 
 	private boolean enabled;
 
-	private Set<VoucherItem> voucherItems = new HashSet<>(0);
+	private Set<Uap> uaps = new HashSet<>(0);
+
+	private Set<Voucheritem> voucheritems = new HashSet<>(0);
 
 	public Uap() {
 		super();
@@ -51,10 +55,11 @@ public class Uap implements Serializable {
 		this.enabled = enabled;
 	}
 
-	public Uap(final long code, final String name, final boolean debt,
-			final boolean credit, final boolean editable, final Date creation,
-			final Date updated, final boolean enabled,
-			final Set<VoucherItem> voucherItems) {
+	public Uap(final Uap uap, final long code, final String name,
+			final boolean debt, final boolean credit, final boolean editable,
+			final Date creation, final Date updated, final boolean enabled,
+			final Set<Uap> uaps, final Set<Voucheritem> voucheritems) {
+		this.uap = uap;
 		this.code = code;
 		this.name = name;
 		this.debt = debt;
@@ -63,7 +68,8 @@ public class Uap implements Serializable {
 		this.creation = creation;
 		this.updated = updated;
 		this.enabled = enabled;
-		this.voucherItems = voucherItems;
+		this.uaps = uaps;
+		this.voucheritems = voucheritems;
 	}
 
 	public Integer getId() {
@@ -72,6 +78,14 @@ public class Uap implements Serializable {
 
 	public void setId(final Integer id) {
 		this.id = id;
+	}
+
+	public Uap getUap() {
+		return this.uap;
+	}
+
+	public void setUap(final Uap uap) {
+		this.uap = uap;
 	}
 
 	public long getCode() {
@@ -138,11 +152,58 @@ public class Uap implements Serializable {
 		this.enabled = enabled;
 	}
 
-	public Set<VoucherItem> getVoucherItems() {
-		return this.voucherItems;
+	public Set<Uap> getUaps() {
+		return this.uaps;
 	}
 
-	public void setVoucherItems(final Set<VoucherItem> voucherItems) {
-		this.voucherItems = voucherItems;
+	public void setUaps(final Set<Uap> uaps) {
+		this.uaps = uaps;
+	}
+
+	public Set<Voucheritem> getVoucheritems() {
+		return this.voucheritems;
+	}
+
+	public void setVoucheritems(final Set<Voucheritem> voucheritems) {
+		this.voucheritems = voucheritems;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (code ^ (code >>> 32));
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Uap other = (Uap) obj;
+		if (code != other.code)
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
+
+	@Override
+	public int compareTo(final Uap other) {
+		return Long.compare(this.code, other.code);
 	}
 }

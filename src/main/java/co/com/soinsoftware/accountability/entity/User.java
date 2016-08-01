@@ -5,12 +5,12 @@ import java.util.Date;
 
 /**
  * @author Carlos Rodriguez
- * @since 11/07/2016
+ * @since 01/08/2016
  * @version 1.0
  */
-public class User implements Serializable {
+public class User implements Serializable, Comparable<User> {
 
-	private static final long serialVersionUID = -1079034577450056890L;
+	private static final long serialVersionUID = 7214829810505786645L;
 
 	private Integer id;
 
@@ -32,8 +32,17 @@ public class User implements Serializable {
 
 	private boolean enabled;
 
+	private volatile long newIdentification;
+
+	private volatile String newName;
+
+	private volatile String newLastname;
+
+	private volatile boolean delete;
+
 	public User() {
 		super();
+		this.delete = false;
 	}
 
 	public User(final Rol rol, final long identification, final String name,
@@ -48,6 +57,7 @@ public class User implements Serializable {
 		this.creation = creation;
 		this.updated = updated;
 		this.enabled = enabled;
+		this.delete = false;
 	}
 
 	public Integer getId() {
@@ -128,5 +138,94 @@ public class User implements Serializable {
 
 	public void setEnabled(final boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public long getNewIdentification() {
+		return newIdentification;
+	}
+
+	public void setNewIdentification(long newIdentification) {
+		this.newIdentification = newIdentification;
+	}
+
+	public String getNewName() {
+		return newName;
+	}
+
+	public void setNewName(String newName) {
+		this.newName = newName;
+	}
+
+	public String getNewLastname() {
+		return newLastname;
+	}
+
+	public void setNewLastname(String newLastname) {
+		this.newLastname = newLastname;
+	}
+
+	public boolean isDelete() {
+		return delete;
+	}
+
+	public void setDelete(boolean delete) {
+		this.delete = delete;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result
+				+ (int) (identification ^ (identification >>> 32));
+		result = prime * result
+				+ ((lastname == null) ? 0 : lastname.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (identification != other.identification)
+			return false;
+		if (lastname == null) {
+			if (other.lastname != null)
+				return false;
+		} else if (!lastname.equals(other.lastname))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
+
+	@Override
+	public int compareTo(final User other) {
+		final String firstLastName = (this.lastname != null) ? this.lastname
+				: "";
+		final String secondLastName = (other.lastname != null) ? other.name
+				: "";
+		final String firstName = (this.name != null) ? this.name : "";
+		final String secondName = (other.name != null) ? other.name : "";
+		if (firstLastName.compareToIgnoreCase(secondLastName) == 0) {
+			return firstName.compareToIgnoreCase(secondName);
+		} else {
+			return firstLastName.compareToIgnoreCase(secondLastName);
+		}
 	}
 }

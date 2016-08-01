@@ -24,12 +24,30 @@ import javax.swing.text.NumberFormatter;
 
 /**
  * @author Carlos Rodriguez
- * @since 11/07/2016
+ * @since 30/05/2016
  * @version 1.0
  */
 public class ViewUtils {
+	
+	protected static final String TITLE_REQUIRED_FIELDS = "Campos requeridos";
+	
+	protected static final String TITLE_SAVED = "Guardar";
+	
+	protected static final String MSG_DELETE_QUESTION = "¿Está seguro que desea eliminar los datos seleccionados?";
+	
+	protected static final String MSG_DELETED = "¡Datos eliminados con exito!";
+	
+	protected static final String MSG_SAVE_QUESTION = "¿Está seguro que desea guardar los datos?";
 
 	protected static final String MSG_SAVED = "¡Datos guardados con exito!";
+	
+	protected static final String MSG_UNEDITED = "No hay datos editados";
+	
+	protected static final String MSG_UNSELECTED = "No hay datos seleccionados";
+	
+	protected static final String MSG_UPDATE_QUESTION = "¿Está seguro que desea actualizar los datos?";
+	
+	protected static final String MSG_UPDATED = "¡Datos actualizados con exito!";
 
 	protected static final Color GREY = new Color(249, 249, 249);
 

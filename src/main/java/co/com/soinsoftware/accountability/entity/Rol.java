@@ -7,12 +7,12 @@ import java.util.Set;
 
 /**
  * @author Carlos Rodriguez
- * @since 11/07/2016
+ * @since 01/08/2016
  * @version 1.0
  */
-public class Rol implements Serializable {
+public class Rol implements Serializable, Comparable<Rol> {
 
-	private static final long serialVersionUID = 1669071706555452516L;
+	private static final long serialVersionUID = 9160088837716858613L;
 
 	private Integer id;
 
@@ -105,5 +105,49 @@ public class Rol implements Serializable {
 
 	public void setUsers(final Set<User> users) {
 		this.users = users;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((code == null) ? 0 : code.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Rol other = (Rol) obj;
+		if (code == null) {
+			if (other.code != null)
+				return false;
+		} else if (!code.equals(other.code))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
+
+	@Override
+	public int compareTo(final Rol other) {
+		final String firstName = (this.name != null) ? this.name : "";
+		final String secondName = (other.name != null) ? other.name : "";
+		return firstName.compareToIgnoreCase(secondName);
 	}
 }

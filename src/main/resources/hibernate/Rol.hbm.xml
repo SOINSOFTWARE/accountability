@@ -1,32 +1,33 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 11-jul-2016 10:30:55 by Hibernate Tools 4.3.1 -->
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 01-ago-2016 9:35:16 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-  <class catalog="accountability" name="co.com.soinsoftware.accountability.entity.Rol" optimistic-lock="version" table="rol">
-    <id name="id" type="java.lang.Integer">
-      <column name="id"/>
-      <generator class="identity"/>
-    </id>
-    <property name="code" type="string">
-      <column length="5" name="code" not-null="true"/>
-    </property>
-    <property name="name" type="string">
-      <column length="60" name="name" not-null="true"/>
-    </property>
-    <property name="creation" type="timestamp">
-      <column length="19" name="creation" not-null="true"/>
-    </property>
-    <property name="updated" type="timestamp">
-      <column length="19" name="updated" not-null="true"/>
-    </property>
-    <property name="enabled" type="boolean">
-      <column name="enabled" not-null="true"/>
-    </property>
-    <set fetch="select" inverse="true" lazy="true" name="users" table="user">
-      <key>
-        <column name="idrol" not-null="true"/>
-      </key>
-      <one-to-many class="co.com.soinsoftware.accountability.entity.User"/>
-    </set>
-  </class>
+    <class name="co.com.soinsoftware.accountability.entity.Rol" table="rol" catalog="accountability" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="code" type="string">
+            <column name="code" length="5" not-null="true" />
+        </property>
+        <property name="name" type="string">
+            <column name="name" length="60" not-null="true" />
+        </property>
+        <property name="creation" type="timestamp">
+            <column name="creation" length="19" not-null="true" />
+        </property>
+        <property name="updated" type="timestamp">
+            <column name="updated" length="19" not-null="true" />
+        </property>
+        <property name="enabled" type="boolean">
+            <column name="enabled" not-null="true" />
+        </property>
+        <set name="users" table="user" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idrol" not-null="true" />
+            </key>
+            <one-to-many class="co.com.soinsoftware.accountability.entity.User" />
+        </set>
+    </class>
 </hibernate-mapping>

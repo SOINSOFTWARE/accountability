@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
+<hibernate-reverse-engineering>
+  <schema-selection match-catalog="accountability"/>
+  <table-filter match-name="uap"/>
+  <table-filter match-name="documenttype"/>
+  <table-filter match-name="vouchertype"/>
+  <table-filter match-name="user"/>
+  <table-filter match-name="companytype"/>
+  <table-filter match-name="voucheritem"/>
+  <table-filter match-name="rol"/>
+  <table-filter match-name="voucher"/>
+  <table-filter match-name="company"/>
+</hibernate-reverse-engineering>

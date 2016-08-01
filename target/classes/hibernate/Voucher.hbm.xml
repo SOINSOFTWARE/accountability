@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 11-jul-2016 10:30:55 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+  <class catalog="accountability" name="co.com.soinsoftware.accountability.entity.Voucher" optimistic-lock="version" table="voucher">
+    <id name="id" type="java.lang.Integer">
+      <column name="id"/>
+      <generator class="identity"/>
+    </id>
+    <many-to-one class="co.com.soinsoftware.accountability.entity.VoucherType" fetch="select" name="voucherType">
+      <column name="idvouchertype" not-null="true"/>
+    </many-to-one>
+    <property name="voucherdate" type="timestamp">
+      <column length="19" name="voucherdate" not-null="true"/>
+    </property>
+    <property name="creation" type="timestamp">
+      <column length="19" name="creation" not-null="true"/>
+    </property>
+    <property name="updated" type="timestamp">
+      <column length="19" name="updated" not-null="true"/>
+    </property>
+    <property name="enabled" type="boolean">
+      <column name="enabled" not-null="true"/>
+    </property>
+    <set fetch="select" inverse="true" lazy="true" name="voucherItems" table="voucheritem">
+      <key>
+        <column name="idvoucher" not-null="true"/>
+      </key>
+      <one-to-many class="co.com.soinsoftware.accountability.entity.VoucherItem"/>
+    </set>
+  </class>
+</hibernate-mapping>

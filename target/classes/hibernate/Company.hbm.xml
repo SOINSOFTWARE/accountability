@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 11-jul-2016 10:30:55 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+  <class catalog="accountability" name="co.com.soinsoftware.accountability.entity.Company" optimistic-lock="version" table="company">
+    <id name="id" type="java.lang.Integer">
+      <column name="id"/>
+      <generator class="identity"/>
+    </id>
+    <many-to-one class="co.com.soinsoftware.accountability.entity.CompanyType" fetch="select" name="companyType">
+      <column name="idcompanytype" not-null="true"/>
+    </many-to-one>
+    <many-to-one class="co.com.soinsoftware.accountability.entity.DocumentType" fetch="select" name="documentType">
+      <column name="iddocumenttype" not-null="true"/>
+    </many-to-one>
+    <property name="name" type="string">
+      <column length="60" name="name" not-null="true"/>
+    </property>
+    <property name="document" type="string">
+      <column length="45" name="document" not-null="true"/>
+    </property>
+    <property name="creation" type="timestamp">
+      <column length="19" name="creation" not-null="true"/>
+    </property>
+    <property name="updated" type="timestamp">
+      <column length="19" name="updated" not-null="true"/>
+    </property>
+    <property name="enabled" type="boolean">
+      <column name="enabled" not-null="true"/>
+    </property>
+  </class>
+</hibernate-mapping>

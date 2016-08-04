@@ -24,6 +24,8 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 
 	private static final String MENU_CONFIGURATION_COMPANY = "Empresa";
 
+	private static final String MENU_CONFIGURATION_UNIQUE_ACCOUNT_PLAN = "Plan único de cuentas";
+
 	private static final String MENU_CONFIGURATION_USER = "Usuario";
 
 	private final MenuController controller;
@@ -44,6 +46,9 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 		case MENU_CONFIGURATION_USER:
 			this.showUserFrame();
 			break;
+		case MENU_CONFIGURATION_UNIQUE_ACCOUNT_PLAN:
+			this.showUapFrame();
+			break;
 		}
 	}
 
@@ -53,12 +58,17 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 		final JMenuItem miCompany = ViewUtils.createJMenuItem(
 				MENU_CONFIGURATION_COMPANY, KeyEvent.VK_E,
 				KeyStroke.getKeyStroke(KeyEvent.VK_6, ActionEvent.ALT_MASK));
+		final JMenuItem miUap = ViewUtils.createJMenuItem(
+				MENU_CONFIGURATION_UNIQUE_ACCOUNT_PLAN, KeyEvent.VK_P,
+				KeyStroke.getKeyStroke(KeyEvent.VK_7, ActionEvent.ALT_MASK));
 		final JMenuItem miUser = ViewUtils.createJMenuItem(
 				MENU_CONFIGURATION_USER, KeyEvent.VK_U,
-				KeyStroke.getKeyStroke(KeyEvent.VK_7, ActionEvent.ALT_MASK));
+				KeyStroke.getKeyStroke(KeyEvent.VK_8, ActionEvent.ALT_MASK));
 		miCompany.addActionListener(this);
+		miUap.addActionListener(this);
 		miUser.addActionListener(this);
 		menu.add(miCompany);
+		menu.add(miUap);
 		menu.add(miUser);
 		this.add(menu);
 	}
@@ -74,6 +84,13 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 		if (!this.controller.getUserFrame().isVisible()) {
 			this.controller.getUserFrame().refresh();
 			this.controller.getUserFrame().setVisible(true);
+		}
+	}
+
+	private void showUapFrame() {
+		if (!this.controller.getUapFrame().isVisible()) {
+			this.controller.getUapFrame().refresh();
+			this.controller.getUapFrame().setVisible(true);
 		}
 	}
 }

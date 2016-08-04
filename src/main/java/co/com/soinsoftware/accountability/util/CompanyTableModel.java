@@ -14,7 +14,8 @@ public class CompanyTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 8408209589620109955L;
 
-	private static final String[] COLUMN_NAMES = { "Tipo", "Nombre", "Documento", "# Documento", "Eliminar" };
+	private static final String[] COLUMN_NAMES = { "Tipo", "Nombre",
+			"Documento", "# Documento", "Eliminar" };
 
 	private final List<Company> companyList;
 
@@ -81,9 +82,9 @@ public class CompanyTableModel extends AbstractTableModel {
 		if (this.companyList != null) {
 			int index = 0;
 			for (final Company company : this.companyList) {
-                            data[index][0] = company.getCompanytype().getName();
-                            data[index][1] = company.getName();
-                            data[index][2] = company.getDocumenttype().getName();
+				data[index][0] = company.getCompanytype().getName();
+				data[index][1] = company.getName();
+				data[index][2] = company.getDocumenttype().getName();
 				data[index][3] = company.getDocument();
 				data[index][4] = new Boolean(false);
 				index++;

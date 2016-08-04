@@ -135,7 +135,7 @@
                               <Component id="jlbRol" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jlbLastName" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jtfIdentification" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jcbRol" alignment="0" pref="190" max="32767" attributes="0"/>
+                              <Component id="jcbRol" alignment="0" min="-2" pref="190" max="-2" attributes="0"/>
                               <Component id="jlbLogin" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jlbPassword" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jtfLogin" alignment="0" max="32767" attributes="0"/>

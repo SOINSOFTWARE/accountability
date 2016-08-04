@@ -20,6 +20,7 @@ public abstract class AbstractDAO {
 	protected static final String TABLE_COMPANY_TYPE = "Companytype";
 	protected static final String TABLE_DOCUMENT_TYPE = "Documenttype";
 	protected static final String TABLE_ROL = "Rol";
+	protected static final String TABLE_UAP = "Uap";
 	protected static final String TABLE_USER = "User";
 
 	protected static final String SQL_AND = " and ";

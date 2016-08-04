@@ -22,6 +22,8 @@ public class Uap implements Serializable, Comparable<Uap> {
 
 	private String name;
 
+	private int level;
+
 	private boolean debt;
 
 	private boolean credit;
@@ -36,32 +38,41 @@ public class Uap implements Serializable, Comparable<Uap> {
 
 	private Set<Uap> uaps = new HashSet<>(0);
 
+	private volatile String newName;
+
+	private volatile boolean delete;
+
 	private Set<Voucheritem> voucheritems = new HashSet<>(0);
 
 	public Uap() {
 		super();
+		this.delete = false;
 	}
 
-	public Uap(final long code, final String name, final boolean debt,
-			final boolean credit, final boolean editable, final Date creation,
-			final Date updated, final boolean enabled) {
+	public Uap(final long code, final String name, final int level,
+			final boolean debt, final boolean credit, final boolean editable,
+			final Date creation, final Date updated, final boolean enabled) {
 		this.code = code;
 		this.name = name;
+		this.level = level;
 		this.debt = debt;
 		this.credit = credit;
 		this.editable = editable;
 		this.creation = creation;
 		this.updated = updated;
 		this.enabled = enabled;
+		this.delete = false;
 	}
 
 	public Uap(final Uap uap, final long code, final String name,
-			final boolean debt, final boolean credit, final boolean editable,
-			final Date creation, final Date updated, final boolean enabled,
-			final Set<Uap> uaps, final Set<Voucheritem> voucheritems) {
+			final int level, final boolean debt, final boolean credit,
+			final boolean editable, final Date creation, final Date updated,
+			final boolean enabled, final Set<Uap> uaps,
+			final Set<Voucheritem> voucheritems) {
 		this.uap = uap;
 		this.code = code;
 		this.name = name;
+		this.level = level;
 		this.debt = debt;
 		this.credit = credit;
 		this.editable = editable;
@@ -70,6 +81,7 @@ public class Uap implements Serializable, Comparable<Uap> {
 		this.enabled = enabled;
 		this.uaps = uaps;
 		this.voucheritems = voucheritems;
+		this.delete = false;
 	}
 
 	public Integer getId() {
@@ -102,6 +114,14 @@ public class Uap implements Serializable, Comparable<Uap> {
 
 	public void setName(final String name) {
 		this.name = name;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
 	}
 
 	public boolean isDebt() {
@@ -166,6 +186,22 @@ public class Uap implements Serializable, Comparable<Uap> {
 
 	public void setVoucheritems(final Set<Voucheritem> voucheritems) {
 		this.voucheritems = voucheritems;
+	}
+
+	public String getNewName() {
+		return this.newName;
+	}
+
+	public void setNewName(final String newName) {
+		this.newName = newName;
+	}
+
+	public boolean isDelete() {
+		return this.delete;
+	}
+
+	public void setDelete(final boolean delete) {
+		this.delete = delete;
 	}
 
 	@Override

@@ -7,48 +7,40 @@ package co.com.soinsoftware.accountability.view;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
-import javax.swing.JOptionPane;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
-import co.com.soinsoftware.accountability.controller.UserController;
-import co.com.soinsoftware.accountability.entity.Rol;
-import co.com.soinsoftware.accountability.entity.User;
-import co.com.soinsoftware.accountability.util.UserTableModel;
+import co.com.soinsoftware.accountability.controller.UapController;
+import co.com.soinsoftware.accountability.entity.Uap;
+import co.com.soinsoftware.accountability.util.UapTableModel;
 
 /**
  * @author Carlos Rodriguez
- * @since 01/08/2016
+ * @since 03/08/2016
  * @version 1.0
  */
-public class JFUser extends JDialog {
+public class JFUap extends JDialog {
 
-	private static final long serialVersionUID = -7121309732386477581L;
+	private static final long serialVersionUID = -2905273704835020301L;
 
-	private static final String MSG_IDENTIFICATION_REQUIRED = "Complete el campo cedula";
+	private final UapController uapController;
 
-	private static final String MSG_LAST_NAME_REQUIRED = "Complete el campo apellido(s)";
+	private List<Uap> uapClassList;
 
-	private static final String MSG_LOGIN_REQUIRED = "Complete el campo login";
+	private List<Uap> uapGroupList;
 
-	private static final String MSG_LOGIN_USED = "El login ya está siendo usado por otro usuario";
+	private List<Uap> uapAccountList;
 
-	private static final String MSG_NAME_REQUIRED = "Complete el campo nombre(s)";
+	private List<Uap> uapSubAccountList;
 
-	private static final String MSG_PASSWORD_REQUIRED = "Complete el campo contraseña";
-
-	private static final String MSG_ROL_REQUIRED = "Seleccione el perfil del usuario";
-
-	private final UserController userController;
-
-	private List<Rol> rolList;
-
-	public JFUser() {
-		this.userController = new UserController();
+	public JFUap() {
+		this.uapController = new UapController();
 		this.initComponents();
 		final Dimension screenSize = Toolkit.getDefaultToolkit()
 				.getScreenSize();
@@ -56,131 +48,132 @@ public class JFUser extends JDialog {
 				(int) (screenSize.getHeight() / 2 - 350));
 		this.setModal(true);
 		this.setTextFieldLimits();
-		this.setRolModel();
-	}
-
-	private void setTextFieldLimits() {
-		this.jtfName.setDocument(new JTextFieldLimit(45));
-		this.jtfLastName.setDocument(new JTextFieldLimit(45));
-		this.jtfLogin.setDocument(new JTextFieldLimit(10));
-		this.jtfPassword.setDocument(new JTextFieldLimit(10));
-	}
-
-	public void refresh() {
-		this.jtfIdentification.setText("");
-		this.jtfName.setText("");
-		this.jtfLastName.setText("");
-		this.jtfLogin.setText("");
-		this.jtfPassword.setText("");
-		this.jcbRol.setSelectedIndex(0);
+		this.setUapClassModel();
+		this.setUapGroupModel(null);
+		this.setUapAccountModel(null);
+		this.setUapSubAccountModel(null);
 		this.refreshTableData();
 	}
 
-	private void refreshTableData() {
-		final List<User> userList = this.userController.selectUsers();
-		final TableModel model = new UserTableModel(userList);
-		this.jtbUserList.setModel(model);
-		this.jtbUserList.setFillsViewportHeight(true);
+	public void refresh() {
+		this.jcbUapClass.setSelectedIndex(0);
+		this.jcbUapGroup.setSelectedIndex(0);
+		this.jcbUapAccount.setSelectedIndex(0);
+		this.jcbUapSubAccount.setSelectedIndex(0);
+		this.setTextToUapFields("");
 	}
 
-	private void setRolModel() {
-		this.rolList = this.userController.selectRoles();
+	private void refreshTableData() {
+		final TableModel model = new UapTableModel(this.uapClassList);
+		this.jtbUapList.setModel(model);
+		this.jtbUapList.setFillsViewportHeight(true);
+		this.setTableColumnDimensions();
+	}
+
+	private void setTableColumnDimensions() {
+		for (int i = 0; i < 3; i++) {
+			final TableColumn column = this.jtbUapList.getColumnModel()
+					.getColumn(i);
+			column.setResizable(false);
+			if (i == 0 || i == 2) {
+				column.setPreferredWidth(80);
+			} else if (i == 1) {
+				column.setPreferredWidth(316);
+			}
+		}
+	}
+
+	private void setTextFieldLimits() {
+		this.jtfName.setDocument(new JTextFieldLimit(100));
+	}
+
+	private void setUapClassModel() {
+		this.uapClassList = this.uapController.selectUapClassLevel();
 		final DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>();
 		model.addElement("Seleccione uno...");
-		for (final Rol rol : this.rolList) {
-			model.addElement(rol.getName());
+		if (this.uapClassList != null && this.uapClassList.size() > 0) {
+			for (final Uap uap : this.uapClassList) {
+				model.addElement(uap.getCode() + " - " + uap.getName());
+			}
 		}
-		this.jcbRol.setModel(model);
+		this.jcbUapClass.setModel(model);
 	}
 
-	private Rol getRolSelected() {
-		Rol rol = null;
-		final int index = this.jcbRol.getSelectedIndex();
+	private void setUapGroupModel(final List<Uap> uapList) {
+		this.uapGroupList = uapList;
+		final DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>();
+		model.addElement("Seleccione uno...");
+		if (this.uapGroupList != null && this.uapGroupList.size() > 0) {
+			for (final Uap uap : this.uapGroupList) {
+				model.addElement(uap.getCode() + " - " + uap.getName());
+			}
+		}
+		this.jcbUapGroup.setModel(model);
+	}
+
+	private void setUapAccountModel(final List<Uap> uapList) {
+		this.uapAccountList = uapList;
+		final DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>();
+		model.addElement("Seleccione uno...");
+		if (this.uapAccountList != null && this.uapAccountList.size() > 0) {
+			for (final Uap uap : this.uapAccountList) {
+				model.addElement(uap.getCode() + " - " + uap.getName());
+			}
+		}
+		this.jcbUapAccount.setModel(model);
+	}
+
+	private void setUapSubAccountModel(final List<Uap> uapList) {
+		this.uapSubAccountList = uapList;
+		final DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>();
+		model.addElement("Seleccione uno...");
+		if (this.uapSubAccountList != null && this.uapSubAccountList.size() > 0) {
+			for (final Uap uap : this.uapSubAccountList) {
+				model.addElement(uap.getCode() + " - " + uap.getName());
+			}
+		}
+		this.jcbUapSubAccount.setModel(model);
+	}
+
+	private Uap getUapClassSelected() {
+		Uap uap = null;
+		final int index = this.jcbUapClass.getSelectedIndex();
 		if (index > 0) {
-			rol = this.rolList.get(index - 1);
+			uap = this.uapClassList.get(index - 1);
 		}
-		return rol;
+		return uap;
 	}
 
-	private long getIdentificationValue() {
-		String identification = this.jtfIdentification.getText()
-				.replace(",", "").replace(".", "");
-		if (identification.equals("")) {
-			identification = "0";
+	private Uap getUapGroupSelected() {
+		Uap uap = null;
+		final int index = this.jcbUapGroup.getSelectedIndex();
+		if (index > 0) {
+			uap = this.uapGroupList.get(index - 1);
 		}
-		return Long.valueOf(identification);
+		return uap;
 	}
 
-	private boolean validateDataForSave() {
-		boolean valid = true;
-		final long identification = this.getIdentificationValue();
-		final String name = this.jtfName.getText();
-		final String lastName = this.jtfLastName.getText();
-		final Rol rol = this.getRolSelected();
-		final String login = this.jtfLogin.getText();
-		final String password = this.jtfPassword.getText();
-		if (identification == 0) {
-			valid = false;
-			ViewUtils.showMessage(this, MSG_IDENTIFICATION_REQUIRED,
-					ViewUtils.TITLE_REQUIRED_FIELDS, JOptionPane.ERROR_MESSAGE);
-		} else if (name.trim().equals("")) {
-			valid = false;
-			ViewUtils.showMessage(this, MSG_NAME_REQUIRED,
-					ViewUtils.TITLE_REQUIRED_FIELDS, JOptionPane.ERROR_MESSAGE);
-		} else if (lastName.trim().equals("")) {
-			valid = false;
-			ViewUtils.showMessage(this, MSG_LAST_NAME_REQUIRED,
-					ViewUtils.TITLE_REQUIRED_FIELDS, JOptionPane.ERROR_MESSAGE);
-		} else if (rol == null) {
-			valid = false;
-			ViewUtils.showMessage(this, MSG_ROL_REQUIRED,
-					ViewUtils.TITLE_REQUIRED_FIELDS, JOptionPane.ERROR_MESSAGE);
-		} else if (login.trim().equals("")) {
-			valid = false;
-			ViewUtils.showMessage(this, MSG_LOGIN_REQUIRED,
-					ViewUtils.TITLE_REQUIRED_FIELDS, JOptionPane.ERROR_MESSAGE);
-		} else if (password.trim().equals("")) {
-			valid = false;
-			ViewUtils.showMessage(this, MSG_PASSWORD_REQUIRED,
-					ViewUtils.TITLE_REQUIRED_FIELDS, JOptionPane.ERROR_MESSAGE);
-		} else if (this.userController.isLoginUsed(login)) {
-			valid = false;
-			ViewUtils.showMessage(this, MSG_LOGIN_USED,
-					ViewUtils.TITLE_REQUIRED_FIELDS, JOptionPane.ERROR_MESSAGE);
+	private Uap getUapAccountSelected() {
+		Uap uap = null;
+		final int index = this.jcbUapAccount.getSelectedIndex();
+		if (index > 0) {
+			uap = this.uapAccountList.get(index - 1);
 		}
-		return valid;
+		return uap;
 	}
 
-	private List<User> getUserListFromTable() {
-		final TableModel model = this.jtbUserList.getModel();
-		return ((UserTableModel) model).getUserList();
+	private Uap getUapSubAccountSelected() {
+		Uap uap = null;
+		final int index = this.jcbUapSubAccount.getSelectedIndex();
+		if (index > 0) {
+			uap = this.uapSubAccountList.get(index - 1);
+		}
+		return uap;
 	}
 
-	private boolean hasUserToBeUpdated(final List<User> userList) {
-		boolean hasElements = false;
-		for (final User user : userList) {
-			if ((user.getNewName() != null && !user.getNewName().equals("") && !user
-					.getNewName().equals(user.getName()))
-					|| (user.getNewLastname() != null
-							&& !user.getNewLastname().equals("") && !user
-							.getNewLastname().equals(user.getLastname()))
-					|| (user.getNewIdentification() != user.getIdentification())) {
-				hasElements = true;
-				break;
-			}
-		}
-		return hasElements;
-	}
-
-	private boolean hasUserToBeDeleted(final List<User> userList) {
-		boolean hasElements = false;
-		for (final User user : userList) {
-			if (user.isDelete()) {
-				hasElements = true;
-				break;
-			}
-		}
-		return hasElements;
+	private void setTextToUapFields(final String code) {
+		this.jtfCode.setText(code);
+		this.jtfName.setText("");
 	}
 
 	/**
@@ -198,26 +191,26 @@ public class JFUser extends JDialog {
 		jpTitle = new javax.swing.JPanel();
 		jlbTitle = new javax.swing.JLabel();
 		lbImage = new javax.swing.JLabel();
-		jpNewUser = new javax.swing.JPanel();
+		jpNewUap = new javax.swing.JPanel();
 		jlbName = new javax.swing.JLabel();
 		jtfName = new javax.swing.JTextField();
-		jlbLastName = new javax.swing.JLabel();
-		jtfLastName = new javax.swing.JTextField();
+		jlbCode = new javax.swing.JLabel();
+		jtfCode = new javax.swing.JTextField();
 		jbtSave = new javax.swing.JButton();
-		jtfIdentification = new javax.swing.JFormattedTextField();
-		jlbIdentification = new javax.swing.JLabel();
-		jlbRol = new javax.swing.JLabel();
-		jcbRol = new javax.swing.JComboBox<String>();
-		jlbLogin = new javax.swing.JLabel();
-		jtfLogin = new javax.swing.JTextField();
-		jlbPassword = new javax.swing.JLabel();
-		jtfPassword = new javax.swing.JTextField();
-		jpUserList = new javax.swing.JPanel();
+		jcbUapClass = new javax.swing.JComboBox<String>();
+		jlbUapClass = new javax.swing.JLabel();
+		jlbUapGroup = new javax.swing.JLabel();
+		jcbUapGroup = new javax.swing.JComboBox<String>();
+		jcbUapAccount = new javax.swing.JComboBox<String>();
+		jlbUapAccount = new javax.swing.JLabel();
+		jlbUapSubAccount = new javax.swing.JLabel();
+		jcbUapSubAccount = new javax.swing.JComboBox<String>();
+		jpUapList = new javax.swing.JPanel();
 		jpActionButtons = new javax.swing.JPanel();
 		jbtUpdate = new javax.swing.JButton();
 		jbtDelete = new javax.swing.JButton();
-		jspUserList = new javax.swing.JScrollPane();
-		jtbUserList = new javax.swing.JTable();
+		jspUapList = new javax.swing.JScrollPane();
+		jtbUapList = new javax.swing.JTable();
 		jpAction = new javax.swing.JPanel();
 		jbtClose = new javax.swing.JButton();
 
@@ -226,7 +219,7 @@ public class JFUser extends JDialog {
 		jpTitle.setBackground(new java.awt.Color(255, 255, 255));
 
 		jlbTitle.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
-		jlbTitle.setText("Usuarios");
+		jlbTitle.setText("Plan único de cuentas");
 
 		javax.swing.GroupLayout jpTitleLayout = new javax.swing.GroupLayout(
 				jpTitle);
@@ -248,21 +241,21 @@ public class JFUser extends JDialog {
 		lbImage.setIcon(new javax.swing.ImageIcon(getClass().getResource(
 				"/images/soin.png"))); // NOI18N
 
-		jpNewUser.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
-				"Nuevo usuario",
+		jpNewUap.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
+				"Nueva cuenta",
 				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
 				javax.swing.border.TitledBorder.DEFAULT_POSITION,
 				new java.awt.Font("Verdana", 1, 12))); // NOI18N
 
 		jlbName.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
-		jlbName.setText("Nombre(s):");
+		jlbName.setText("Nombre:");
 
 		jtfName.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
 
-		jlbLastName.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
-		jlbLastName.setText("Apellido(s):");
+		jlbCode.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
+		jlbCode.setText("Codigo:");
 
-		jtfLastName.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+		jtfCode.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
 
 		jbtSave.setBackground(new java.awt.Color(16, 135, 221));
 		jbtSave.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
@@ -275,48 +268,73 @@ public class JFUser extends JDialog {
 			}
 		});
 
-		jtfIdentification
-				.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(
-						new javax.swing.text.NumberFormatter(
-								new java.text.DecimalFormat("#,##0"))));
-		jtfIdentification.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+		jcbUapClass.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+		jcbUapClass.setMaximumSize(new java.awt.Dimension(200, 20));
+		jcbUapClass.setMinimumSize(new java.awt.Dimension(200, 20));
+		jcbUapClass.setPreferredSize(new java.awt.Dimension(200, 20));
+		jcbUapClass.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				jcbUapClassActionPerformed(evt);
+			}
+		});
 
-		jlbIdentification.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
-		jlbIdentification.setText("Cedula:");
+		jlbUapClass.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
+		jlbUapClass.setText("Clase:");
 
-		jlbRol.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
-		jlbRol.setText("Perfil:");
+		jlbUapGroup.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
+		jlbUapGroup.setText("Grupo:");
 
-		jcbRol.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+		jcbUapGroup.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+		jcbUapGroup.setMaximumSize(new java.awt.Dimension(200, 20));
+		jcbUapGroup.setPreferredSize(new java.awt.Dimension(200, 20));
+		jcbUapGroup.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				jcbUapGroupActionPerformed(evt);
+			}
+		});
 
-		jlbLogin.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
-		jlbLogin.setText("Login:");
+		jcbUapAccount.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+		jcbUapAccount.setMaximumSize(new java.awt.Dimension(200, 20));
+		jcbUapAccount.setPreferredSize(new java.awt.Dimension(200, 20));
+		jcbUapAccount.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				jcbUapAccountActionPerformed(evt);
+			}
+		});
 
-		jtfLogin.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+		jlbUapAccount.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
+		jlbUapAccount.setText("Cuenta:");
 
-		jlbPassword.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
-		jlbPassword.setText("Contraseña:");
+		jlbUapSubAccount.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
+		jlbUapSubAccount.setText("Sub-Cuenta:");
 
-		jtfPassword.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+		jcbUapSubAccount.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+		jcbUapSubAccount.setMaximumSize(new java.awt.Dimension(200, 20));
+		jcbUapSubAccount.setPreferredSize(new java.awt.Dimension(200, 20));
+		jcbUapSubAccount.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				jcbUapSubAccountActionPerformed(evt);
+			}
+		});
 
-		javax.swing.GroupLayout jpNewUserLayout = new javax.swing.GroupLayout(
-				jpNewUser);
-		jpNewUser.setLayout(jpNewUserLayout);
-		jpNewUserLayout
-				.setHorizontalGroup(jpNewUserLayout
+		javax.swing.GroupLayout jpNewUapLayout = new javax.swing.GroupLayout(
+				jpNewUap);
+		jpNewUap.setLayout(jpNewUapLayout);
+		jpNewUapLayout
+				.setHorizontalGroup(jpNewUapLayout
 						.createParallelGroup(
 								javax.swing.GroupLayout.Alignment.LEADING)
 						.addGroup(
-								jpNewUserLayout
+								jpNewUapLayout
 										.createSequentialGroup()
 										.addContainerGap()
 										.addGroup(
-												jpNewUserLayout
+												jpNewUapLayout
 														.createParallelGroup(
 																javax.swing.GroupLayout.Alignment.LEADING)
 														.addGroup(
 																javax.swing.GroupLayout.Alignment.TRAILING,
-																jpNewUserLayout
+																jpNewUapLayout
 																		.createSequentialGroup()
 																		.addGap(0,
 																				0,
@@ -327,57 +345,106 @@ public class JFUser extends JDialog {
 																				javax.swing.GroupLayout.DEFAULT_SIZE,
 																				javax.swing.GroupLayout.PREFERRED_SIZE))
 														.addGroup(
-																jpNewUserLayout
+																jpNewUapLayout
 																		.createSequentialGroup()
 																		.addGroup(
-																				jpNewUserLayout
+																				jpNewUapLayout
 																						.createParallelGroup(
 																								javax.swing.GroupLayout.Alignment.LEADING,
 																								false)
 																						.addComponent(
-																								jtfLastName)
+																								jtfCode)
 																						.addComponent(
 																								jtfName)
 																						.addComponent(
+																								jlbUapClass)
+																						.addComponent(
+																								jlbUapGroup)
+																						.addComponent(
+																								jlbUapAccount)
+																						.addComponent(
+																								jlbCode)
+																						.addComponent(
+																								jlbUapSubAccount)
+																						.addComponent(
 																								jlbName)
 																						.addComponent(
-																								jlbIdentification)
-																						.addComponent(
-																								jlbRol)
-																						.addComponent(
-																								jlbLastName)
-																						.addComponent(
-																								jtfIdentification)
-																						.addComponent(
-																								jcbRol,
-																								javax.swing.GroupLayout.PREFERRED_SIZE,
-																								190,
+																								jcbUapSubAccount,
+																								0,
+																								javax.swing.GroupLayout.DEFAULT_SIZE,
 																								javax.swing.GroupLayout.PREFERRED_SIZE)
 																						.addComponent(
-																								jlbLogin)
+																								jcbUapAccount,
+																								0,
+																								javax.swing.GroupLayout.DEFAULT_SIZE,
+																								javax.swing.GroupLayout.PREFERRED_SIZE)
 																						.addComponent(
-																								jlbPassword)
+																								jcbUapGroup,
+																								0,
+																								javax.swing.GroupLayout.DEFAULT_SIZE,
+																								javax.swing.GroupLayout.PREFERRED_SIZE)
 																						.addComponent(
-																								jtfLogin)
-																						.addComponent(
-																								jtfPassword))
+																								jcbUapClass,
+																								0,
+																								javax.swing.GroupLayout.DEFAULT_SIZE,
+																								javax.swing.GroupLayout.PREFERRED_SIZE))
 																		.addGap(0,
 																				0,
 																				Short.MAX_VALUE)))
 										.addContainerGap()));
-		jpNewUserLayout
-				.setVerticalGroup(jpNewUserLayout
+		jpNewUapLayout
+				.setVerticalGroup(jpNewUapLayout
 						.createParallelGroup(
 								javax.swing.GroupLayout.Alignment.LEADING)
 						.addGroup(
-								jpNewUserLayout
+								jpNewUapLayout
 										.createSequentialGroup()
 										.addContainerGap()
-										.addComponent(jlbIdentification)
+										.addComponent(jlbUapClass)
 										.addPreferredGap(
 												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 										.addComponent(
-												jtfIdentification,
+												jcbUapClass,
+												javax.swing.GroupLayout.PREFERRED_SIZE,
+												javax.swing.GroupLayout.DEFAULT_SIZE,
+												javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(
+												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+										.addComponent(jlbUapGroup)
+										.addPreferredGap(
+												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										.addComponent(
+												jcbUapGroup,
+												javax.swing.GroupLayout.PREFERRED_SIZE,
+												javax.swing.GroupLayout.DEFAULT_SIZE,
+												javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(
+												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+										.addComponent(jlbUapAccount)
+										.addPreferredGap(
+												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										.addComponent(
+												jcbUapAccount,
+												javax.swing.GroupLayout.PREFERRED_SIZE,
+												javax.swing.GroupLayout.DEFAULT_SIZE,
+												javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(
+												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+										.addComponent(jlbUapSubAccount)
+										.addPreferredGap(
+												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										.addComponent(
+												jcbUapSubAccount,
+												javax.swing.GroupLayout.PREFERRED_SIZE,
+												javax.swing.GroupLayout.DEFAULT_SIZE,
+												javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(
+												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+										.addComponent(jlbCode)
+										.addPreferredGap(
+												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										.addComponent(
+												jtfCode,
 												javax.swing.GroupLayout.PREFERRED_SIZE,
 												javax.swing.GroupLayout.DEFAULT_SIZE,
 												javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -385,56 +452,15 @@ public class JFUser extends JDialog {
 												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
 										.addComponent(jlbName)
 										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+												javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+												javax.swing.GroupLayout.DEFAULT_SIZE,
+												Short.MAX_VALUE)
 										.addComponent(
 												jtfName,
 												javax.swing.GroupLayout.PREFERRED_SIZE,
 												javax.swing.GroupLayout.DEFAULT_SIZE,
 												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-										.addComponent(jlbLastName)
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(
-												jtfLastName,
-												javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-										.addComponent(jlbRol)
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(
-												jcbRol,
-												javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-										.addComponent(jlbLogin)
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(
-												jtfLogin,
-												javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-										.addComponent(jlbPassword)
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(
-												jtfPassword,
-												javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												Short.MAX_VALUE)
+										.addGap(27, 27, 27)
 										.addComponent(
 												jbtSave,
 												javax.swing.GroupLayout.PREFERRED_SIZE,
@@ -442,8 +468,8 @@ public class JFUser extends JDialog {
 												javax.swing.GroupLayout.PREFERRED_SIZE)
 										.addContainerGap()));
 
-		jpUserList.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
-				"Listado de usuarios",
+		jpUapList.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
+				"Listado de cuentas",
 				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
 				javax.swing.border.TitledBorder.DEFAULT_POSITION,
 				new java.awt.Font("Verdana", 1, 12))); // NOI18N
@@ -525,26 +551,24 @@ public class JFUser extends JDialog {
 												javax.swing.GroupLayout.DEFAULT_SIZE,
 												Short.MAX_VALUE)));
 
-		jtbUserList.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
-		jtbUserList.setModel(new javax.swing.table.DefaultTableModel(
-				new Object[][] {
+		jtbUapList.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+		jspUapList.setViewportView(jtbUapList);
 
-				}, new String[] {
-
-				}));
-		jspUserList.setViewportView(jtbUserList);
-
-		javax.swing.GroupLayout jpUserListLayout = new javax.swing.GroupLayout(
-				jpUserList);
-		jpUserList.setLayout(jpUserListLayout);
-		jpUserListLayout
-				.setHorizontalGroup(jpUserListLayout
+		javax.swing.GroupLayout jpUapListLayout = new javax.swing.GroupLayout(
+				jpUapList);
+		jpUapList.setLayout(jpUapListLayout);
+		jpUapListLayout
+				.setHorizontalGroup(jpUapListLayout
 						.createParallelGroup(
 								javax.swing.GroupLayout.Alignment.LEADING)
 						.addGroup(
-								jpUserListLayout
+								jpUapListLayout
 										.createSequentialGroup()
-										.addComponent(jspUserList)
+										.addContainerGap()
+										.addComponent(
+												jspUapList,
+												javax.swing.GroupLayout.DEFAULT_SIZE,
+												582, Short.MAX_VALUE)
 										.addPreferredGap(
 												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
 										.addComponent(
@@ -552,14 +576,14 @@ public class JFUser extends JDialog {
 												javax.swing.GroupLayout.PREFERRED_SIZE,
 												javax.swing.GroupLayout.DEFAULT_SIZE,
 												javax.swing.GroupLayout.PREFERRED_SIZE)));
-		jpUserListLayout.setVerticalGroup(jpUserListLayout
+		jpUapListLayout.setVerticalGroup(jpUapListLayout
 				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addComponent(jspUapList,
+						javax.swing.GroupLayout.PREFERRED_SIZE, 0,
+						Short.MAX_VALUE)
 				.addComponent(jpActionButtons,
 						javax.swing.GroupLayout.DEFAULT_SIZE,
-						javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-				.addComponent(jspUserList,
-						javax.swing.GroupLayout.PREFERRED_SIZE, 0,
-						Short.MAX_VALUE));
+						javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
 
 		jpAction.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
 				"", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
@@ -613,34 +637,40 @@ public class JFUser extends JDialog {
 						javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 				.addGroup(
 						layout.createSequentialGroup()
-								.addGap(0, 612, Short.MAX_VALUE)
-								.addComponent(lbImage,
-										javax.swing.GroupLayout.PREFERRED_SIZE,
-										388,
-										javax.swing.GroupLayout.PREFERRED_SIZE))
-				.addGroup(
-						layout.createSequentialGroup()
 								.addContainerGap()
-								.addComponent(jpNewUser,
+								.addComponent(jpNewUap,
 										javax.swing.GroupLayout.PREFERRED_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE,
 										javax.swing.GroupLayout.PREFERRED_SIZE)
 								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
 								.addGroup(
 										layout.createParallelGroup(
 												javax.swing.GroupLayout.Alignment.LEADING)
+												.addGroup(
+														layout.createSequentialGroup()
+																.addGap(0,
+																		0,
+																		Short.MAX_VALUE)
+																.addComponent(
+																		lbImage,
+																		javax.swing.GroupLayout.PREFERRED_SIZE,
+																		388,
+																		javax.swing.GroupLayout.PREFERRED_SIZE))
 												.addComponent(
 														jpAction,
+														javax.swing.GroupLayout.Alignment.TRAILING,
 														javax.swing.GroupLayout.DEFAULT_SIZE,
 														javax.swing.GroupLayout.DEFAULT_SIZE,
 														Short.MAX_VALUE)
-												.addComponent(
-														jpUserList,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														Short.MAX_VALUE))
-								.addContainerGap()));
+												.addGroup(
+														layout.createSequentialGroup()
+																.addComponent(
+																		jpUapList,
+																		javax.swing.GroupLayout.DEFAULT_SIZE,
+																		javax.swing.GroupLayout.DEFAULT_SIZE,
+																		Short.MAX_VALUE)
+																.addContainerGap()))));
 		layout.setVerticalGroup(layout
 				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(
@@ -656,7 +686,7 @@ public class JFUser extends JDialog {
 												javax.swing.GroupLayout.Alignment.LEADING,
 												false)
 												.addComponent(
-														jpNewUser,
+														jpNewUap,
 														javax.swing.GroupLayout.PREFERRED_SIZE,
 														javax.swing.GroupLayout.DEFAULT_SIZE,
 														javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -664,12 +694,12 @@ public class JFUser extends JDialog {
 														javax.swing.GroupLayout.Alignment.TRAILING,
 														layout.createSequentialGroup()
 																.addComponent(
-																		jpUserList,
+																		jpUapList,
 																		javax.swing.GroupLayout.DEFAULT_SIZE,
 																		javax.swing.GroupLayout.DEFAULT_SIZE,
 																		Short.MAX_VALUE)
 																.addPreferredGap(
-																		javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 																.addComponent(
 																		jpAction,
 																		javax.swing.GroupLayout.PREFERRED_SIZE,
@@ -688,86 +718,59 @@ public class JFUser extends JDialog {
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void jbtSaveActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jbtSaveActionPerformed
-		if (this.validateDataForSave()) {
-			final int confirmation = ViewUtils.showConfirmDialog(this,
-					ViewUtils.MSG_SAVE_QUESTION, ViewUtils.TITLE_SAVED);
-			if (confirmation == JOptionPane.OK_OPTION) {
-				final long identification = this.getIdentificationValue();
-				final String name = this.jtfName.getText();
-				final String lastName = this.jtfLastName.getText();
-				final Rol rol = this.getRolSelected();
-				final String login = this.jtfLogin.getText();
-				final String password = this.jtfPassword.getText();
-				this.userController.saveUser(identification, name, lastName,
-						rol, login, password);
-				ViewUtils.showMessage(this, ViewUtils.MSG_SAVED,
-						ViewUtils.TITLE_SAVED, JOptionPane.INFORMATION_MESSAGE);
-				this.refresh();
-			}
-		}
+		// TODO add your handling code here:
 	}// GEN-LAST:event_jbtSaveActionPerformed
 
-	private void jbtUpdateActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jbtUpdateActionPerformed
-		final List<User> userList = this.getUserListFromTable();
-		if (userList != null && this.hasUserToBeUpdated(userList)) {
-			final int confirmation = ViewUtils.showConfirmDialog(this,
-					ViewUtils.MSG_UPDATE_QUESTION, ViewUtils.TITLE_SAVED);
-			if (confirmation == JOptionPane.OK_OPTION) {
-				for (final User user : userList) {
-					boolean edited = false;
-					if (user.getNewName() != null
-							&& !user.getNewName().equals("")
-							&& !user.getNewName().equals(user.getName())) {
-						user.setName(user.getNewName());
-						edited = true;
-					}
-					if (user.getNewLastname() != null
-							&& !user.getNewLastname().equals("")
-							&& !user.getNewLastname()
-									.equals(user.getLastname())) {
-						user.setLastname(user.getNewLastname());
-						edited = true;
-					}
-					if (user.getNewIdentification() != user.getIdentification()) {
-						user.setIdentification(user.getNewIdentification());
-						edited = true;
-					}
-					if (edited) {
-						user.setUpdated(new Date());
-						this.userController.saveUser(user);
-					}
-				}
-				ViewUtils.showMessage(this, ViewUtils.MSG_UPDATED,
-						ViewUtils.TITLE_SAVED, JOptionPane.INFORMATION_MESSAGE);
-				this.refresh();
-			}
-		} else {
-			ViewUtils.showMessage(this, ViewUtils.MSG_UNEDITED,
-					ViewUtils.TITLE_SAVED, JOptionPane.INFORMATION_MESSAGE);
+	private void jcbUapClassActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jcbUapClassActionPerformed
+		final Uap uap = this.getUapClassSelected();
+		List<Uap> uapList = new ArrayList<>();
+		if (uap != null && uap.getUaps() != null && uap.getUaps().size() > 0) {
+			uapList = new ArrayList<>(uap.getUaps());
+			Collections.sort(uapList);
 		}
+		this.setUapGroupModel(uapList);
+		this.setUapAccountModel(null);
+		this.setUapSubAccountModel(null);
+		this.setTextToUapFields("");
+	}// GEN-LAST:event_jcbUapClassActionPerformed
+
+	private void jcbUapGroupActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jcbUapGroupActionPerformed
+		final Uap uap = this.getUapGroupSelected();
+		List<Uap> uapList = new ArrayList<>();
+		if (uap != null && uap.getUaps() != null && uap.getUaps().size() > 0) {
+			uapList = new ArrayList<>(uap.getUaps());
+			Collections.sort(uapList);
+		}
+		this.setUapAccountModel(uapList);
+		this.setUapSubAccountModel(null);
+		this.setTextToUapFields("");
+	}// GEN-LAST:event_jcbUapGroupActionPerformed
+
+	private void jcbUapAccountActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jcbUapAccountActionPerformed
+		final Uap uap = this.getUapAccountSelected();
+		List<Uap> uapList = new ArrayList<>();
+		if (uap != null && uap.getUaps() != null && uap.getUaps().size() > 0) {
+			uapList = new ArrayList<>(uap.getUaps());
+			Collections.sort(uapList);
+		}
+		this.setUapSubAccountModel(uapList);
+		this.setTextToUapFields("");
+	}// GEN-LAST:event_jcbUapAccountActionPerformed
+
+	private void jcbUapSubAccountActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jcbUapSubAccountActionPerformed
+		final Uap uap = this.getUapSubAccountSelected();
+		if (uap != null) {
+			this.setTextToUapFields(String.valueOf(uap.getCode()));
+			this.jtfCode.requestFocus();
+		}
+	}// GEN-LAST:event_jcbUapSubAccountActionPerformed
+
+	private void jbtUpdateActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jbtUpdateActionPerformed
+		// TODO add your handling code here:
 	}// GEN-LAST:event_jbtUpdateActionPerformed
 
 	private void jbtDeleteActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jbtDeleteActionPerformed
-		final List<User> userList = this.getUserListFromTable();
-		if (userList != null && this.hasUserToBeDeleted(userList)) {
-			final int confirmation = ViewUtils.showConfirmDialog(this,
-					ViewUtils.MSG_DELETE_QUESTION, ViewUtils.TITLE_SAVED);
-			if (confirmation == JOptionPane.OK_OPTION) {
-				for (final User user : userList) {
-					if (user.isDelete()) {
-						user.setEnabled(false);
-						user.setUpdated(new Date());
-						this.userController.saveUser(user);
-					}
-				}
-				ViewUtils.showMessage(this, ViewUtils.MSG_DELETED,
-						ViewUtils.TITLE_SAVED, JOptionPane.INFORMATION_MESSAGE);
-				this.refresh();
-			}
-		} else {
-			ViewUtils.showMessage(this, ViewUtils.MSG_UNSELECTED,
-					ViewUtils.TITLE_SAVED, JOptionPane.INFORMATION_MESSAGE);
-		}
+		// TODO add your handling code here:
 	}// GEN-LAST:event_jbtDeleteActionPerformed
 
 	private void jbtCloseActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jbtCloseActionPerformed
@@ -779,26 +782,26 @@ public class JFUser extends JDialog {
 	private javax.swing.JButton jbtDelete;
 	private javax.swing.JButton jbtSave;
 	private javax.swing.JButton jbtUpdate;
-	private javax.swing.JComboBox<String> jcbRol;
-	private javax.swing.JLabel jlbIdentification;
-	private javax.swing.JLabel jlbLastName;
-	private javax.swing.JLabel jlbLogin;
+	private javax.swing.JComboBox<String> jcbUapAccount;
+	private javax.swing.JComboBox<String> jcbUapClass;
+	private javax.swing.JComboBox<String> jcbUapGroup;
+	private javax.swing.JComboBox<String> jcbUapSubAccount;
+	private javax.swing.JLabel jlbCode;
 	private javax.swing.JLabel jlbName;
-	private javax.swing.JLabel jlbPassword;
-	private javax.swing.JLabel jlbRol;
 	private javax.swing.JLabel jlbTitle;
+	private javax.swing.JLabel jlbUapAccount;
+	private javax.swing.JLabel jlbUapClass;
+	private javax.swing.JLabel jlbUapGroup;
+	private javax.swing.JLabel jlbUapSubAccount;
 	private javax.swing.JPanel jpAction;
 	private javax.swing.JPanel jpActionButtons;
-	private javax.swing.JPanel jpNewUser;
+	private javax.swing.JPanel jpNewUap;
 	private javax.swing.JPanel jpTitle;
-	private javax.swing.JPanel jpUserList;
-	private javax.swing.JScrollPane jspUserList;
-	private javax.swing.JTable jtbUserList;
-	private javax.swing.JFormattedTextField jtfIdentification;
-	private javax.swing.JTextField jtfLastName;
-	private javax.swing.JTextField jtfLogin;
+	private javax.swing.JPanel jpUapList;
+	private javax.swing.JScrollPane jspUapList;
+	private javax.swing.JTable jtbUapList;
+	private javax.swing.JTextField jtfCode;
 	private javax.swing.JTextField jtfName;
-	private javax.swing.JTextField jtfPassword;
 	private javax.swing.JLabel lbImage;
 	// End of variables declaration//GEN-END:variables
 }

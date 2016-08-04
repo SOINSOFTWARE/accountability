@@ -195,6 +195,7 @@ public class JFCompany extends JDialog {
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
+	// <editor-fold defaultstate="collapsed"
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
@@ -310,7 +311,7 @@ public class JFCompany extends JDialog {
 																jpNewCompanyLayout
 																		.createSequentialGroup()
 																		.addGap(0,
-																				101,
+																				0,
 																				Short.MAX_VALUE)
 																		.addComponent(
 																				jbtSave,
@@ -318,20 +319,19 @@ public class JFCompany extends JDialog {
 																				javax.swing.GroupLayout.DEFAULT_SIZE,
 																				javax.swing.GroupLayout.PREFERRED_SIZE))
 														.addComponent(
-																jtfCompanyDocument,
-																javax.swing.GroupLayout.DEFAULT_SIZE,
-																190,
-																Short.MAX_VALUE)
+																jtfCompanyDocument)
 														.addComponent(
 																jtfCompanyName)
 														.addComponent(
 																jcbCompanyType,
-																0, 190,
-																Short.MAX_VALUE)
+																javax.swing.GroupLayout.PREFERRED_SIZE,
+																190,
+																javax.swing.GroupLayout.PREFERRED_SIZE)
 														.addComponent(
 																jcbDocumentType,
-																0, 190,
-																Short.MAX_VALUE)
+																javax.swing.GroupLayout.PREFERRED_SIZE,
+																190,
+																javax.swing.GroupLayout.PREFERRED_SIZE)
 														.addGroup(
 																jpNewCompanyLayout
 																		.createSequentialGroup()

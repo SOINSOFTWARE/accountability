@@ -26,7 +26,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Component id="jpTitle" alignment="0" max="32767" attributes="0"/>
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace min="0" pref="393" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="612" max="32767" attributes="0"/>
               <Component id="lbImage" min="-2" pref="388" max="-2" attributes="0"/>
           </Group>
           <Group type="102" attributes="0">
@@ -124,13 +124,13 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="0" pref="101" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           <Component id="jbtSave" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="jtfCompanyDocument" alignment="0" pref="190" max="32767" attributes="0"/>
+                      <Component id="jtfCompanyDocument" alignment="0" max="32767" attributes="0"/>
                       <Component id="jtfCompanyName" alignment="0" max="32767" attributes="0"/>
-                      <Component id="jcbCompanyType" alignment="0" pref="190" max="32767" attributes="0"/>
-                      <Component id="jcbDocumentType" alignment="0" pref="190" max="32767" attributes="0"/>
+                      <Component id="jcbCompanyType" alignment="0" min="-2" pref="190" max="-2" attributes="0"/>
+                      <Component id="jcbDocumentType" alignment="0" min="-2" pref="190" max="-2" attributes="0"/>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jlbCompanyDocument" min="-2" max="-2" attributes="0"/>

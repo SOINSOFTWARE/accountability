@@ -15,7 +15,10 @@
             <column name="code" not-null="true" />
         </property>
         <property name="name" type="string">
-            <column name="name" length="60" not-null="true" />
+            <column name="name" length="100" not-null="true" />
+        </property>
+        <property name="level" type="int">
+            <column name="level" not-null="true" />
         </property>
         <property name="debt" type="boolean">
             <column name="debt" not-null="true" />

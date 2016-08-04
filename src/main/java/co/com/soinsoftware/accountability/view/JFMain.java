@@ -18,7 +18,7 @@ import co.com.soinsoftware.accountability.entity.User;
 public class JFMain extends JFrame {
 
 	private static final long serialVersionUID = 1911600408651182901L;
-	
+
 	private final User loggedUser;
 
 	public JFMain(final User user) {
@@ -26,11 +26,13 @@ public class JFMain extends JFrame {
 		this.initComponents();
 		this.createMenuBar();
 	}
-	
+
 	private void createMenuBar() {
 		final JFCompany companyFrame = new JFCompany();
+		final JFUap uapFrame = new JFUap();
 		final JFUser userFrame = new JFUser();
-		final MenuController controller = new MenuController(companyFrame, userFrame);
+		final MenuController controller = new MenuController(companyFrame,
+				uapFrame, userFrame);
 		final JMenuBar menuBar = new JMBAppMenu(controller);
 		this.setJMenuBar(menuBar);
 	}

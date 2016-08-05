@@ -63,3 +63,5 @@ $RECYCLE.BIN/
 *.lnk
 target/classes/META-INF/maven/co.com.soinsoftware/accountability/pom.properties
 target/classes/META-INF/maven/org.apache.maven/accountability/pom.properties
+target/classes/.netbeans_automatic_build
+*.netbeans_automatic_build

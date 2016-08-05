@@ -20,51 +20,36 @@ public class Vouchertype implements Serializable, Comparable<Vouchertype> {
 
 	private String name;
 
-	private long numberfrom;
-
-	private long numberto;
-
-	private long numbercurrent;
-
 	private Date creation;
 
 	private Date updated;
 
 	private boolean enabled;
 
-	private Set<Voucher> vouchers = new HashSet<>(0);
+	private Set<Vouchertypexcompany> vouchertypexcompanies = new HashSet<>(0);
 
 	public Vouchertype() {
 		super();
 	}
 
 	public Vouchertype(final String code, final String name,
-			final long numberfrom, final long numberto,
-			final long numbercurrent, final Date creation, final Date updated,
-			final boolean enabled) {
+			final Date creation, final Date updated, final boolean enabled) {
 		this.code = code;
 		this.name = name;
-		this.numberfrom = numberfrom;
-		this.numberto = numberto;
-		this.numbercurrent = numbercurrent;
 		this.creation = creation;
 		this.updated = updated;
 		this.enabled = enabled;
 	}
 
 	public Vouchertype(final String code, final String name,
-			final long numberfrom, final long numberto,
-			final long numbercurrent, final Date creation, final Date updated,
-			final boolean enabled, final Set<Voucher> vouchers) {
+			final Date creation, final Date updated, final boolean enabled,
+			final Set<Vouchertypexcompany> vouchertypexcompanies) {
 		this.code = code;
 		this.name = name;
-		this.numberfrom = numberfrom;
-		this.numberto = numberto;
-		this.numbercurrent = numbercurrent;
 		this.creation = creation;
 		this.updated = updated;
 		this.enabled = enabled;
-		this.vouchers = vouchers;
+		this.vouchertypexcompanies = vouchertypexcompanies;
 	}
 
 	public Integer getId() {
@@ -91,30 +76,6 @@ public class Vouchertype implements Serializable, Comparable<Vouchertype> {
 		this.name = name;
 	}
 
-	public long getNumberfrom() {
-		return this.numberfrom;
-	}
-
-	public void setNumberfrom(final long numberfrom) {
-		this.numberfrom = numberfrom;
-	}
-
-	public long getNumberto() {
-		return this.numberto;
-	}
-
-	public void setNumberto(final long numberto) {
-		this.numberto = numberto;
-	}
-
-	public long getNumbercurrent() {
-		return this.numbercurrent;
-	}
-
-	public void setNumbercurrent(final long numbercurrent) {
-		this.numbercurrent = numbercurrent;
-	}
-
 	public Date getCreation() {
 		return this.creation;
 	}
@@ -139,12 +100,13 @@ public class Vouchertype implements Serializable, Comparable<Vouchertype> {
 		this.enabled = enabled;
 	}
 
-	public Set<Voucher> getVouchers() {
-		return this.vouchers;
+	public Set<Vouchertypexcompany> getVouchertypexcompanies() {
+		return vouchertypexcompanies;
 	}
 
-	public void setVouchers(final Set<Voucher> vouchers) {
-		this.vouchers = vouchers;
+	public void setVouchertypexcompanies(
+			Set<Vouchertypexcompany> vouchertypexcompanies) {
+		this.vouchertypexcompanies = vouchertypexcompanies;
 	}
 
 	@Override

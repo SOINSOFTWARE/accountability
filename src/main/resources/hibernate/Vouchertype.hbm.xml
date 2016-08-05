@@ -14,15 +14,6 @@
         <property name="name" type="string">
             <column name="name" length="60" not-null="true" />
         </property>
-        <property name="numberfrom" type="long">
-            <column name="numberfrom" not-null="true" />
-        </property>
-        <property name="numberto" type="long">
-            <column name="numberto" not-null="true" />
-        </property>
-        <property name="numbercurrent" type="long">
-            <column name="numbercurrent" not-null="true" />
-        </property>
         <property name="creation" type="timestamp">
             <column name="creation" length="19" not-null="true" />
         </property>
@@ -32,11 +23,11 @@
         <property name="enabled" type="boolean">
             <column name="enabled" not-null="true" />
         </property>
-        <set name="vouchers" table="voucher" inverse="true" lazy="true" fetch="select">
+        <set name="vouchertypexcompanies" table="vouchertypexcompany" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="idvouchertype" not-null="true" />
+                <column name="idvouchertypexcompany" not-null="true" />
             </key>
-            <one-to-many class="co.com.soinsoftware.accountability.entity.Voucher" />
+            <one-to-many class="co.com.soinsoftware.accountability.entity.Vouchertypexcompany" />
         </set>
     </class>
 </hibernate-mapping>

@@ -15,5 +15,6 @@
     <mapping resource="hibernate/Voucher.hbm.xml"/>
     <mapping resource="hibernate/Rol.hbm.xml"/>
     <mapping resource="hibernate/Uap.hbm.xml"/>
+    <mapping resource="hibernate/Vouchertypexcompany.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

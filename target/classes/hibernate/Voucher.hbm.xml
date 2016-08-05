@@ -8,8 +8,8 @@
             <column name="id" />
             <generator class="identity" />
         </id>
-        <many-to-one name="vouchertype" class="co.com.soinsoftware.accountability.entity.Vouchertype" fetch="select">
-            <column name="idvouchertype" not-null="true" />
+        <many-to-one name="vouchertypexcompany" class="co.com.soinsoftware.accountability.entity.Vouchertypexcompany" fetch="select">
+            <column name="idvouchertypexcompany" not-null="true" />
         </many-to-one>
         <property name="voucherdate" type="timestamp">
             <column name="voucherdate" length="19" not-null="true" />

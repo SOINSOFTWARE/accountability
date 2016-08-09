@@ -28,6 +28,10 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 
 	private static final String MENU_CONFIGURATION_USER = "Usuario";
 
+	private static final String MENU_CONFIGURATION_VOUCHER_TYPE = "Comprobante";
+
+	private static final String MENU_CONFIGURATION_VOUCHER_TYPE_COMPANY = "Comprobantes por empresa";
+
 	private final MenuController controller;
 
 	public JMBAppMenu(final MenuController controller) {
@@ -43,11 +47,17 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 		case MENU_CONFIGURATION_COMPANY:
 			this.showCompanyFrame();
 			break;
+		case MENU_CONFIGURATION_UNIQUE_ACCOUNT_PLAN:
+			this.showUapFrame();
+			break;
 		case MENU_CONFIGURATION_USER:
 			this.showUserFrame();
 			break;
-		case MENU_CONFIGURATION_UNIQUE_ACCOUNT_PLAN:
-			this.showUapFrame();
+		case MENU_CONFIGURATION_VOUCHER_TYPE:
+			this.showVoucherTypeFrame();
+			break;
+		case MENU_CONFIGURATION_VOUCHER_TYPE_COMPANY:
+			this.showVoucherTypeXCompanyFrame();
 			break;
 		}
 	}
@@ -55,18 +65,28 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 	private void addMenuConfiguration() {
 		final JMenu menu = new JMenu(MENU_CONFIGURATION);
 		menu.setMnemonic(KeyEvent.VK_C);
+		final JMenuItem miVoucherType = ViewUtils.createJMenuItem(
+				MENU_CONFIGURATION_VOUCHER_TYPE, KeyEvent.VK_C,
+				KeyStroke.getKeyStroke(KeyEvent.VK_5, ActionEvent.ALT_MASK));
+		final JMenuItem miVoucherTypeXComp = ViewUtils.createJMenuItem(
+				MENU_CONFIGURATION_VOUCHER_TYPE_COMPANY, KeyEvent.VK_X,
+				KeyStroke.getKeyStroke(KeyEvent.VK_6, ActionEvent.ALT_MASK));
 		final JMenuItem miCompany = ViewUtils.createJMenuItem(
 				MENU_CONFIGURATION_COMPANY, KeyEvent.VK_E,
-				KeyStroke.getKeyStroke(KeyEvent.VK_6, ActionEvent.ALT_MASK));
+				KeyStroke.getKeyStroke(KeyEvent.VK_7, ActionEvent.ALT_MASK));
 		final JMenuItem miUap = ViewUtils.createJMenuItem(
 				MENU_CONFIGURATION_UNIQUE_ACCOUNT_PLAN, KeyEvent.VK_P,
-				KeyStroke.getKeyStroke(KeyEvent.VK_7, ActionEvent.ALT_MASK));
+				KeyStroke.getKeyStroke(KeyEvent.VK_8, ActionEvent.ALT_MASK));
 		final JMenuItem miUser = ViewUtils.createJMenuItem(
 				MENU_CONFIGURATION_USER, KeyEvent.VK_U,
-				KeyStroke.getKeyStroke(KeyEvent.VK_8, ActionEvent.ALT_MASK));
+				KeyStroke.getKeyStroke(KeyEvent.VK_9, ActionEvent.ALT_MASK));
+		miVoucherType.addActionListener(this);
+		miVoucherTypeXComp.addActionListener(this);
 		miCompany.addActionListener(this);
 		miUap.addActionListener(this);
 		miUser.addActionListener(this);
+		menu.add(miVoucherType);
+		menu.add(miVoucherTypeXComp);
 		menu.add(miCompany);
 		menu.add(miUap);
 		menu.add(miUser);
@@ -91,6 +111,20 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 		if (!this.controller.getUapFrame().isVisible()) {
 			this.controller.getUapFrame().refresh();
 			this.controller.getUapFrame().setVisible(true);
+		}
+	}
+
+	private void showVoucherTypeFrame() {
+		if (!this.controller.getVoucherTypeFrame().isVisible()) {
+			this.controller.getVoucherTypeFrame().refresh();
+			this.controller.getVoucherTypeFrame().setVisible(true);
+		}
+	}
+
+	private void showVoucherTypeXCompanyFrame() {
+		if (!this.controller.getVoucherTypeXCompFrame().isVisible()) {
+			this.controller.getVoucherTypeXCompFrame().refresh();
+			this.controller.getVoucherTypeXCompFrame().setVisible(true);
 		}
 	}
 }

@@ -58,11 +58,11 @@ public class UserTableModel extends AbstractTableModel {
 	public void setValueAt(final Object value, final int row, final int col) {
 		final User user = this.userList.get(row);
 		if (col == 1) {
-			user.setLastname((String) value);
+			user.setNewLastname((String) value);
 		}else if (col == 2) {
 			user.setNewName((String) value);
 		} else if (col == 3) {
-			user.setIdentification((Long) value);
+			user.setNewIdentification((Long) value);
 		} else {
 			user.setDelete((Boolean) value);
 		}

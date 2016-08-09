@@ -31,8 +31,10 @@ public class JFMain extends JFrame {
 		final JFCompany companyFrame = new JFCompany();
 		final JFUap uapFrame = new JFUap();
 		final JFUser userFrame = new JFUser();
+		final JFVoucherType voucherTypeFrame = new JFVoucherType();
+		final JFVoucherTypeXCompany voucherTypeXCompFrame = new JFVoucherTypeXCompany();
 		final MenuController controller = new MenuController(companyFrame,
-				uapFrame, userFrame);
+				uapFrame, userFrame, voucherTypeFrame, voucherTypeXCompFrame);
 		final JMenuBar menuBar = new JMBAppMenu(controller);
 		this.setJMenuBar(menuBar);
 	}

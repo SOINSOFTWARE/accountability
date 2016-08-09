@@ -7,7 +7,10 @@ import java.util.List;
 import java.util.Set;
 
 import co.com.soinsoftware.accountability.bll.VoucherTypeBLL;
+import co.com.soinsoftware.accountability.bll.VoucherTypeXCompanyBLL;
+import co.com.soinsoftware.accountability.entity.Company;
 import co.com.soinsoftware.accountability.entity.Vouchertype;
+import co.com.soinsoftware.accountability.entity.Vouchertypexcompany;
 
 /**
  * @author Carlos Rodriguez
@@ -18,9 +21,12 @@ public class VoucherTypeController {
 
 	private final VoucherTypeBLL voucherTypeBLL;
 
+	private final VoucherTypeXCompanyBLL voucherTypeXCompBLL;
+
 	public VoucherTypeController() {
 		super();
 		this.voucherTypeBLL = VoucherTypeBLL.getInstance();
+		this.voucherTypeXCompBLL = VoucherTypeXCompanyBLL.getInstance();
 	}
 
 	public List<Vouchertype> selectVoucherTypes() {
@@ -30,6 +36,23 @@ public class VoucherTypeController {
 			voucherTypeList = new ArrayList<>(voucherTypeSet);
 			if (voucherTypeList.size() > 0) {
 				Collections.sort(voucherTypeList);
+			}
+		}
+		return voucherTypeList;
+	}
+
+	public List<Vouchertype> selectVoucherTypes(final Company company) {
+		List<Vouchertype> voucherTypeList = new ArrayList<>();
+		if (company != null) {
+			final List<Vouchertype> completeVoucherTypeList = this
+					.selectVoucherTypes();
+			if (completeVoucherTypeList != null
+					&& completeVoucherTypeList.size() > 0) {
+				for (final Vouchertype voucherType : completeVoucherTypeList) {
+					if (!this.hasVoucherTypeXCompany(company, voucherType)) {
+						voucherTypeList.add(voucherType);
+					}
+				}
 			}
 		}
 		return voucherTypeList;
@@ -49,5 +72,41 @@ public class VoucherTypeController {
 
 	public void saveVoucherType(final Vouchertype voucherType) {
 		this.voucherTypeBLL.save(voucherType);
+	}
+
+	public List<Vouchertypexcompany> selectVoucherTypesXCompany() {
+		List<Vouchertypexcompany> voucherTypeXCompList = new ArrayList<>();
+		final Set<Vouchertypexcompany> voucherTypeXCompSet = this.voucherTypeXCompBLL
+				.select();
+		if (voucherTypeXCompSet != null) {
+			voucherTypeXCompList = new ArrayList<>(voucherTypeXCompSet);
+			if (voucherTypeXCompList.size() > 0) {
+				Collections.sort(voucherTypeXCompList);
+			}
+		}
+		return voucherTypeXCompList;
+	}
+
+	public Vouchertypexcompany saveVoucherTypeXCompany(final Company company,
+			final Vouchertype voucherType, final long numberFrom,
+			final long numberTo) {
+		final Date currentDate = new Date();
+		final Vouchertypexcompany voucherTypeXComp = new Vouchertypexcompany(
+				company, voucherType, numberFrom, numberTo, numberFrom,
+				currentDate, currentDate, true);
+		this.saveVoucherTypeXCompany(voucherTypeXComp);
+		return voucherTypeXComp;
+	}
+
+	public void saveVoucherTypeXCompany(
+			final Vouchertypexcompany voucherTypeXComp) {
+		this.voucherTypeXCompBLL.save(voucherTypeXComp);
+	}
+
+	private boolean hasVoucherTypeXCompany(final Company company,
+			final Vouchertype voucherType) {
+		final Vouchertypexcompany voucherTypeXCompany = this.voucherTypeXCompBLL
+				.select(voucherType, company);
+		return (voucherTypeXCompany != null);
 	}
 }

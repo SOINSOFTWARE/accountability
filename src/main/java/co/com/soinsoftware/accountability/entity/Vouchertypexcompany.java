@@ -35,8 +35,11 @@ public class Vouchertypexcompany implements Serializable,
 
 	private Set<Voucher> vouchers = new HashSet<>(0);
 
+	private boolean delete;
+
 	public Vouchertypexcompany() {
 		super();
+		this.delete = false;
 	}
 
 	public Vouchertypexcompany(final Company company,
@@ -51,6 +54,7 @@ public class Vouchertypexcompany implements Serializable,
 		this.creation = creation;
 		this.updated = updated;
 		this.enabled = enabled;
+		this.delete = false;
 	}
 
 	public Vouchertypexcompany(final Company company,
@@ -67,6 +71,7 @@ public class Vouchertypexcompany implements Serializable,
 		this.updated = updated;
 		this.enabled = enabled;
 		this.vouchers = vouchers;
+		this.delete = false;
 	}
 
 	public Integer getId() {
@@ -149,12 +154,64 @@ public class Vouchertypexcompany implements Serializable,
 		this.vouchers = vouchers;
 	}
 
+	public boolean isDelete() {
+		return delete;
+	}
+
+	public void setDelete(boolean delete) {
+		this.delete = delete;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (enabled ? 1231 : 1237);
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result
+				+ ((vouchertype == null) ? 0 : vouchertype.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Vouchertypexcompany other = (Vouchertypexcompany) obj;
+		if (enabled != other.enabled)
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (vouchertype == null) {
+			if (other.vouchertype != null)
+				return false;
+		} else if (!vouchertype.equals(other.vouchertype))
+			return false;
+		return true;
+	}
+
 	@Override
 	public int compareTo(final Vouchertypexcompany other) {
+		final String compFirstName = (this.company.getName() != null) ? this.company
+				.getName() : "";
+		final String compSecondName = (other.company.getName() != null) ? other.company
+				.getName() : "";
 		final String firstName = (this.vouchertype.getName() != null) ? this.vouchertype
 				.getName() : "";
 		final String secondName = (other.vouchertype.getName() != null) ? other.vouchertype
 				.getName() : "";
-		return firstName.compareToIgnoreCase(secondName);
+		if (compFirstName.compareToIgnoreCase(compSecondName) == 0) {
+			return firstName.compareToIgnoreCase(secondName);
+		} else {
+			return compFirstName.compareToIgnoreCase(compSecondName);
+		}
+
 	}
 }

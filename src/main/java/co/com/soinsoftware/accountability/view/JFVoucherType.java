@@ -20,7 +20,7 @@ import co.com.soinsoftware.accountability.util.VoucherTypeTableModel;
 
 /**
  * @author Carlos Rodriguez
- * @since 05/08/2016
+ * @since 09/08/2016
  * @version 1.0
  */
 public class JFVoucherType extends JDialog {

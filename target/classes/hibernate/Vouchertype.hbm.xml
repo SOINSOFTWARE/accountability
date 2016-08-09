@@ -25,7 +25,7 @@
         </property>
         <set name="vouchertypexcompanies" table="vouchertypexcompany" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="idvouchertypexcompany" not-null="true" />
+                <column name="idvouchertype" not-null="true" />
             </key>
             <one-to-many class="co.com.soinsoftware.accountability.entity.Vouchertypexcompany" />
         </set>

@@ -29,6 +29,10 @@ public class VoucherTypeXCompanyBLL {
 		return this.dao.select();
 	}
 
+	public Set<Vouchertypexcompany> select(final Company company) {
+		return this.dao.select(company);
+	}
+
 	public Vouchertypexcompany select(final Vouchertype voucherType,
 			final Company company) {
 		return this.dao.select(voucherType, company);

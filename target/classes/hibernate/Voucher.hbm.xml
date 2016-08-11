@@ -11,6 +11,9 @@
         <many-to-one name="vouchertypexcompany" class="co.com.soinsoftware.accountability.entity.Vouchertypexcompany" fetch="select">
             <column name="idvouchertypexcompany" not-null="true" />
         </many-to-one>
+        <property name="vouchernumber" type="long">
+            <column name="vouchernumber" not-null="true" />
+        </property>
         <property name="voucherdate" type="timestamp">
             <column name="voucherdate" length="19" not-null="true" />
         </property>

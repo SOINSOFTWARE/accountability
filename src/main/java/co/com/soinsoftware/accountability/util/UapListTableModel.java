@@ -11,21 +11,20 @@ import co.com.soinsoftware.accountability.entity.Uap;
 
 /**
  * @author Carlos Rodriguez
- * @since 04/08/2016
+ * @since 11/08/2016
  * @version 1.0
  */
-public class UapTableModel extends AbstractTableModel {
+public class UapListTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 8408209589620109955L;
 
-	private static final String[] COLUMN_NAMES = { "Código", "Nombre",
-			"Eliminar" };
+	private static final String[] COLUMN_NAMES = { "Código", "Nombre" };
 
 	private final List<Uap> uapList;
 
 	private Object[][] data;
 
-	public UapTableModel(final List<Uap> uapList) {
+	public UapListTableModel(final List<Uap> uapList) {
 		super();
 		this.uapList = new ArrayList<>();
 		this.unpackageChildrenList(uapList);
@@ -52,43 +51,28 @@ public class UapTableModel extends AbstractTableModel {
 		return COLUMN_NAMES[col];
 	}
 
-	@Override
-	public boolean isCellEditable(final int row, final int col) {
-		final Uap uap = this.uapList.get(row);
-		return (col > 0 && uap.isEditable());
-	}
-
-	@Override
-	public void setValueAt(final Object value, final int row, final int col) {
-		final Uap uap = this.uapList.get(row);
-		if (col == 1) {
-			uap.setNewName((String) value);
-		} else {
-			uap.setDelete((Boolean) value);
-		}
-		data[row][col] = value;
-		fireTableCellUpdated(row, col);
-	}
-
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Class getColumnClass(final int col) {
 		return getValueAt(0, col).getClass();
 	}
 
-	public List<Uap> getUapList() {
-		return this.uapList;
+	public Uap getSelectedUap(final int index) {
+		Uap uap = null;
+		if (index > -1) {
+			uap = this.uapList.get(index);
+		}
+		return uap;
 	}
 
 	private void buildData() {
 		final int rowSize = this.getRowSizeToBuild();
-		data = new Object[rowSize][3];
+		data = new Object[rowSize][2];
 		if (this.uapList != null) {
 			int index = 0;
 			for (final Uap uap : this.uapList) {
 				data[index][0] = String.valueOf(uap.getCode());
 				data[index][1] = uap.getName();
-				data[index][2] = new Boolean(false);
 				index++;
 			}
 		}

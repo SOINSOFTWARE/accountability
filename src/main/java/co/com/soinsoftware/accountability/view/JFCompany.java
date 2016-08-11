@@ -196,465 +196,278 @@ public class JFCompany extends JDialog {
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
-	// desc="Generated Code">//GEN-BEGIN:initComponents
-	private void initComponents() {
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
 
-		jpTitle = new javax.swing.JPanel();
-		jlbTitle = new javax.swing.JLabel();
-		lbImage = new javax.swing.JLabel();
-		jpNewCompany = new javax.swing.JPanel();
-		jlbCompanyName = new javax.swing.JLabel();
-		jtfCompanyName = new javax.swing.JTextField();
-		jlbCompanyDocument = new javax.swing.JLabel();
-		jtfCompanyDocument = new javax.swing.JTextField();
-		jbtSave = new javax.swing.JButton();
-		jcbCompanyType = new javax.swing.JComboBox<String>();
-		jlbCompanyType = new javax.swing.JLabel();
-		jlbDocumentType = new javax.swing.JLabel();
-		jcbDocumentType = new javax.swing.JComboBox<String>();
-		jpCompanyList = new javax.swing.JPanel();
-		jpActionButtons = new javax.swing.JPanel();
-		jbtUpdate = new javax.swing.JButton();
-		jbtDelete = new javax.swing.JButton();
-		jspCompanyList = new javax.swing.JScrollPane();
-		jtbCompanyList = new javax.swing.JTable();
-		jpAction = new javax.swing.JPanel();
-		jbtClose = new javax.swing.JButton();
+        jpTitle = new javax.swing.JPanel();
+        jlbTitle = new javax.swing.JLabel();
+        lbImage = new javax.swing.JLabel();
+        jpNewCompany = new javax.swing.JPanel();
+        jlbCompanyName = new javax.swing.JLabel();
+        jtfCompanyName = new javax.swing.JTextField();
+        jlbCompanyDocument = new javax.swing.JLabel();
+        jtfCompanyDocument = new javax.swing.JTextField();
+        jbtSave = new javax.swing.JButton();
+        jcbCompanyType = new javax.swing.JComboBox<String>();
+        jlbCompanyType = new javax.swing.JLabel();
+        jlbDocumentType = new javax.swing.JLabel();
+        jcbDocumentType = new javax.swing.JComboBox<String>();
+        jpCompanyList = new javax.swing.JPanel();
+        jpActionButtons = new javax.swing.JPanel();
+        jbtUpdate = new javax.swing.JButton();
+        jbtDelete = new javax.swing.JButton();
+        jspCompanyList = new javax.swing.JScrollPane();
+        jtbCompanyList = new javax.swing.JTable();
+        jpAction = new javax.swing.JPanel();
+        jbtClose = new javax.swing.JButton();
 
-		setTitle("Hotelero");
-		setResizable(false);
+        setTitle("Contabilidad");
+        setResizable(false);
 
-		jpTitle.setBackground(new java.awt.Color(255, 255, 255));
+        jpTitle.setBackground(new java.awt.Color(255, 255, 255));
 
-		jlbTitle.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
-		jlbTitle.setText("Empresas");
+        jlbTitle.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        jlbTitle.setText("Empresas");
 
-		javax.swing.GroupLayout jpTitleLayout = new javax.swing.GroupLayout(
-				jpTitle);
-		jpTitle.setLayout(jpTitleLayout);
-		jpTitleLayout.setHorizontalGroup(jpTitleLayout.createParallelGroup(
-				javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				jpTitleLayout
-						.createSequentialGroup()
-						.addContainerGap()
-						.addComponent(jlbTitle)
-						.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,
-								Short.MAX_VALUE)));
-		jpTitleLayout.setVerticalGroup(jpTitleLayout.createParallelGroup(
-				javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				jpTitleLayout.createSequentialGroup().addGap(32, 32, 32)
-						.addComponent(jlbTitle)
-						.addContainerGap(34, Short.MAX_VALUE)));
+        javax.swing.GroupLayout jpTitleLayout = new javax.swing.GroupLayout(jpTitle);
+        jpTitle.setLayout(jpTitleLayout);
+        jpTitleLayout.setHorizontalGroup(
+            jpTitleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpTitleLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jlbTitle)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jpTitleLayout.setVerticalGroup(
+            jpTitleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpTitleLayout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addComponent(jlbTitle)
+                .addContainerGap(34, Short.MAX_VALUE))
+        );
 
-		lbImage.setIcon(new javax.swing.ImageIcon(getClass().getResource(
-				"/images/soin.png"))); // NOI18N
+        lbImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/soin.png"))); // NOI18N
 
-		jpNewCompany.setBorder(javax.swing.BorderFactory.createTitledBorder(
-				null, "Nueva empresa",
-				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
-				javax.swing.border.TitledBorder.DEFAULT_POSITION,
-				new java.awt.Font("Verdana", 1, 12))); // NOI18N
+        jpNewCompany.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nueva empresa", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Verdana", 1, 12))); // NOI18N
 
-		jlbCompanyName.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
-		jlbCompanyName.setText("Nombre:");
+        jlbCompanyName.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
+        jlbCompanyName.setText("Nombre:");
 
-		jtfCompanyName.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+        jtfCompanyName.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
 
-		jlbCompanyDocument.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
-		jlbCompanyDocument.setText("Número de documento:");
+        jlbCompanyDocument.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
+        jlbCompanyDocument.setText("Número de documento:");
 
-		jtfCompanyDocument.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+        jtfCompanyDocument.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
 
-		jbtSave.setBackground(new java.awt.Color(16, 135, 221));
-		jbtSave.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
-		jbtSave.setForeground(new java.awt.Color(255, 255, 255));
-		jbtSave.setText("Guardar");
-		jbtSave.setPreferredSize(new java.awt.Dimension(89, 23));
-		jbtSave.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jbtSaveActionPerformed(evt);
-			}
-		});
+        jbtSave.setBackground(new java.awt.Color(16, 135, 221));
+        jbtSave.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
+        jbtSave.setForeground(new java.awt.Color(255, 255, 255));
+        jbtSave.setText("Guardar");
+        jbtSave.setPreferredSize(new java.awt.Dimension(89, 23));
+        jbtSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtSaveActionPerformed(evt);
+            }
+        });
 
-		jcbCompanyType.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
-		jcbCompanyType.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jcbCompanyTypeActionPerformed(evt);
-			}
-		});
+        jcbCompanyType.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+        jcbCompanyType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbCompanyTypeActionPerformed(evt);
+            }
+        });
 
-		jlbCompanyType.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
-		jlbCompanyType.setText("Tipo de empresa:");
+        jlbCompanyType.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
+        jlbCompanyType.setText("Tipo de empresa:");
 
-		jlbDocumentType.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
-		jlbDocumentType.setText("Tipo de documento:");
+        jlbDocumentType.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
+        jlbDocumentType.setText("Tipo de documento:");
 
-		jcbDocumentType.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+        jcbDocumentType.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
 
-		javax.swing.GroupLayout jpNewCompanyLayout = new javax.swing.GroupLayout(
-				jpNewCompany);
-		jpNewCompany.setLayout(jpNewCompanyLayout);
-		jpNewCompanyLayout
-				.setHorizontalGroup(jpNewCompanyLayout
-						.createParallelGroup(
-								javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(
-								jpNewCompanyLayout
-										.createSequentialGroup()
-										.addContainerGap()
-										.addGroup(
-												jpNewCompanyLayout
-														.createParallelGroup(
-																javax.swing.GroupLayout.Alignment.LEADING)
-														.addGroup(
-																javax.swing.GroupLayout.Alignment.TRAILING,
-																jpNewCompanyLayout
-																		.createSequentialGroup()
-																		.addGap(0,
-																				0,
-																				Short.MAX_VALUE)
-																		.addComponent(
-																				jbtSave,
-																				javax.swing.GroupLayout.PREFERRED_SIZE,
-																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																				javax.swing.GroupLayout.PREFERRED_SIZE))
-														.addComponent(
-																jtfCompanyDocument)
-														.addComponent(
-																jtfCompanyName)
-														.addComponent(
-																jcbCompanyType,
-																javax.swing.GroupLayout.PREFERRED_SIZE,
-																190,
-																javax.swing.GroupLayout.PREFERRED_SIZE)
-														.addComponent(
-																jcbDocumentType,
-																javax.swing.GroupLayout.PREFERRED_SIZE,
-																190,
-																javax.swing.GroupLayout.PREFERRED_SIZE)
-														.addGroup(
-																jpNewCompanyLayout
-																		.createSequentialGroup()
-																		.addGroup(
-																				jpNewCompanyLayout
-																						.createParallelGroup(
-																								javax.swing.GroupLayout.Alignment.LEADING)
-																						.addComponent(
-																								jlbCompanyDocument)
-																						.addComponent(
-																								jlbCompanyName)
-																						.addComponent(
-																								jlbCompanyType)
-																						.addComponent(
-																								jlbDocumentType))
-																		.addGap(0,
-																				0,
-																				Short.MAX_VALUE)))
-										.addContainerGap()));
-		jpNewCompanyLayout
-				.setVerticalGroup(jpNewCompanyLayout
-						.createParallelGroup(
-								javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(
-								jpNewCompanyLayout
-										.createSequentialGroup()
-										.addContainerGap()
-										.addComponent(jlbCompanyType)
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(
-												jcbCompanyType,
-												javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-										.addComponent(jlbCompanyName)
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(
-												jtfCompanyName,
-												javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-										.addComponent(jlbDocumentType)
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(
-												jcbDocumentType,
-												javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-										.addComponent(jlbCompanyDocument)
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(
-												jtfCompanyDocument,
-												javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												Short.MAX_VALUE)
-										.addComponent(
-												jbtSave,
-												javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addContainerGap()));
+        javax.swing.GroupLayout jpNewCompanyLayout = new javax.swing.GroupLayout(jpNewCompany);
+        jpNewCompany.setLayout(jpNewCompanyLayout);
+        jpNewCompanyLayout.setHorizontalGroup(
+            jpNewCompanyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpNewCompanyLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpNewCompanyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpNewCompanyLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jbtSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtfCompanyDocument)
+                    .addComponent(jtfCompanyName)
+                    .addGroup(jpNewCompanyLayout.createSequentialGroup()
+                        .addGroup(jpNewCompanyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jcbCompanyType, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jcbDocumentType, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jlbCompanyDocument)
+                            .addComponent(jlbCompanyName)
+                            .addComponent(jlbCompanyType)
+                            .addComponent(jlbDocumentType))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jpNewCompanyLayout.setVerticalGroup(
+            jpNewCompanyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpNewCompanyLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jlbCompanyType)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jcbCompanyType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jlbCompanyName)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jtfCompanyName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jlbDocumentType)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jcbDocumentType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jlbCompanyDocument)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jtfCompanyDocument, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jbtSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
-		jpCompanyList.setBorder(javax.swing.BorderFactory.createTitledBorder(
-				null, "Listado de empresas",
-				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
-				javax.swing.border.TitledBorder.DEFAULT_POSITION,
-				new java.awt.Font("Verdana", 1, 12))); // NOI18N
+        jpCompanyList.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Listado de empresas", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Verdana", 1, 12))); // NOI18N
 
-		jpActionButtons.setBorder(javax.swing.BorderFactory
-				.createTitledBorder(""));
+        jpActionButtons.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-		jbtUpdate.setBackground(new java.awt.Color(16, 135, 221));
-		jbtUpdate.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
-		jbtUpdate.setForeground(new java.awt.Color(255, 255, 255));
-		jbtUpdate.setText("Actualizar");
-		jbtUpdate.setPreferredSize(new java.awt.Dimension(89, 23));
-		jbtUpdate.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jbtUpdateActionPerformed(evt);
-			}
-		});
+        jbtUpdate.setBackground(new java.awt.Color(16, 135, 221));
+        jbtUpdate.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
+        jbtUpdate.setForeground(new java.awt.Color(255, 255, 255));
+        jbtUpdate.setText("Actualizar");
+        jbtUpdate.setPreferredSize(new java.awt.Dimension(89, 23));
+        jbtUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtUpdateActionPerformed(evt);
+            }
+        });
 
-		jbtDelete.setBackground(new java.awt.Color(16, 135, 221));
-		jbtDelete.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
-		jbtDelete.setForeground(new java.awt.Color(255, 255, 255));
-		jbtDelete.setText("Eliminar");
-		jbtDelete.setPreferredSize(new java.awt.Dimension(89, 23));
-		jbtDelete.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jbtDeleteActionPerformed(evt);
-			}
-		});
+        jbtDelete.setBackground(new java.awt.Color(16, 135, 221));
+        jbtDelete.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
+        jbtDelete.setForeground(new java.awt.Color(255, 255, 255));
+        jbtDelete.setText("Eliminar");
+        jbtDelete.setPreferredSize(new java.awt.Dimension(89, 23));
+        jbtDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtDeleteActionPerformed(evt);
+            }
+        });
 
-		javax.swing.GroupLayout jpActionButtonsLayout = new javax.swing.GroupLayout(
-				jpActionButtons);
-		jpActionButtons.setLayout(jpActionButtonsLayout);
-		jpActionButtonsLayout
-				.setHorizontalGroup(jpActionButtonsLayout
-						.createParallelGroup(
-								javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(
-								jpActionButtonsLayout
-										.createSequentialGroup()
-										.addContainerGap()
-										.addGroup(
-												jpActionButtonsLayout
-														.createParallelGroup(
-																javax.swing.GroupLayout.Alignment.LEADING)
-														.addComponent(
-																jbtUpdate,
-																javax.swing.GroupLayout.PREFERRED_SIZE,
-																100,
-																javax.swing.GroupLayout.PREFERRED_SIZE)
-														.addComponent(
-																jbtDelete,
-																javax.swing.GroupLayout.PREFERRED_SIZE,
-																100,
-																javax.swing.GroupLayout.PREFERRED_SIZE))
-										.addContainerGap(
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												Short.MAX_VALUE)));
-		jpActionButtonsLayout
-				.setVerticalGroup(jpActionButtonsLayout
-						.createParallelGroup(
-								javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(
-								jpActionButtonsLayout
-										.createSequentialGroup()
-										.addContainerGap()
-										.addComponent(
-												jbtUpdate,
-												javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-										.addComponent(
-												jbtDelete,
-												javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addContainerGap(
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												Short.MAX_VALUE)));
+        javax.swing.GroupLayout jpActionButtonsLayout = new javax.swing.GroupLayout(jpActionButtons);
+        jpActionButtons.setLayout(jpActionButtonsLayout);
+        jpActionButtonsLayout.setHorizontalGroup(
+            jpActionButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpActionButtonsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpActionButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jbtUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jpActionButtonsLayout.setVerticalGroup(
+            jpActionButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpActionButtonsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jbtUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jbtDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
-		jtbCompanyList.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
-		jspCompanyList.setViewportView(jtbCompanyList);
-		if (jtbCompanyList.getColumnModel().getColumnCount() > 0) {
-			jtbCompanyList.getColumnModel().getColumn(0).setResizable(false);
-			jtbCompanyList.getColumnModel().getColumn(1).setResizable(false);
-			jtbCompanyList.getColumnModel().getColumn(2).setResizable(false);
-		}
+        jtbCompanyList.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+        jspCompanyList.setViewportView(jtbCompanyList);
+        if (jtbCompanyList.getColumnModel().getColumnCount() > 0) {
+            jtbCompanyList.getColumnModel().getColumn(0).setResizable(false);
+            jtbCompanyList.getColumnModel().getColumn(1).setResizable(false);
+            jtbCompanyList.getColumnModel().getColumn(2).setResizable(false);
+        }
 
-		javax.swing.GroupLayout jpCompanyListLayout = new javax.swing.GroupLayout(
-				jpCompanyList);
-		jpCompanyList.setLayout(jpCompanyListLayout);
-		jpCompanyListLayout
-				.setHorizontalGroup(jpCompanyListLayout
-						.createParallelGroup(
-								javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(
-								jpCompanyListLayout
-										.createSequentialGroup()
-										.addContainerGap()
-										.addComponent(
-												jspCompanyList,
-												javax.swing.GroupLayout.PREFERRED_SIZE,
-												0, Short.MAX_VALUE)
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(
-												jpActionButtons,
-												javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)));
-		jpCompanyListLayout.setVerticalGroup(jpCompanyListLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addComponent(jspCompanyList,
-						javax.swing.GroupLayout.PREFERRED_SIZE, 0,
-						Short.MAX_VALUE)
-				.addComponent(jpActionButtons,
-						javax.swing.GroupLayout.DEFAULT_SIZE,
-						javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
+        javax.swing.GroupLayout jpCompanyListLayout = new javax.swing.GroupLayout(jpCompanyList);
+        jpCompanyList.setLayout(jpCompanyListLayout);
+        jpCompanyListLayout.setHorizontalGroup(
+            jpCompanyListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpCompanyListLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jspCompanyList, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jpActionButtons, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jpCompanyListLayout.setVerticalGroup(
+            jpCompanyListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jspCompanyList, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(jpActionButtons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
 
-		jpAction.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
-				"", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
-				javax.swing.border.TitledBorder.DEFAULT_POSITION,
-				new java.awt.Font("Verdana", 0, 11))); // NOI18N
+        jpAction.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Verdana", 0, 11))); // NOI18N
 
-		jbtClose.setBackground(new java.awt.Color(16, 135, 221));
-		jbtClose.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
-		jbtClose.setForeground(new java.awt.Color(255, 255, 255));
-		jbtClose.setText("Cerrar");
-		jbtClose.setPreferredSize(new java.awt.Dimension(89, 23));
-		jbtClose.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jbtCloseActionPerformed(evt);
-			}
-		});
+        jbtClose.setBackground(new java.awt.Color(16, 135, 221));
+        jbtClose.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
+        jbtClose.setForeground(new java.awt.Color(255, 255, 255));
+        jbtClose.setText("Cerrar");
+        jbtClose.setPreferredSize(new java.awt.Dimension(89, 23));
+        jbtClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtCloseActionPerformed(evt);
+            }
+        });
 
-		javax.swing.GroupLayout jpActionLayout = new javax.swing.GroupLayout(
-				jpAction);
-		jpAction.setLayout(jpActionLayout);
-		jpActionLayout.setHorizontalGroup(jpActionLayout.createParallelGroup(
-				javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				javax.swing.GroupLayout.Alignment.TRAILING,
-				jpActionLayout
-						.createSequentialGroup()
-						.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,
-								Short.MAX_VALUE)
-						.addComponent(jbtClose,
-								javax.swing.GroupLayout.PREFERRED_SIZE,
-								javax.swing.GroupLayout.DEFAULT_SIZE,
-								javax.swing.GroupLayout.PREFERRED_SIZE)
-						.addGap(22, 22, 22)));
-		jpActionLayout.setVerticalGroup(jpActionLayout.createParallelGroup(
-				javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				jpActionLayout
-						.createSequentialGroup()
-						.addGap(23, 23, 23)
-						.addComponent(jbtClose,
-								javax.swing.GroupLayout.PREFERRED_SIZE,
-								javax.swing.GroupLayout.DEFAULT_SIZE,
-								javax.swing.GroupLayout.PREFERRED_SIZE)
-						.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,
-								Short.MAX_VALUE)));
+        javax.swing.GroupLayout jpActionLayout = new javax.swing.GroupLayout(jpAction);
+        jpAction.setLayout(jpActionLayout);
+        jpActionLayout.setHorizontalGroup(
+            jpActionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpActionLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jbtClose, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(22, 22, 22))
+        );
+        jpActionLayout.setVerticalGroup(
+            jpActionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpActionLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(jbtClose, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
-		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(
-				getContentPane());
-		getContentPane().setLayout(layout);
-		layout.setHorizontalGroup(layout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addComponent(jpTitle, javax.swing.GroupLayout.DEFAULT_SIZE,
-						javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-				.addGroup(
-						javax.swing.GroupLayout.Alignment.TRAILING,
-						layout.createSequentialGroup()
-								.addGap(0, 612, Short.MAX_VALUE)
-								.addComponent(lbImage,
-										javax.swing.GroupLayout.PREFERRED_SIZE,
-										388,
-										javax.swing.GroupLayout.PREFERRED_SIZE))
-				.addGroup(
-						layout.createSequentialGroup()
-								.addContainerGap()
-								.addGroup(
-										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.LEADING)
-												.addGroup(
-														layout.createSequentialGroup()
-																.addComponent(
-																		jpNewCompany,
-																		javax.swing.GroupLayout.PREFERRED_SIZE,
-																		javax.swing.GroupLayout.DEFAULT_SIZE,
-																		javax.swing.GroupLayout.PREFERRED_SIZE)
-																.addPreferredGap(
-																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addComponent(
-																		jpCompanyList,
-																		javax.swing.GroupLayout.DEFAULT_SIZE,
-																		javax.swing.GroupLayout.DEFAULT_SIZE,
-																		Short.MAX_VALUE))
-												.addComponent(
-														jpAction,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														Short.MAX_VALUE))
-								.addContainerGap()));
-		layout.setVerticalGroup(layout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(
-						javax.swing.GroupLayout.Alignment.TRAILING,
-						layout.createSequentialGroup()
-								.addComponent(jpTitle,
-										javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE,
-										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addGap(11, 11, 11)
-								.addGroup(
-										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.LEADING,
-												false)
-												.addComponent(
-														jpNewCompany,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														Short.MAX_VALUE)
-												.addComponent(
-														jpCompanyList,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														Short.MAX_VALUE))
-								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-								.addComponent(jpAction,
-										javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE,
-										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-										javax.swing.GroupLayout.DEFAULT_SIZE,
-										Short.MAX_VALUE)
-								.addComponent(lbImage,
-										javax.swing.GroupLayout.PREFERRED_SIZE,
-										35,
-										javax.swing.GroupLayout.PREFERRED_SIZE)));
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jpTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 612, Short.MAX_VALUE)
+                .addComponent(lbImage, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jpNewCompany, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jpCompanyList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jpAction, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jpTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jpNewCompany, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jpCompanyList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jpAction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbImage, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
-		pack();
-	}// </editor-fold>//GEN-END:initComponents
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
 
 	private void jcbCompanyTypeActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jcbCompanyTypeActionPerformed
 		this.validateCompanyTypeSelected();
@@ -742,27 +555,27 @@ public class JFCompany extends JDialog {
 		}
 	}// GEN-LAST:event_jbtDeleteActionPerformed
 
-	// Variables declaration - do not modify//GEN-BEGIN:variables
-	private javax.swing.JButton jbtClose;
-	private javax.swing.JButton jbtDelete;
-	private javax.swing.JButton jbtSave;
-	private javax.swing.JButton jbtUpdate;
-	private javax.swing.JComboBox<String> jcbCompanyType;
-	private javax.swing.JComboBox<String> jcbDocumentType;
-	private javax.swing.JLabel jlbCompanyDocument;
-	private javax.swing.JLabel jlbCompanyName;
-	private javax.swing.JLabel jlbCompanyType;
-	private javax.swing.JLabel jlbDocumentType;
-	private javax.swing.JLabel jlbTitle;
-	private javax.swing.JPanel jpAction;
-	private javax.swing.JPanel jpActionButtons;
-	private javax.swing.JPanel jpCompanyList;
-	private javax.swing.JPanel jpNewCompany;
-	private javax.swing.JPanel jpTitle;
-	private javax.swing.JScrollPane jspCompanyList;
-	private javax.swing.JTable jtbCompanyList;
-	private javax.swing.JTextField jtfCompanyDocument;
-	private javax.swing.JTextField jtfCompanyName;
-	private javax.swing.JLabel lbImage;
-	// End of variables declaration//GEN-END:variables
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jbtClose;
+    private javax.swing.JButton jbtDelete;
+    private javax.swing.JButton jbtSave;
+    private javax.swing.JButton jbtUpdate;
+    private javax.swing.JComboBox<String> jcbCompanyType;
+    private javax.swing.JComboBox<String> jcbDocumentType;
+    private javax.swing.JLabel jlbCompanyDocument;
+    private javax.swing.JLabel jlbCompanyName;
+    private javax.swing.JLabel jlbCompanyType;
+    private javax.swing.JLabel jlbDocumentType;
+    private javax.swing.JLabel jlbTitle;
+    private javax.swing.JPanel jpAction;
+    private javax.swing.JPanel jpActionButtons;
+    private javax.swing.JPanel jpCompanyList;
+    private javax.swing.JPanel jpNewCompany;
+    private javax.swing.JPanel jpTitle;
+    private javax.swing.JScrollPane jspCompanyList;
+    private javax.swing.JTable jtbCompanyList;
+    private javax.swing.JTextField jtfCompanyDocument;
+    private javax.swing.JTextField jtfCompanyName;
+    private javax.swing.JLabel lbImage;
+    // End of variables declaration//GEN-END:variables
 }

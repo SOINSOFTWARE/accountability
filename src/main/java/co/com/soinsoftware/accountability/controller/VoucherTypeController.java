@@ -87,6 +87,20 @@ public class VoucherTypeController {
 		return voucherTypeXCompList;
 	}
 
+	public List<Vouchertypexcompany> selectVoucherTypesXCompany(
+			final Company company) {
+		List<Vouchertypexcompany> voucherTypeXCompList = new ArrayList<>();
+		final Set<Vouchertypexcompany> voucherTypeXCompSet = this.voucherTypeXCompBLL
+				.select(company);
+		if (voucherTypeXCompSet != null) {
+			voucherTypeXCompList = new ArrayList<>(voucherTypeXCompSet);
+			if (voucherTypeXCompList.size() > 0) {
+				Collections.sort(voucherTypeXCompList);
+			}
+		}
+		return voucherTypeXCompList;
+	}
+
 	public Vouchertypexcompany saveVoucherTypeXCompany(final Company company,
 			final Vouchertype voucherType, final long numberFrom,
 			final long numberTo) {

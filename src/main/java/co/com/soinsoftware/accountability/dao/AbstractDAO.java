@@ -22,6 +22,8 @@ public abstract class AbstractDAO {
 	protected static final String TABLE_ROL = "Rol";
 	protected static final String TABLE_UAP = "Uap";
 	protected static final String TABLE_USER = "User";
+	protected static final String TABLE_VOUCHER = "Voucher";
+	protected static final String TABLE_VOUCHER_ITEM = "Voucheritem";
 	protected static final String TABLE_VOUCHER_TYPE = "Vouchertype";
 	protected static final String TABLE_VOUCHER_TYPE_COMPANY = "Vouchertypexcompany";
 

@@ -35,6 +35,21 @@ public class VoucherTypeXCompanyDAO extends AbstractDAO {
 		return voucherTypeXCompSet;
 	}
 
+	@SuppressWarnings("unchecked")
+	public Set<Vouchertypexcompany> select(final Company company) {
+		Set<Vouchertypexcompany> voucherTypeXCompSet = null;
+		try {
+			final Query query = this.createQuery(this
+					.getSelectStatementCompany());
+			query.setParameter(COLUMN_COMPANY, company);
+			voucherTypeXCompSet = (query.list().isEmpty()) ? null
+					: new HashSet<Vouchertypexcompany>(query.list());
+		} catch (HibernateException ex) {
+			System.out.println(ex);
+		}
+		return voucherTypeXCompSet;
+	}
+
 	public Vouchertypexcompany select(final Vouchertype voucherType,
 			final Company company) {
 		Vouchertypexcompany voucherTypeXCompany = null;
@@ -64,9 +79,19 @@ public class VoucherTypeXCompanyDAO extends AbstractDAO {
 		return query.toString();
 	}
 
-	private String getSelectStatementVoucherTypeXCompany() {
+	private String getSelectStatementCompany() {
 		final StringBuilder query = new StringBuilder(
 				this.getSelectStatementEnabled());
+		query.append(SQL_AND);
+		query.append(COLUMN_COMPANY);
+		query.append(SQL_EQUALS_WITH_PARAM);
+		query.append(COLUMN_COMPANY);
+		return query.toString();
+	}
+
+	private String getSelectStatementVoucherTypeXCompany() {
+		final StringBuilder query = new StringBuilder(
+				this.getSelectStatementCompany());
 		query.append(SQL_AND);
 		query.append(COLUMN_COMPANY);
 		query.append(SQL_EQUALS_WITH_PARAM);

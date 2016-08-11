@@ -2,7 +2,7 @@
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <Properties>
-    <Property name="title" type="java.lang.String" value="Hotelero"/>
+    <Property name="title" type="java.lang.String" value="Contabilidad"/>
     <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
@@ -129,10 +129,10 @@
                       </Group>
                       <Component id="jtfCompanyDocument" alignment="0" max="32767" attributes="0"/>
                       <Component id="jtfCompanyName" alignment="0" max="32767" attributes="0"/>
-                      <Component id="jcbCompanyType" alignment="0" min="-2" pref="190" max="-2" attributes="0"/>
-                      <Component id="jcbDocumentType" alignment="0" min="-2" pref="190" max="-2" attributes="0"/>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jcbCompanyType" alignment="0" min="-2" pref="190" max="-2" attributes="0"/>
+                              <Component id="jcbDocumentType" alignment="0" min="-2" pref="190" max="-2" attributes="0"/>
                               <Component id="jlbCompanyDocument" min="-2" max="-2" attributes="0"/>
                               <Component id="jlbCompanyName" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jlbCompanyType" alignment="0" min="-2" max="-2" attributes="0"/>

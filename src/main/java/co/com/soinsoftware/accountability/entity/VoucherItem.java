@@ -32,6 +32,8 @@ public class Voucheritem implements Serializable, Comparable<Voucheritem> {
 
 	private boolean enabled;
 
+	private volatile boolean delete;
+
 	public Voucheritem() {
 		super();
 	}
@@ -141,6 +143,14 @@ public class Voucheritem implements Serializable, Comparable<Voucheritem> {
 
 	public void setEnabled(final boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public boolean isDelete() {
+		return delete;
+	}
+
+	public void setDelete(boolean delete) {
+		this.delete = delete;
 	}
 
 	@Override

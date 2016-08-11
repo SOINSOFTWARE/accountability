@@ -20,6 +20,10 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 
 	private static final long serialVersionUID = 2306440560901177958L;
 
+	private static final String MENU_ACTION = "Movimiento";
+
+	private static final String MENU_ACTION_NEW_VOUCHER = "Nuevo asiento";
+
 	private static final String MENU_CONFIGURATION = "Configuración";
 
 	private static final String MENU_CONFIGURATION_COMPANY = "Empresa";
@@ -36,95 +40,84 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 
 	public JMBAppMenu(final MenuController controller) {
 		super();
-		this.addMenuConfiguration();
 		this.controller = controller;
+		this.addMenuAction();
+		this.addMenuConfiguration();
 	}
 
 	@Override
 	public void actionPerformed(final ActionEvent evt) {
 		final String actionCommand = evt.getActionCommand();
 		switch (actionCommand) {
+		case MENU_ACTION_NEW_VOUCHER:
+			this.controller.showVoucherFrame();
+			break;
 		case MENU_CONFIGURATION_COMPANY:
-			this.showCompanyFrame();
+			this.controller.showCompanyFrame();
 			break;
 		case MENU_CONFIGURATION_UNIQUE_ACCOUNT_PLAN:
-			this.showUapFrame();
+			this.controller.showUapFrame();
 			break;
 		case MENU_CONFIGURATION_USER:
-			this.showUserFrame();
+			this.controller.showUserFrame();
 			break;
 		case MENU_CONFIGURATION_VOUCHER_TYPE:
-			this.showVoucherTypeFrame();
+			this.controller.showVoucherTypeFrame();
 			break;
 		case MENU_CONFIGURATION_VOUCHER_TYPE_COMPANY:
-			this.showVoucherTypeXCompanyFrame();
+			this.controller.showVoucherTypeXCompanyFrame();
 			break;
 		}
+	}
+
+	private void addMenuAction() {
+		final JMenu menu = new JMenu(MENU_ACTION);
+		menu.setMnemonic(KeyEvent.VK_M);
+		final JMenuItem miNewVoucher = ViewUtils.createJMenuItem(
+				MENU_ACTION_NEW_VOUCHER, KeyEvent.VK_N,
+				KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
+		miNewVoucher.addActionListener(this);
+		menu.add(miNewVoucher);
+		this.add(menu);
 	}
 
 	private void addMenuConfiguration() {
 		final JMenu menu = new JMenu(MENU_CONFIGURATION);
 		menu.setMnemonic(KeyEvent.VK_C);
-		final JMenuItem miVoucherType = ViewUtils.createJMenuItem(
-				MENU_CONFIGURATION_VOUCHER_TYPE, KeyEvent.VK_C,
-				KeyStroke.getKeyStroke(KeyEvent.VK_5, ActionEvent.ALT_MASK));
+		if (this.controller.isAdminRol() || this.controller.isAccountRol()) {
+			final JMenuItem miVoucherType = ViewUtils
+					.createJMenuItem(MENU_CONFIGURATION_VOUCHER_TYPE,
+							KeyEvent.VK_C, KeyStroke.getKeyStroke(
+									KeyEvent.VK_5, ActionEvent.ALT_MASK));
+			miVoucherType.addActionListener(this);
+			menu.add(miVoucherType);
+		}
 		final JMenuItem miVoucherTypeXComp = ViewUtils.createJMenuItem(
 				MENU_CONFIGURATION_VOUCHER_TYPE_COMPANY, KeyEvent.VK_X,
 				KeyStroke.getKeyStroke(KeyEvent.VK_6, ActionEvent.ALT_MASK));
-		final JMenuItem miCompany = ViewUtils.createJMenuItem(
-				MENU_CONFIGURATION_COMPANY, KeyEvent.VK_E,
-				KeyStroke.getKeyStroke(KeyEvent.VK_7, ActionEvent.ALT_MASK));
+		miVoucherTypeXComp.addActionListener(this);
+		menu.add(miVoucherTypeXComp);
+		if (this.controller.isAdminRol() || this.controller.isAccountRol()) {
+			final JMenuItem miCompany = ViewUtils
+					.createJMenuItem(MENU_CONFIGURATION_COMPANY, KeyEvent.VK_E,
+							KeyStroke.getKeyStroke(KeyEvent.VK_7,
+									ActionEvent.ALT_MASK));
+			miCompany.addActionListener(this);
+			menu.add(miCompany);
+		}
 		final JMenuItem miUap = ViewUtils.createJMenuItem(
 				MENU_CONFIGURATION_UNIQUE_ACCOUNT_PLAN, KeyEvent.VK_P,
 				KeyStroke.getKeyStroke(KeyEvent.VK_8, ActionEvent.ALT_MASK));
-		final JMenuItem miUser = ViewUtils.createJMenuItem(
-				MENU_CONFIGURATION_USER, KeyEvent.VK_U,
-				KeyStroke.getKeyStroke(KeyEvent.VK_9, ActionEvent.ALT_MASK));
-		miVoucherType.addActionListener(this);
-		miVoucherTypeXComp.addActionListener(this);
-		miCompany.addActionListener(this);
 		miUap.addActionListener(this);
-		miUser.addActionListener(this);
-		menu.add(miVoucherType);
-		menu.add(miVoucherTypeXComp);
-		menu.add(miCompany);
 		menu.add(miUap);
-		menu.add(miUser);
+		if (this.controller.isAdminRol()) {
+			final JMenuItem miUser = ViewUtils
+					.createJMenuItem(MENU_CONFIGURATION_USER, KeyEvent.VK_U,
+							KeyStroke.getKeyStroke(KeyEvent.VK_9,
+									ActionEvent.ALT_MASK));
+			miUser.addActionListener(this);
+			menu.add(miUser);
+		}
 		this.add(menu);
-	}
-
-	private void showCompanyFrame() {
-		if (!this.controller.getCompanyFrame().isVisible()) {
-			this.controller.getCompanyFrame().refresh();
-			this.controller.getCompanyFrame().setVisible(true);
-		}
-	}
-
-	private void showUserFrame() {
-		if (!this.controller.getUserFrame().isVisible()) {
-			this.controller.getUserFrame().refresh();
-			this.controller.getUserFrame().setVisible(true);
-		}
-	}
-
-	private void showUapFrame() {
-		if (!this.controller.getUapFrame().isVisible()) {
-			this.controller.getUapFrame().refresh();
-			this.controller.getUapFrame().setVisible(true);
-		}
-	}
-
-	private void showVoucherTypeFrame() {
-		if (!this.controller.getVoucherTypeFrame().isVisible()) {
-			this.controller.getVoucherTypeFrame().refresh();
-			this.controller.getVoucherTypeFrame().setVisible(true);
-		}
-	}
-
-	private void showVoucherTypeXCompanyFrame() {
-		if (!this.controller.getVoucherTypeXCompFrame().isVisible()) {
-			this.controller.getVoucherTypeXCompFrame().refresh();
-			this.controller.getVoucherTypeXCompFrame().setVisible(true);
-		}
 	}
 }

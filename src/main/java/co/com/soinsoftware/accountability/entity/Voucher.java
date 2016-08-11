@@ -18,6 +18,8 @@ public class Voucher implements Serializable, Comparable<Voucher> {
 
 	private Vouchertypexcompany vouchertypexcompany;
 
+	private long vouchernumber;
+
 	private Date voucherdate;
 
 	private Date creation;
@@ -33,9 +35,10 @@ public class Voucher implements Serializable, Comparable<Voucher> {
 	}
 
 	public Voucher(final Vouchertypexcompany vouchertypexcompany,
-			final Date voucherdate, final Date creation, final Date updated,
-			final boolean enabled) {
+			final long vouchernumber, final Date voucherdate,
+			final Date creation, final Date updated, final boolean enabled) {
 		this.vouchertypexcompany = vouchertypexcompany;
+		this.vouchernumber = vouchernumber;
 		this.voucherdate = voucherdate;
 		this.creation = creation;
 		this.updated = updated;
@@ -43,9 +46,11 @@ public class Voucher implements Serializable, Comparable<Voucher> {
 	}
 
 	public Voucher(final Vouchertypexcompany vouchertypexcompany,
-			final Date voucherdate, final Date creation, final Date updated,
-			final boolean enabled, final Set<Voucheritem> voucheritems) {
+			final long vouchernumber, final Date voucherdate,
+			final Date creation, final Date updated, final boolean enabled,
+			final Set<Voucheritem> voucheritems) {
 		this.vouchertypexcompany = vouchertypexcompany;
+		this.vouchernumber = vouchernumber;
 		this.voucherdate = voucherdate;
 		this.creation = creation;
 		this.updated = updated;
@@ -67,6 +72,14 @@ public class Voucher implements Serializable, Comparable<Voucher> {
 
 	public void setVouchertypexcompany(Vouchertypexcompany vouchertypexcompany) {
 		this.vouchertypexcompany = vouchertypexcompany;
+	}
+
+	public long getVouchernumber() {
+		return vouchernumber;
+	}
+
+	public void setVouchernumber(long vouchernumber) {
+		this.vouchernumber = vouchernumber;
 	}
 
 	public Date getVoucherdate() {
@@ -116,6 +129,12 @@ public class Voucher implements Serializable, Comparable<Voucher> {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result
 				+ ((voucherdate == null) ? 0 : voucherdate.hashCode());
+		result = prime * result
+				+ (int) (vouchernumber ^ (vouchernumber >>> 32));
+		result = prime
+				* result
+				+ ((vouchertypexcompany == null) ? 0 : vouchertypexcompany
+						.hashCode());
 		return result;
 	}
 
@@ -137,6 +156,13 @@ public class Voucher implements Serializable, Comparable<Voucher> {
 			if (other.voucherdate != null)
 				return false;
 		} else if (!voucherdate.equals(other.voucherdate))
+			return false;
+		if (vouchernumber != other.vouchernumber)
+			return false;
+		if (vouchertypexcompany == null) {
+			if (other.vouchertypexcompany != null)
+				return false;
+		} else if (!vouchertypexcompany.equals(other.vouchertypexcompany))
 			return false;
 		return true;
 	}

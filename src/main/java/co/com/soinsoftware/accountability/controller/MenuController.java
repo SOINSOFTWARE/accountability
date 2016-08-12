@@ -1,5 +1,8 @@
 package co.com.soinsoftware.accountability.controller;
 
+import java.util.List;
+
+import co.com.soinsoftware.accountability.entity.Company;
 import co.com.soinsoftware.accountability.entity.Rol;
 import co.com.soinsoftware.accountability.entity.User;
 import co.com.soinsoftware.accountability.view.JFCompany;
@@ -17,6 +20,8 @@ import co.com.soinsoftware.accountability.view.JFVoucherTypeXCompany;
  * @version 1.0
  */
 public class MenuController {
+
+	private final CompanyController companyController;
 
 	private final JFCompany companyFrame;
 
@@ -39,6 +44,7 @@ public class MenuController {
 	public MenuController(final User user) {
 		super();
 		this.loggedUser = user;
+		this.companyController = new CompanyController();
 		this.companyFrame = new JFCompany();
 		this.voucherFrame = new JFVoucher();
 		this.voucherListFrame = new JFVoucherList(this.voucherFrame);
@@ -76,13 +82,27 @@ public class MenuController {
 	}
 
 	public void showVoucherFrame() {
-		this.companyListFrame.refresh(JFCompanyList.VOUCHER_FRAME);
-		this.companyListFrame.setVisible(true);
+		final List<Company> companyList = this.companyController
+				.selectCompanies();
+		if (companyList == null || companyList.size() > 1) {
+			this.companyListFrame.refresh(JFCompanyList.VOUCHER_FRAME);
+			this.companyListFrame.setVisible(true);
+		} else {
+			this.voucherFrame.refresh(companyList.get(0), null);
+			this.voucherFrame.setVisible(true);
+		}
 	}
 
 	public void showVoucherListFrame() {
-		this.companyListFrame.refresh(JFCompanyList.VOUCHER_LIST_FRAME);
-		this.companyListFrame.setVisible(true);
+		final List<Company> companyList = this.companyController
+				.selectCompanies();
+		if (companyList == null || companyList.size() > 1) {
+			this.companyListFrame.refresh(JFCompanyList.VOUCHER_LIST_FRAME);
+			this.companyListFrame.setVisible(true);
+		} else {
+			this.voucherListFrame.refresh(companyList.get(0));
+			this.voucherListFrame.setVisible(true);
+		}
 	}
 
 	public boolean isAdminRol() {

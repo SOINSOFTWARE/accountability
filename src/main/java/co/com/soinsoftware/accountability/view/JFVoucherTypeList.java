@@ -86,6 +86,7 @@ public class JFVoucherTypeList extends JDialog {
 	 */
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
+	// <editor-fold defaultstate="collapsed"
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
@@ -181,11 +182,11 @@ public class JFVoucherTypeList extends JDialog {
 						.createSequentialGroup()
 						.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,
 								Short.MAX_VALUE)
-						.addComponent(jbtClose,
+						.addComponent(jbtSelect,
 								javax.swing.GroupLayout.PREFERRED_SIZE, 97,
 								javax.swing.GroupLayout.PREFERRED_SIZE)
 						.addGap(18, 18, 18)
-						.addComponent(jbtSelect,
+						.addComponent(jbtClose,
 								javax.swing.GroupLayout.PREFERRED_SIZE, 97,
 								javax.swing.GroupLayout.PREFERRED_SIZE)
 						.addContainerGap()));

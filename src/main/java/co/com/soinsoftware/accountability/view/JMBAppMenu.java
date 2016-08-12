@@ -20,9 +20,11 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 
 	private static final long serialVersionUID = 2306440560901177958L;
 
-	private static final String MENU_ACTION = "Movimiento";
+	private static final String MENU_ACTION = "Movimientos";
 
 	private static final String MENU_ACTION_NEW_VOUCHER = "Nuevo asiento";
+
+	private static final String MENU_ACTION_VIEW_VOUCHER = "Ver asientos";
 
 	private static final String MENU_CONFIGURATION = "Configuración";
 
@@ -52,6 +54,9 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 		case MENU_ACTION_NEW_VOUCHER:
 			this.controller.showVoucherFrame();
 			break;
+		case MENU_ACTION_VIEW_VOUCHER:
+			this.controller.showVoucherListFrame();
+			break;
 		case MENU_CONFIGURATION_COMPANY:
 			this.controller.showCompanyFrame();
 			break;
@@ -78,6 +83,11 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 				KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
 		miNewVoucher.addActionListener(this);
 		menu.add(miNewVoucher);
+		final JMenuItem miViewVoucher = ViewUtils.createJMenuItem(
+				MENU_ACTION_VIEW_VOUCHER, KeyEvent.VK_V,
+				KeyStroke.getKeyStroke(KeyEvent.VK_2, ActionEvent.ALT_MASK));
+		miViewVoucher.addActionListener(this);
+		menu.add(miViewVoucher);
 		this.add(menu);
 	}
 

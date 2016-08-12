@@ -3,7 +3,9 @@ package co.com.soinsoftware.accountability.bll;
 import java.util.Set;
 
 import co.com.soinsoftware.accountability.dao.VoucherDAO;
+import co.com.soinsoftware.accountability.entity.Company;
 import co.com.soinsoftware.accountability.entity.Voucher;
+import co.com.soinsoftware.accountability.entity.Vouchertypexcompany;
 
 /**
  * @author Carlos Rodriguez
@@ -25,6 +27,17 @@ public class VoucherBLL {
 
 	public Set<Voucher> select() {
 		return this.dao.select();
+	}
+
+	public Set<Voucher> select(final int year, final int month,
+			final Company company, final Vouchertypexcompany voucherTypeXComp) {
+		Set<Voucher> voucherSet = null;
+		if (voucherTypeXComp == null) {
+			voucherSet = this.dao.select(year, month, company);
+		} else {
+			voucherSet = this.dao.select(year, month, voucherTypeXComp);
+		}
+		return voucherSet;
 	}
 
 	public void save(final Voucher voucher) {

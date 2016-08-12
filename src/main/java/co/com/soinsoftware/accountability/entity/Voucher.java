@@ -173,6 +173,6 @@ public class Voucher implements Serializable, Comparable<Voucher> {
 				: new Date();
 		final Date secondDate = (other.voucherdate != null) ? other.voucherdate
 				: new Date();
-		return firstDate.compareTo(secondDate);
+		return firstDate.compareTo(secondDate) * -1;
 	}
 }

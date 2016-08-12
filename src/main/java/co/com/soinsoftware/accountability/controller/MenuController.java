@@ -7,6 +7,7 @@ import co.com.soinsoftware.accountability.view.JFCompanyList;
 import co.com.soinsoftware.accountability.view.JFUap;
 import co.com.soinsoftware.accountability.view.JFUser;
 import co.com.soinsoftware.accountability.view.JFVoucher;
+import co.com.soinsoftware.accountability.view.JFVoucherList;
 import co.com.soinsoftware.accountability.view.JFVoucherType;
 import co.com.soinsoftware.accountability.view.JFVoucherTypeXCompany;
 
@@ -24,8 +25,10 @@ public class MenuController {
 	private final JFUap uapFrame;
 
 	private final JFUser userFrame;
-	
+
 	private final JFVoucher voucherFrame;
+
+	private final JFVoucherList voucherListFrame;
 
 	private final JFVoucherType voucherTypeFrame;
 
@@ -38,7 +41,9 @@ public class MenuController {
 		this.loggedUser = user;
 		this.companyFrame = new JFCompany();
 		this.voucherFrame = new JFVoucher();
-		this.companyListFrame = new JFCompanyList(this.voucherFrame);
+		this.voucherListFrame = new JFVoucherList(this.voucherFrame);
+		this.companyListFrame = new JFCompanyList(this.voucherFrame,
+				this.voucherListFrame);
 		this.uapFrame = new JFUap();
 		this.userFrame = new JFUser();
 		this.voucherTypeFrame = new JFVoucherType();
@@ -71,7 +76,12 @@ public class MenuController {
 	}
 
 	public void showVoucherFrame() {
-		this.companyListFrame.refresh();
+		this.companyListFrame.refresh(JFCompanyList.VOUCHER_FRAME);
+		this.companyListFrame.setVisible(true);
+	}
+
+	public void showVoucherListFrame() {
+		this.companyListFrame.refresh(JFCompanyList.VOUCHER_LIST_FRAME);
 		this.companyListFrame.setVisible(true);
 	}
 

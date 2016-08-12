@@ -1,10 +1,14 @@
 package co.com.soinsoftware.accountability.controller;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import co.com.soinsoftware.accountability.bll.VoucherBLL;
 import co.com.soinsoftware.accountability.bll.VoucherItemBLL;
+import co.com.soinsoftware.accountability.entity.Company;
 import co.com.soinsoftware.accountability.entity.Voucher;
 import co.com.soinsoftware.accountability.entity.Voucheritem;
 import co.com.soinsoftware.accountability.entity.Vouchertypexcompany;
@@ -24,6 +28,20 @@ public class VoucherController {
 		super();
 		this.voucherBLL = VoucherBLL.getInstance();
 		this.voucherItemBLL = VoucherItemBLL.getInstance();
+	}
+
+	public List<Voucher> select(final int year, final int month,
+			final Company company, final Vouchertypexcompany voucherTypeXComp) {
+		List<Voucher> voucherList = new ArrayList<>();
+		final Set<Voucher> voucherSet = this.voucherBLL.select(year, month,
+				company, voucherTypeXComp);
+		if (voucherSet != null) {
+			voucherList = new ArrayList<>(voucherSet);
+			if (voucherList.size() > 0) {
+				Collections.sort(voucherList);
+			}
+		}
+		return voucherList;
 	}
 
 	public Voucher saveVoucher(final Vouchertypexcompany voucherTypeXComp,

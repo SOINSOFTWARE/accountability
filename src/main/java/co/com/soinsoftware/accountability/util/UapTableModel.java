@@ -7,7 +7,9 @@ import java.util.Set;
 
 import javax.swing.table.AbstractTableModel;
 
+import co.com.soinsoftware.accountability.entity.Company;
 import co.com.soinsoftware.accountability.entity.Uap;
+import co.com.soinsoftware.accountability.entity.Uapxcompany;
 
 /**
  * @author Carlos Rodriguez
@@ -21,12 +23,15 @@ public class UapTableModel extends AbstractTableModel {
 	private static final String[] COLUMN_NAMES = { "Código", "Nombre",
 			"Eliminar" };
 
+	private final Company company;
+
 	private final List<Uap> uapList;
 
 	private Object[][] data;
 
-	public UapTableModel(final List<Uap> uapList) {
+	public UapTableModel(final Company company, final List<Uap> uapList) {
 		super();
+		this.company = company;
 		this.uapList = new ArrayList<>();
 		this.unpackageChildrenList(uapList);
 		this.buildData();
@@ -97,12 +102,15 @@ public class UapTableModel extends AbstractTableModel {
 	private void unpackageChildrenList(final List<Uap> uapList) {
 		for (final Uap uap : uapList) {
 			if (uap.isEnabled()) {
-				this.uapList.add(uap);
-				final Set<Uap> uapSet = uap.getUaps();
-				if (uapSet != null && uapSet.size() > 0) {
-					List<Uap> uapChildrenList = new ArrayList<>(uapSet);
-					Collections.sort(uapChildrenList);
-					this.unpackageChildrenList(uapChildrenList);
+				boolean isInCompany = this.validateUapIsInCompany(uap);
+				if (isInCompany) {
+					this.uapList.add(uap);
+					final Set<Uap> uapSet = uap.getUaps();
+					if (uapSet != null && uapSet.size() > 0) {
+						List<Uap> uapChildrenList = new ArrayList<>(uapSet);
+						Collections.sort(uapChildrenList);
+						this.unpackageChildrenList(uapChildrenList);
+					}
 				}
 			}
 		}
@@ -114,5 +122,20 @@ public class UapTableModel extends AbstractTableModel {
 			rowSize = this.uapList.size();
 		}
 		return rowSize;
+	}
+
+	private boolean validateUapIsInCompany(final Uap uap) {
+		boolean isInCompany = false;
+		final Set<Uapxcompany> uapXCompSet = uap.getUapxcompanies();
+		if (uapXCompSet != null) {
+			for (final Uapxcompany uapXComp : uapXCompSet) {
+				if (uapXComp.getCompany().equals(this.company)
+						&& uapXComp.isEnabled()) {
+					isInCompany = true;
+					break;
+				}
+			}
+		}
+		return isInCompany;
 	}
 }

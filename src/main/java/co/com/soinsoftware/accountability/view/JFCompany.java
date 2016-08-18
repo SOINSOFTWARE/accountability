@@ -4,7 +4,9 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
@@ -12,9 +14,12 @@ import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;
 
 import co.com.soinsoftware.accountability.controller.CompanyController;
+import co.com.soinsoftware.accountability.controller.UapController;
 import co.com.soinsoftware.accountability.entity.Company;
 import co.com.soinsoftware.accountability.entity.Companytype;
 import co.com.soinsoftware.accountability.entity.Documenttype;
+import co.com.soinsoftware.accountability.entity.Uap;
+import co.com.soinsoftware.accountability.entity.Uapxcompany;
 import co.com.soinsoftware.accountability.util.CompanyTableModel;
 
 /*
@@ -52,6 +57,8 @@ public class JFCompany extends JDialog {
 
 	private final Documenttype docTypeNit;
 
+	private final UapController uapController;
+
 	private List<Companytype> companyTypeList;
 
 	private List<Documenttype> documentTypeList;
@@ -65,6 +72,7 @@ public class JFCompany extends JDialog {
 		this.docTypeCc = this.companyController.selectDocumentTypeCc();
 		this.docTypeCe = this.companyController.selectDocumentTypeCe();
 		this.docTypeNit = this.companyController.selectDocumentTypeNit();
+		this.uapController = new UapController();
 		this.initComponents();
 		final Dimension screenSize = Toolkit.getDefaultToolkit()
 				.getScreenSize();
@@ -240,6 +248,20 @@ public class JFCompany extends JDialog {
 	private Documenttype getDocumentTypeSelected() {
 		final int index = this.jcbDocumentType.getSelectedIndex();
 		return this.documentTypeList.get(index);
+	}
+
+	private void saveDefaultUap(final Company company) {
+		final List<Uap> uapList = uapController.selectUapDefault();
+		final Set<Uapxcompany> uapXCompSet = new HashSet<>();
+		if (uapList != null && uapList.size() > 0) {
+			final Date currentDate = new Date();
+			for (final Uap uap : uapList) {
+				final Uapxcompany uapXComp = new Uapxcompany(uap, company,
+						currentDate, currentDate, true);
+				uapXCompSet.add(uapXComp);
+			}
+			this.uapController.saveUapXCompanySet(uapXCompSet);
+		}
 	}
 
 	/**
@@ -785,8 +807,10 @@ public class JFCompany extends JDialog {
 					nameCEO = this.jtfNameCEO.getText();
 					identificationCEO = this.getIdentificationValue();
 				}
-				this.companyController.saveCompany(companyType, documentType,
-						name, document, nameCEO, identificationCEO);
+				final Company company = this.companyController.saveCompany(
+						companyType, documentType, name, document, nameCEO,
+						identificationCEO);
+				this.saveDefaultUap(company);
 				ViewUtils.showMessage(this, ViewUtils.MSG_SAVED,
 						ViewUtils.TITLE_SAVED, JOptionPane.INFORMATION_MESSAGE);
 				this.refresh();

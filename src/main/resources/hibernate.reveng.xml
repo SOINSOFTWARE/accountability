@@ -12,4 +12,5 @@
   <table-filter match-name="voucher"/>
   <table-filter match-name="company"/>
   <table-filter match-name="vouchertypexcompany"/>
+  <table-filter match-name="uapxcompany"/>
 </hibernate-reverse-engineering>

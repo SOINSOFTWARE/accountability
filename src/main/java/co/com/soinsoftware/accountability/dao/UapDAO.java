@@ -17,6 +17,8 @@ public class UapDAO extends AbstractDAO {
 
 	private static final String COLUMN_CODE = "code";
 
+	private static final String COLUMN_EDITABLE = "editable";
+
 	private static final String COLUMN_LEVEL = "level";
 
 	private static final String COLUMN_UAP = "uap";
@@ -26,7 +28,7 @@ public class UapDAO extends AbstractDAO {
 		Set<Uap> uapSet = null;
 		try {
 			final Query query = this.createQuery(this
-					.getSelectStatementEnabled());
+					.getSelectStatementDefaultUAP());
 			uapSet = (query.list().isEmpty()) ? null : new HashSet<Uap>(
 					query.list());
 		} catch (HibernateException ex) {
@@ -117,6 +119,15 @@ public class UapDAO extends AbstractDAO {
 		query.append(COLUMN_UAP);
 		query.append(SQL_EQUALS_WITH_PARAM);
 		query.append(COLUMN_UAP);
+		return query.toString();
+	}
+
+	private String getSelectStatementDefaultUAP() {
+		final StringBuilder query = new StringBuilder(
+				this.getSelectStatementEnabled());
+		query.append(SQL_AND);
+		query.append(COLUMN_EDITABLE);
+		query.append(" = 0 ");
 		return query.toString();
 	}
 }

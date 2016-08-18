@@ -7,7 +7,10 @@ import java.util.List;
 import java.util.Set;
 
 import co.com.soinsoftware.accountability.bll.UapBLL;
+import co.com.soinsoftware.accountability.bll.UapXCompanyBLL;
+import co.com.soinsoftware.accountability.entity.Company;
 import co.com.soinsoftware.accountability.entity.Uap;
+import co.com.soinsoftware.accountability.entity.Uapxcompany;
 
 /**
  * @author Carlos Rodriguez
@@ -20,9 +23,17 @@ public class UapController {
 
 	private final UapBLL uapBLL;
 
+	private final UapXCompanyBLL uapXCompBLL;
+
 	public UapController() {
 		super();
 		this.uapBLL = UapBLL.getInstance();
+		this.uapXCompBLL = UapXCompanyBLL.getInstance();
+	}
+
+	public List<Uap> selectUapDefault() {
+		final Set<Uap> uapSet = this.uapBLL.select();
+		return this.sortUapSet(uapSet);
 	}
 
 	public List<Uap> selectUapClassLevel() {
@@ -51,6 +62,22 @@ public class UapController {
 
 	public void saveUap(final Uap uap) {
 		this.uapBLL.save(uap);
+	}
+
+	public Uapxcompany saveUapXCompany(final Company company, final Uap uap) {
+		final Date currentDate = new Date();
+		final Uapxcompany uapXComp = new Uapxcompany(uap, company, currentDate,
+				currentDate, true);
+		this.saveUapXCompany(uapXComp);
+		return uapXComp;
+	}
+
+	public void saveUapXCompany(final Uapxcompany uapXCompany) {
+		this.uapXCompBLL.save(uapXCompany);
+	}
+
+	public void saveUapXCompanySet(final Set<Uapxcompany> uapXCompanySet) {
+		this.uapXCompBLL.save(uapXCompanySet);
 	}
 
 	private List<Uap> sortUapSet(final Set<Uap> uapSet) {

@@ -34,17 +34,22 @@ public class JFCompanyList extends JDialog {
 
 	private final JFVoucherList voucherListFrame;
 
+	private final JFUap uapFrame;
+
 	private int frameSelected;
 
 	public static final int VOUCHER_FRAME = 0;
 
 	public static final int VOUCHER_LIST_FRAME = 1;
 
+	public static final int UAP_FRAME = 2;
+
 	public JFCompanyList(final JFVoucher voucherFrame,
-			final JFVoucherList voucherListFrame) {
+			final JFVoucherList voucherListFrame, final JFUap uapFrame) {
 		this.companyController = new CompanyController();
 		this.voucherFrame = voucherFrame;
 		this.voucherListFrame = voucherListFrame;
+		this.uapFrame = uapFrame;
 		this.initComponents();
 		final Dimension screenSize = Toolkit.getDefaultToolkit()
 				.getScreenSize();
@@ -80,6 +85,11 @@ public class JFCompanyList extends JDialog {
 	private void showVoucherListFrame(final Company company) {
 		this.voucherListFrame.refresh(company);
 		this.voucherListFrame.setVisible(true);
+	}
+
+	private void showUapFrame(final Company company) {
+		this.uapFrame.refresh(company);
+		this.uapFrame.setVisible(true);
 	}
 
 	/**
@@ -291,8 +301,10 @@ public class JFCompanyList extends JDialog {
 			this.setVisible(false);
 			if (this.frameSelected == VOUCHER_FRAME) {
 				this.showVoucherFrame(company);
-			} else {
+			} else if (this.frameSelected == VOUCHER_LIST_FRAME) {
 				this.showVoucherListFrame(company);
+			} else {
+				this.showUapFrame(company);
 			}
 		} else {
 			ViewUtils.showMessage(this, MSG_COMPANY_REQUIRED,

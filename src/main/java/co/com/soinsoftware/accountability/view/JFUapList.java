@@ -15,6 +15,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 import co.com.soinsoftware.accountability.controller.UapController;
+import co.com.soinsoftware.accountability.entity.Company;
 import co.com.soinsoftware.accountability.entity.Uap;
 import co.com.soinsoftware.accountability.util.UapListTableModel;
 
@@ -44,13 +45,13 @@ public class JFUapList extends JDialog {
 		this.setModal(true);
 	}
 
-	public void refresh() {
-		this.refreshTableData();
+	public void refresh(final Company company) {
+		this.refreshTableData(company);
 	}
 
-	private void refreshTableData() {
+	private void refreshTableData(final Company company) {
 		final List<Uap> uapList = this.uapController.selectUapClassLevel();
-		final TableModel model = new UapListTableModel(uapList);
+		final TableModel model = new UapListTableModel(company, uapList);
 		this.jtbUapList.setModel(model);
 		this.jtbUapList.setFillsViewportHeight(true);
 		this.setTableColumnDimensions();

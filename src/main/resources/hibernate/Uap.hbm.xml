@@ -50,5 +50,11 @@
             </key>
             <one-to-many class="co.com.soinsoftware.accountability.entity.Voucheritem" />
         </set>
+        <set name="uapxcompanies" table="uapxcompany" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="iduap" not-null="true" />
+            </key>
+            <one-to-many class="co.com.soinsoftware.accountability.entity.Uapxcompany" />
+        </set>
     </class>
 </hibernate-mapping>

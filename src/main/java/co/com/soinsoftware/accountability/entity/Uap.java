@@ -38,11 +38,13 @@ public class Uap implements Serializable, Comparable<Uap> {
 
 	private Set<Uap> uaps = new HashSet<>(0);
 
+	private Set<Voucheritem> voucheritems = new HashSet<>(0);
+
+	private Set<Uapxcompany> uapxcompanies = new HashSet<>(0);
+
 	private volatile String newName;
 
 	private volatile boolean delete;
-
-	private Set<Voucheritem> voucheritems = new HashSet<>(0);
 
 	public Uap() {
 		super();
@@ -68,7 +70,8 @@ public class Uap implements Serializable, Comparable<Uap> {
 			final int level, final boolean debt, final boolean credit,
 			final boolean editable, final Date creation, final Date updated,
 			final boolean enabled, final Set<Uap> uaps,
-			final Set<Voucheritem> voucheritems) {
+			final Set<Voucheritem> voucheritems,
+			final Set<Uapxcompany> uapxcompanies) {
 		this.uap = uap;
 		this.code = code;
 		this.name = name;
@@ -81,6 +84,7 @@ public class Uap implements Serializable, Comparable<Uap> {
 		this.enabled = enabled;
 		this.uaps = uaps;
 		this.voucheritems = voucheritems;
+		this.uapxcompanies = uapxcompanies;
 		this.delete = false;
 	}
 
@@ -186,6 +190,14 @@ public class Uap implements Serializable, Comparable<Uap> {
 
 	public void setVoucheritems(final Set<Voucheritem> voucheritems) {
 		this.voucheritems = voucheritems;
+	}
+
+	public Set<Uapxcompany> getUapxcompanies() {
+		return uapxcompanies;
+	}
+
+	public void setUapxcompanies(Set<Uapxcompany> uapxcompanies) {
+		this.uapxcompanies = uapxcompanies;
 	}
 
 	public String getNewName() {

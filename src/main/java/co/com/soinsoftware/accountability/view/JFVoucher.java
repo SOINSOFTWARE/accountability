@@ -1006,7 +1006,7 @@ public class JFVoucher extends JDialog {
 	}// GEN-LAST:event_jbtCleanActionPerformed
 
 	private void jbtAddActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jbtAddActionPerformed
-		this.uapListFrame.refresh();
+		this.uapListFrame.refresh(this.company);
 		this.uapListFrame.setVisible(true);
 	}// GEN-LAST:event_jbtAddActionPerformed
 

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
@@ -20,7 +21,9 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 import co.com.soinsoftware.accountability.controller.UapController;
+import co.com.soinsoftware.accountability.entity.Company;
 import co.com.soinsoftware.accountability.entity.Uap;
+import co.com.soinsoftware.accountability.entity.Uapxcompany;
 import co.com.soinsoftware.accountability.util.UapTableModel;
 
 /**
@@ -48,6 +51,8 @@ public class JFUap extends JDialog {
 
 	private final UapController uapController;
 
+	private Company company;
+
 	private List<Uap> uapClassList;
 
 	private List<Uap> uapGroupList;
@@ -66,11 +71,12 @@ public class JFUap extends JDialog {
 		this.setModal(true);
 		this.buildButtonGroup();
 		this.setTextFieldLimits();
-		this.refreshUapAccountSelection();
-		this.refreshTableData();
 	}
 
-	public void refresh() {
+	public void refresh(final Company company) {
+		this.company = company;
+		this.refreshUapAccountSelection();
+		this.refreshTableData();
 		this.jrbEmpHelper.setSelected(true);
 		this.jcbUapClass.setSelectedIndex(0);
 		this.jcbUapGroup.setSelectedIndex(0);
@@ -86,7 +92,8 @@ public class JFUap extends JDialog {
 	}
 
 	private void refreshTableData() {
-		final TableModel model = new UapTableModel(this.uapClassList);
+		final TableModel model = new UapTableModel(this.company,
+				this.uapClassList);
 		this.jtbUapList.setModel(model);
 		this.jtbUapList.setFillsViewportHeight(true);
 		this.setTableColumnDimensions();
@@ -115,7 +122,10 @@ public class JFUap extends JDialog {
 		model.addElement("Seleccione uno...");
 		if (this.uapClassList != null && this.uapClassList.size() > 0) {
 			for (final Uap uap : this.uapClassList) {
-				model.addElement(uap.getCode() + " - " + uap.getName());
+				boolean isInCompany = this.validateUapIsInCompany(uap);
+				if (isInCompany) {
+					model.addElement(uap.getCode() + " - " + uap.getName());
+				}
 			}
 		}
 		this.jcbUapClass.setModel(model);
@@ -128,7 +138,10 @@ public class JFUap extends JDialog {
 		if (this.uapGroupList != null && this.uapGroupList.size() > 0) {
 			for (final Uap uap : this.uapGroupList) {
 				if (uap.isEnabled()) {
-					model.addElement(uap.getCode() + " - " + uap.getName());
+					boolean isInCompany = this.validateUapIsInCompany(uap);
+					if (isInCompany) {
+						model.addElement(uap.getCode() + " - " + uap.getName());
+					}
 				}
 			}
 		}
@@ -142,7 +155,10 @@ public class JFUap extends JDialog {
 		if (this.uapAccountList != null && this.uapAccountList.size() > 0) {
 			for (final Uap uap : this.uapAccountList) {
 				if (uap.isEnabled()) {
-					model.addElement(uap.getCode() + " - " + uap.getName());
+					boolean isInCompany = this.validateUapIsInCompany(uap);
+					if (isInCompany) {
+						model.addElement(uap.getCode() + " - " + uap.getName());
+					}
 				}
 			}
 		}
@@ -156,7 +172,10 @@ public class JFUap extends JDialog {
 		if (this.uapSubAccountList != null && this.uapSubAccountList.size() > 0) {
 			for (final Uap uap : this.uapSubAccountList) {
 				if (uap.isEnabled()) {
-					model.addElement(uap.getCode() + " - " + uap.getName());
+					boolean isInCompany = this.validateUapIsInCompany(uap);
+					if (isInCompany) {
+						model.addElement(uap.getCode() + " - " + uap.getName());
+					}
 				}
 			}
 		}
@@ -219,6 +238,21 @@ public class JFUap extends JDialog {
 		return Long.valueOf(code);
 	}
 
+	private boolean validateUapIsInCompany(final Uap uap) {
+		boolean isInCompany = false;
+		final Set<Uapxcompany> uapXCompSet = uap.getUapxcompanies();
+		if (uapXCompSet != null) {
+			for (final Uapxcompany uapXComp : uapXCompSet) {
+				if (uapXComp.getCompany().equals(this.company)
+						&& uapXComp.isEnabled()) {
+					isInCompany = true;
+					break;
+				}
+			}
+		}
+		return isInCompany;
+	}
+
 	private boolean validateDataForSave() {
 		boolean valid = true;
 		final Uap uapGroup = this.getUapGroupSelected();
@@ -278,7 +312,7 @@ public class JFUap extends JDialog {
 					ViewUtils.TITLE_REQUIRED_FIELDS, JOptionPane.ERROR_MESSAGE);
 		} else {
 			final Uap uapWithCode = this.uapController.selectUapByCode(code);
-			if (uapWithCode != null) {
+			if (uapWithCode != null && this.validateUapIsInCompany(uapWithCode)) {
 				valid = false;
 				ViewUtils.showMessage(this, MSG_USED_CODE_REQUIRED,
 						ViewUtils.TITLE_REQUIRED_FIELDS,
@@ -962,12 +996,15 @@ public class JFUap extends JDialog {
 				final String name = this.jtfName.getText();
 				final Uap uap = this.uapController.saveUap(parentUap, code,
 						name);
+				final Uapxcompany uapXComp = this.uapController
+						.saveUapXCompany(this.company, uap);
+				uap.getUapxcompanies().add(uapXComp);
 				parentUap.getUaps().add(uap);
 				ViewUtils.showMessage(this, ViewUtils.MSG_SAVED,
 						ViewUtils.TITLE_SAVED, JOptionPane.INFORMATION_MESSAGE);
 				this.refreshUapAccountSelection();
 				this.refreshTableData();
-				this.refresh();
+				this.refresh(this.company);
 			}
 		}
 	}// GEN-LAST:event_jbtSaveActionPerformed
@@ -1040,7 +1077,7 @@ public class JFUap extends JDialog {
 						ViewUtils.TITLE_SAVED, JOptionPane.INFORMATION_MESSAGE);
 				this.refreshUapAccountSelection();
 				this.refreshTableData();
-				this.refresh();
+				this.refresh(this.company);
 			}
 		} else {
 			ViewUtils.showMessage(this, ViewUtils.MSG_UNEDITED,
@@ -1059,13 +1096,23 @@ public class JFUap extends JDialog {
 						uap.setEnabled(false);
 						uap.setUpdated(new Date());
 						this.uapController.saveUap(uap);
+						final Set<Uapxcompany> uapXCompSet = uap
+								.getUapxcompanies();
+						for (final Uapxcompany uapXComp : uapXCompSet) {
+							if (uapXComp.getCompany().equals(this.company)) {
+								uapXComp.setEnabled(false);
+								uapXComp.setUpdated(new Date());
+								this.uapController.saveUapXCompany(uapXComp);
+								break;
+							}
+						}
 					}
 				}
 				ViewUtils.showMessage(this, ViewUtils.MSG_DELETED,
 						ViewUtils.TITLE_SAVED, JOptionPane.INFORMATION_MESSAGE);
 				this.refreshUapAccountSelection();
 				this.refreshTableData();
-				this.refresh();
+				this.refresh(this.company);
 			}
 		} else {
 			ViewUtils.showMessage(this, ViewUtils.MSG_UNSELECTED,

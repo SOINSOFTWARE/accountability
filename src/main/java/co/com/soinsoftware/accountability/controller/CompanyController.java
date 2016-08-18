@@ -55,13 +55,14 @@ public class CompanyController {
 		return companyList;
 	}
 
-	public void saveCompany(final Companytype companyType,
+	public Company saveCompany(final Companytype companyType,
 			final Documenttype documentType, final String name,
 			final String document, final String nameCEO, final Long documentCEO) {
 		final Date currentDate = new Date();
 		final Company company = new Company(companyType, documentType, name,
 				document, nameCEO, documentCEO, currentDate, currentDate, true);
 		this.saveCompany(company);
+		return company;
 	}
 
 	public void saveCompany(final Company company) {

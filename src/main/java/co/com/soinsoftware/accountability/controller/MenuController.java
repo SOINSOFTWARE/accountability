@@ -47,10 +47,10 @@ public class MenuController {
 		this.companyController = new CompanyController();
 		this.companyFrame = new JFCompany();
 		this.voucherFrame = new JFVoucher();
+		this.uapFrame = new JFUap();
 		this.voucherListFrame = new JFVoucherList(this.voucherFrame);
 		this.companyListFrame = new JFCompanyList(this.voucherFrame,
-				this.voucherListFrame);
-		this.uapFrame = new JFUap();
+				this.voucherListFrame, this.uapFrame);
 		this.userFrame = new JFUser();
 		this.voucherTypeFrame = new JFVoucherType();
 		this.voucherTypeXCompFrame = new JFVoucherTypeXCompany();
@@ -67,8 +67,15 @@ public class MenuController {
 	}
 
 	public void showUapFrame() {
-		this.uapFrame.refresh();
-		this.uapFrame.setVisible(true);
+		final List<Company> companyList = this.companyController
+				.selectCompanies();
+		if (companyList == null || companyList.size() > 1) {
+			this.companyListFrame.refresh(JFCompanyList.UAP_FRAME);
+			this.companyListFrame.setVisible(true);
+		} else {
+			this.uapFrame.refresh(companyList.get(0));
+			this.uapFrame.setVisible(true);
+		}
 	}
 
 	public void showVoucherTypeFrame() {

@@ -57,10 +57,10 @@ public class CompanyController {
 
 	public void saveCompany(final Companytype companyType,
 			final Documenttype documentType, final String name,
-			final String document) {
+			final String document, final String nameCEO, final Long documentCEO) {
 		final Date currentDate = new Date();
 		final Company company = new Company(companyType, documentType, name,
-				document, currentDate, currentDate, true);
+				document, nameCEO, documentCEO, currentDate, currentDate, true);
 		this.saveCompany(company);
 	}
 

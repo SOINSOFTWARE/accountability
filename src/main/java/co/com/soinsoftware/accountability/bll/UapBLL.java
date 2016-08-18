@@ -31,7 +31,11 @@ public class UapBLL {
 		return this.dao.select(level);
 	}
 
-	public Uap select(final String code) {
+	public Set<Uap> select(final Uap uap) {
+		return this.dao.select(uap);
+	}
+
+	public Uap select(final long code) {
 		return this.dao.select(code);
 	}
 

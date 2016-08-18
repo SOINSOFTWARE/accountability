@@ -20,6 +20,12 @@
         <property name="document" type="string">
             <column name="document" length="45" not-null="true" />
         </property>
+        <property name="nameceo" type="string">
+            <column name="nameceo" length="60" />
+        </property>
+        <property name="documentceo" type="long">
+            <column name="documentceo" />
+        </property>
         <property name="creation" type="timestamp">
             <column name="creation" length="19" not-null="true" />
         </property>

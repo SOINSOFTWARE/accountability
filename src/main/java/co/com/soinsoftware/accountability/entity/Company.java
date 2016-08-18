@@ -22,6 +22,10 @@ public class Company implements Serializable, Comparable<Company> {
 
 	private String document;
 
+	private String nameceo;
+
+	private Long documentceo;
+
 	private Date creation;
 
 	private Date updated;
@@ -31,6 +35,10 @@ public class Company implements Serializable, Comparable<Company> {
 	private volatile String newName;
 
 	private volatile String newDocument;
+
+	private volatile String newNameCeo;
+
+	private volatile Long newDocumentCeo;
 
 	private volatile boolean delete;
 
@@ -47,6 +55,23 @@ public class Company implements Serializable, Comparable<Company> {
 		this.documenttype = documenttype;
 		this.name = name;
 		this.document = document;
+		this.creation = creation;
+		this.updated = updated;
+		this.enabled = enabled;
+		this.delete = false;
+	}
+
+	public Company(final Companytype companytype,
+			final Documenttype documenttype, final String name,
+			final String document, final String nameceo,
+			final Long documentceo, final Date creation, final Date updated,
+			final boolean enabled) {
+		this.companytype = companytype;
+		this.documenttype = documenttype;
+		this.name = name;
+		this.document = document;
+		this.nameceo = nameceo;
+		this.documentceo = documentceo;
 		this.creation = creation;
 		this.updated = updated;
 		this.enabled = enabled;
@@ -93,6 +118,22 @@ public class Company implements Serializable, Comparable<Company> {
 		this.document = document;
 	}
 
+	public String getNameceo() {
+		return nameceo;
+	}
+
+	public void setNameceo(String nameceo) {
+		this.nameceo = nameceo;
+	}
+
+	public Long getDocumentceo() {
+		return documentceo;
+	}
+
+	public void setDocumentceo(Long documentceo) {
+		this.documentceo = documentceo;
+	}
+
 	public Date getCreation() {
 		return this.creation;
 	}
@@ -131,6 +172,22 @@ public class Company implements Serializable, Comparable<Company> {
 
 	public void setNewDocument(final String newDocument) {
 		this.newDocument = newDocument;
+	}
+
+	public String getNewNameCeo() {
+		return newNameCeo;
+	}
+
+	public void setNewNameCeo(String newNameCeo) {
+		this.newNameCeo = newNameCeo;
+	}
+
+	public Long getNewDocumentCeo() {
+		return newDocumentCeo;
+	}
+
+	public void setNewDocumentCeo(Long newDocumentCeo) {
+		this.newDocumentCeo = newDocumentCeo;
 	}
 
 	public boolean isDelete() {

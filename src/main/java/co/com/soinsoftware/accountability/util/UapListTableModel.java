@@ -80,12 +80,14 @@ public class UapListTableModel extends AbstractTableModel {
 
 	private void unpackageChildrenList(final List<Uap> uapList) {
 		for (final Uap uap : uapList) {
-			this.uapList.add(uap);
-			final Set<Uap> uapSet = uap.getUaps();
-			if (uapSet != null && uapSet.size() > 0) {
-				List<Uap> uapChildrenList = new ArrayList<>(uapSet);
-				Collections.sort(uapChildrenList);
-				this.unpackageChildrenList(uapChildrenList);
+			if (uap.isEnabled()) {
+				this.uapList.add(uap);
+				final Set<Uap> uapSet = uap.getUaps();
+				if (uapSet != null && uapSet.size() > 0) {
+					List<Uap> uapChildrenList = new ArrayList<>(uapSet);
+					Collections.sort(uapChildrenList);
+					this.unpackageChildrenList(uapChildrenList);
+				}
 			}
 		}
 	}

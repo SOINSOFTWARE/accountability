@@ -7,12 +7,15 @@ package co.com.soinsoftware.accountability.view;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ItemEvent;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
@@ -22,12 +25,26 @@ import co.com.soinsoftware.accountability.util.UapTableModel;
 
 /**
  * @author Carlos Rodriguez
- * @since 03/08/2016
+ * @since 18/08/2016
  * @version 1.0
  */
 public class JFUap extends JDialog {
 
 	private static final long serialVersionUID = -2905273704835020301L;
+
+	private static final String MSG_CODE_REQUIRED = "Complete el campo código";
+
+	private static final String MSG_INVALID_CODE_REQUIRED = "El código no es valido";
+
+	private static final String MSG_USED_CODE_REQUIRED = "El código ya está siendo usado";
+
+	private static final String MSG_NAME_REQUIRED = "Complete el campo nombre";
+
+	private static final String MSG_SELECT_ONE_GROUP_REQUIRED = "Seleccione el grupo al que pertenece la nueva cuenta";
+
+	private static final String MSG_SELECT_ONE_ACCOUNT_REQUIRED = "Seleccione la cuenta a la que pertenece la nueva sub-cuenta";
+
+	private static final String MSG_SELECT_ONE_SUBACCOUNT_REQUIRED = "Seleccione la sub-cuenta a la que pertenece la nueva cuenta auxiliar";
 
 	private final UapController uapController;
 
@@ -47,20 +64,25 @@ public class JFUap extends JDialog {
 		this.setLocation((int) (screenSize.getWidth() / 2 - 500),
 				(int) (screenSize.getHeight() / 2 - 350));
 		this.setModal(true);
+		this.buildButtonGroup();
 		this.setTextFieldLimits();
-		this.setUapClassModel();
-		this.setUapGroupModel(null);
-		this.setUapAccountModel(null);
-		this.setUapSubAccountModel(null);
+		this.refreshUapAccountSelection();
 		this.refreshTableData();
 	}
 
 	public void refresh() {
+		this.jrbEmpHelper.setSelected(true);
 		this.jcbUapClass.setSelectedIndex(0);
 		this.jcbUapGroup.setSelectedIndex(0);
 		this.jcbUapAccount.setSelectedIndex(0);
 		this.jcbUapSubAccount.setSelectedIndex(0);
 		this.setTextToUapFields("");
+	}
+
+	private void buildButtonGroup() {
+		this.bgAccountClass.add(this.jrbEmpHelper);
+		this.bgAccountClass.add(this.jrbSubAccount);
+		this.bgAccountClass.add(this.jrbAccount);
 	}
 
 	private void refreshTableData() {
@@ -105,7 +127,9 @@ public class JFUap extends JDialog {
 		model.addElement("Seleccione uno...");
 		if (this.uapGroupList != null && this.uapGroupList.size() > 0) {
 			for (final Uap uap : this.uapGroupList) {
-				model.addElement(uap.getCode() + " - " + uap.getName());
+				if (uap.isEnabled()) {
+					model.addElement(uap.getCode() + " - " + uap.getName());
+				}
 			}
 		}
 		this.jcbUapGroup.setModel(model);
@@ -117,7 +141,9 @@ public class JFUap extends JDialog {
 		model.addElement("Seleccione uno...");
 		if (this.uapAccountList != null && this.uapAccountList.size() > 0) {
 			for (final Uap uap : this.uapAccountList) {
-				model.addElement(uap.getCode() + " - " + uap.getName());
+				if (uap.isEnabled()) {
+					model.addElement(uap.getCode() + " - " + uap.getName());
+				}
 			}
 		}
 		this.jcbUapAccount.setModel(model);
@@ -129,7 +155,9 @@ public class JFUap extends JDialog {
 		model.addElement("Seleccione uno...");
 		if (this.uapSubAccountList != null && this.uapSubAccountList.size() > 0) {
 			for (final Uap uap : this.uapSubAccountList) {
-				model.addElement(uap.getCode() + " - " + uap.getName());
+				if (uap.isEnabled()) {
+					model.addElement(uap.getCode() + " - " + uap.getName());
+				}
 			}
 		}
 		this.jcbUapSubAccount.setModel(model);
@@ -176,6 +204,126 @@ public class JFUap extends JDialog {
 		this.jtfName.setText("");
 	}
 
+	private void setUapCode(final Uap uap) {
+		if (uap != null) {
+			this.setTextToUapFields(String.valueOf(uap.getCode()));
+			this.jtfCode.requestFocus();
+		}
+	}
+
+	private long getCodeValue() {
+		String code = this.jtfCode.getText().replace(",", "").replace(".", "");
+		if (code.equals("")) {
+			code = "0";
+		}
+		return Long.valueOf(code);
+	}
+
+	private boolean validateDataForSave() {
+		boolean valid = true;
+		final Uap uapGroup = this.getUapGroupSelected();
+		final Uap uapAccount = this.getUapAccountSelected();
+		final Uap uapSubAccount = this.getUapSubAccountSelected();
+		final long code = this.getCodeValue();
+		final String name = this.jtfName.getText();
+		if (this.jrbAccount.isSelected() && uapGroup == null) {
+			valid = false;
+			ViewUtils.showMessage(this, MSG_SELECT_ONE_GROUP_REQUIRED,
+					ViewUtils.TITLE_REQUIRED_FIELDS, JOptionPane.ERROR_MESSAGE);
+		} else if (this.jrbSubAccount.isSelected() && uapAccount == null) {
+			valid = false;
+			ViewUtils.showMessage(this, MSG_SELECT_ONE_ACCOUNT_REQUIRED,
+					ViewUtils.TITLE_REQUIRED_FIELDS, JOptionPane.ERROR_MESSAGE);
+		} else if (this.jrbEmpHelper.isSelected() && uapSubAccount == null) {
+			valid = false;
+			ViewUtils.showMessage(this, MSG_SELECT_ONE_SUBACCOUNT_REQUIRED,
+					ViewUtils.TITLE_REQUIRED_FIELDS, JOptionPane.ERROR_MESSAGE);
+		} else if (code == 0) {
+			valid = false;
+			ViewUtils.showMessage(this, MSG_CODE_REQUIRED,
+					ViewUtils.TITLE_REQUIRED_FIELDS, JOptionPane.ERROR_MESSAGE);
+		} else if (name.trim().equals("")) {
+			valid = false;
+			ViewUtils.showMessage(this, MSG_NAME_REQUIRED,
+					ViewUtils.TITLE_REQUIRED_FIELDS, JOptionPane.ERROR_MESSAGE);
+		} else if (code > 0) {
+			valid = this.validateCode();
+		}
+		return valid;
+	}
+
+	private boolean validateCode() {
+		boolean valid = true;
+		final Uap uapGroup = this.getUapGroupSelected();
+		final Uap uapAccount = this.getUapAccountSelected();
+		final Uap uapSubAccount = this.getUapSubAccountSelected();
+		final long code = this.getCodeValue();
+		String parentCode = "";
+		if (this.jrbAccount.isSelected()) {
+			parentCode = String.valueOf(uapGroup.getCode());
+		} else if (this.jrbSubAccount.isSelected()) {
+			parentCode = String.valueOf(uapAccount.getCode());
+		} else if (this.jrbEmpHelper.isSelected()) {
+			parentCode = String.valueOf(uapSubAccount.getCode());
+		}
+		int parentLength = parentCode.length();
+		final String codeStr = String.valueOf(code);
+		if (!parentCode.equals(codeStr.substring(0, parentLength))) {
+			valid = false;
+			ViewUtils.showMessage(this, MSG_INVALID_CODE_REQUIRED,
+					ViewUtils.TITLE_REQUIRED_FIELDS, JOptionPane.ERROR_MESSAGE);
+		} else if (codeStr.length() != (parentLength + 2)) {
+			valid = false;
+			ViewUtils.showMessage(this, MSG_INVALID_CODE_REQUIRED,
+					ViewUtils.TITLE_REQUIRED_FIELDS, JOptionPane.ERROR_MESSAGE);
+		} else {
+			final Uap uapWithCode = this.uapController.selectUapByCode(code);
+			if (uapWithCode != null) {
+				valid = false;
+				ViewUtils.showMessage(this, MSG_USED_CODE_REQUIRED,
+						ViewUtils.TITLE_REQUIRED_FIELDS,
+						JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		return valid;
+	}
+
+	private void refreshUapAccountSelection() {
+		this.setUapClassModel();
+		this.setUapGroupModel(null);
+		this.setUapAccountModel(null);
+		this.setUapSubAccountModel(null);
+		this.setTextToUapFields("");
+	}
+
+	private List<Uap> getUapListFromTable() {
+		final TableModel model = this.jtbUapList.getModel();
+		return ((UapTableModel) model).getUapList();
+	}
+
+	private boolean hasUapToBeUpdated(final List<Uap> userList) {
+		boolean hasElements = false;
+		for (final Uap uap : userList) {
+			if ((uap.getNewName() != null && !uap.getNewName().equals("") && !uap
+					.getNewName().equals(uap.getName()))) {
+				hasElements = true;
+				break;
+			}
+		}
+		return hasElements;
+	}
+
+	private boolean hasUapToBeDeleted(final List<Uap> userList) {
+		boolean hasElements = false;
+		for (final Uap user : userList) {
+			if (user.isDelete()) {
+				hasElements = true;
+				break;
+			}
+		}
+		return hasElements;
+	}
+
 	/**
 	 * This method is called from within the constructor to initialize the form.
 	 * WARNING: Do NOT modify this code. The content of this method is always
@@ -185,9 +333,12 @@ public class JFUap extends JDialog {
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
+	// <editor-fold defaultstate="collapsed"
+	// <editor-fold defaultstate="collapsed"
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
+		bgAccountClass = new javax.swing.ButtonGroup();
 		jpTitle = new javax.swing.JPanel();
 		jlbTitle = new javax.swing.JLabel();
 		lbImage = new javax.swing.JLabel();
@@ -205,6 +356,9 @@ public class JFUap extends JDialog {
 		jlbUapAccount = new javax.swing.JLabel();
 		jlbUapSubAccount = new javax.swing.JLabel();
 		jcbUapSubAccount = new javax.swing.JComboBox<String>();
+		jrbEmpHelper = new javax.swing.JRadioButton();
+		jrbSubAccount = new javax.swing.JRadioButton();
+		jrbAccount = new javax.swing.JRadioButton();
 		jpUapList = new javax.swing.JPanel();
 		jpActionButtons = new javax.swing.JPanel();
 		jbtUpdate = new javax.swing.JButton();
@@ -317,6 +471,30 @@ public class JFUap extends JDialog {
 			}
 		});
 
+		jrbEmpHelper.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+		jrbEmpHelper.setText("Auxiliar empresarial");
+		jrbEmpHelper.addItemListener(new java.awt.event.ItemListener() {
+			public void itemStateChanged(java.awt.event.ItemEvent evt) {
+				jrbEmpHelperItemStateChanged(evt);
+			}
+		});
+
+		jrbSubAccount.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+		jrbSubAccount.setText("Sub-cuenta");
+		jrbSubAccount.addItemListener(new java.awt.event.ItemListener() {
+			public void itemStateChanged(java.awt.event.ItemEvent evt) {
+				jrbSubAccountItemStateChanged(evt);
+			}
+		});
+
+		jrbAccount.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+		jrbAccount.setText("Cuenta");
+		jrbAccount.addItemListener(new java.awt.event.ItemListener() {
+			public void itemStateChanged(java.awt.event.ItemEvent evt) {
+				jrbAccountItemStateChanged(evt);
+			}
+		});
+
 		javax.swing.GroupLayout jpNewUapLayout = new javax.swing.GroupLayout(
 				jpNewUap);
 		jpNewUap.setLayout(jpNewUapLayout);
@@ -350,44 +528,54 @@ public class JFUap extends JDialog {
 																		.addGroup(
 																				jpNewUapLayout
 																						.createParallelGroup(
-																								javax.swing.GroupLayout.Alignment.LEADING,
-																								false)
+																								javax.swing.GroupLayout.Alignment.LEADING)
 																						.addComponent(
-																								jtfCode)
+																								jrbAccount)
 																						.addComponent(
-																								jtfName)
+																								jrbSubAccount)
 																						.addComponent(
-																								jlbUapClass)
-																						.addComponent(
-																								jlbUapGroup)
-																						.addComponent(
-																								jlbUapAccount)
-																						.addComponent(
-																								jlbCode)
-																						.addComponent(
-																								jlbUapSubAccount)
-																						.addComponent(
-																								jlbName)
-																						.addComponent(
-																								jcbUapSubAccount,
-																								0,
-																								javax.swing.GroupLayout.DEFAULT_SIZE,
-																								javax.swing.GroupLayout.PREFERRED_SIZE)
-																						.addComponent(
-																								jcbUapAccount,
-																								0,
-																								javax.swing.GroupLayout.DEFAULT_SIZE,
-																								javax.swing.GroupLayout.PREFERRED_SIZE)
-																						.addComponent(
-																								jcbUapGroup,
-																								0,
-																								javax.swing.GroupLayout.DEFAULT_SIZE,
-																								javax.swing.GroupLayout.PREFERRED_SIZE)
-																						.addComponent(
-																								jcbUapClass,
-																								0,
-																								javax.swing.GroupLayout.DEFAULT_SIZE,
-																								javax.swing.GroupLayout.PREFERRED_SIZE))
+																								jrbEmpHelper)
+																						.addGroup(
+																								jpNewUapLayout
+																										.createParallelGroup(
+																												javax.swing.GroupLayout.Alignment.LEADING,
+																												false)
+																										.addComponent(
+																												jtfCode)
+																										.addComponent(
+																												jtfName)
+																										.addComponent(
+																												jlbUapClass)
+																										.addComponent(
+																												jlbUapGroup)
+																										.addComponent(
+																												jlbUapAccount)
+																										.addComponent(
+																												jlbCode)
+																										.addComponent(
+																												jlbUapSubAccount)
+																										.addComponent(
+																												jlbName)
+																										.addComponent(
+																												jcbUapSubAccount,
+																												0,
+																												javax.swing.GroupLayout.DEFAULT_SIZE,
+																												javax.swing.GroupLayout.PREFERRED_SIZE)
+																										.addComponent(
+																												jcbUapAccount,
+																												0,
+																												javax.swing.GroupLayout.DEFAULT_SIZE,
+																												javax.swing.GroupLayout.PREFERRED_SIZE)
+																										.addComponent(
+																												jcbUapGroup,
+																												0,
+																												javax.swing.GroupLayout.DEFAULT_SIZE,
+																												javax.swing.GroupLayout.PREFERRED_SIZE)
+																										.addComponent(
+																												jcbUapClass,
+																												0,
+																												javax.swing.GroupLayout.DEFAULT_SIZE,
+																												javax.swing.GroupLayout.PREFERRED_SIZE)))
 																		.addGap(0,
 																				0,
 																				Short.MAX_VALUE)))
@@ -399,7 +587,16 @@ public class JFUap extends JDialog {
 						.addGroup(
 								jpNewUapLayout
 										.createSequentialGroup()
-										.addContainerGap()
+										.addGap(19, 19, 19)
+										.addComponent(jrbEmpHelper)
+										.addPreferredGap(
+												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										.addComponent(jrbSubAccount)
+										.addPreferredGap(
+												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										.addComponent(jrbAccount)
+										.addPreferredGap(
+												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
 										.addComponent(jlbUapClass)
 										.addPreferredGap(
 												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -452,21 +649,22 @@ public class JFUap extends JDialog {
 												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
 										.addComponent(jlbName)
 										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												Short.MAX_VALUE)
+												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 										.addComponent(
 												jtfName,
 												javax.swing.GroupLayout.PREFERRED_SIZE,
 												javax.swing.GroupLayout.DEFAULT_SIZE,
 												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addGap(27, 27, 27)
+										.addPreferredGap(
+												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
 										.addComponent(
 												jbtSave,
 												javax.swing.GroupLayout.PREFERRED_SIZE,
 												javax.swing.GroupLayout.DEFAULT_SIZE,
 												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addContainerGap()));
+										.addContainerGap(
+												javax.swing.GroupLayout.DEFAULT_SIZE,
+												Short.MAX_VALUE)));
 
 		jpUapList.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
 				"Listado de cuentas",
@@ -565,10 +763,7 @@ public class JFUap extends JDialog {
 								jpUapListLayout
 										.createSequentialGroup()
 										.addContainerGap()
-										.addComponent(
-												jspUapList,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												582, Short.MAX_VALUE)
+										.addComponent(jspUapList)
 										.addPreferredGap(
 												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
 										.addComponent(
@@ -643,33 +838,37 @@ public class JFUap extends JDialog {
 										javax.swing.GroupLayout.DEFAULT_SIZE,
 										javax.swing.GroupLayout.PREFERRED_SIZE)
 								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 								.addGroup(
 										layout.createParallelGroup(
 												javax.swing.GroupLayout.Alignment.LEADING)
 												.addGroup(
 														layout.createSequentialGroup()
 																.addGap(0,
-																		0,
+																		364,
 																		Short.MAX_VALUE)
 																.addComponent(
 																		lbImage,
 																		javax.swing.GroupLayout.PREFERRED_SIZE,
 																		388,
 																		javax.swing.GroupLayout.PREFERRED_SIZE))
-												.addComponent(
-														jpAction,
-														javax.swing.GroupLayout.Alignment.TRAILING,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														Short.MAX_VALUE)
 												.addGroup(
+														javax.swing.GroupLayout.Alignment.TRAILING,
 														layout.createSequentialGroup()
-																.addComponent(
-																		jpUapList,
-																		javax.swing.GroupLayout.DEFAULT_SIZE,
-																		javax.swing.GroupLayout.DEFAULT_SIZE,
-																		Short.MAX_VALUE)
+																.addGroup(
+																		layout.createParallelGroup(
+																				javax.swing.GroupLayout.Alignment.TRAILING)
+																				.addComponent(
+																						jpUapList,
+																						javax.swing.GroupLayout.Alignment.LEADING,
+																						javax.swing.GroupLayout.DEFAULT_SIZE,
+																						javax.swing.GroupLayout.DEFAULT_SIZE,
+																						Short.MAX_VALUE)
+																				.addComponent(
+																						jpAction,
+																						javax.swing.GroupLayout.DEFAULT_SIZE,
+																						javax.swing.GroupLayout.DEFAULT_SIZE,
+																						Short.MAX_VALUE))
 																.addContainerGap()))));
 		layout.setVerticalGroup(layout
 				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -679,8 +878,7 @@ public class JFUap extends JDialog {
 										javax.swing.GroupLayout.PREFERRED_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE,
 										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+								.addGap(11, 11, 11)
 								.addGroup(
 										layout.createParallelGroup(
 												javax.swing.GroupLayout.Alignment.LEADING,
@@ -717,8 +915,61 @@ public class JFUap extends JDialog {
 		pack();
 	}// </editor-fold>//GEN-END:initComponents
 
+	private void jrbEmpHelperItemStateChanged(java.awt.event.ItemEvent evt) {// GEN-FIRST:event_jrbEmpHelperItemStateChanged
+		if (evt.getStateChange() == ItemEvent.SELECTED) {
+			this.jlbUapAccount.setVisible(true);
+			this.jcbUapAccount.setVisible(true);
+			this.jlbUapSubAccount.setVisible(true);
+			this.jcbUapSubAccount.setVisible(true);
+			this.refreshUapAccountSelection();
+		}
+	}// GEN-LAST:event_jrbEmpHelperItemStateChanged
+
+	private void jrbSubAccountItemStateChanged(java.awt.event.ItemEvent evt) {// GEN-FIRST:event_jrbSubAccountItemStateChanged
+		if (evt.getStateChange() == ItemEvent.SELECTED) {
+			this.jlbUapAccount.setVisible(true);
+			this.jcbUapAccount.setVisible(true);
+			this.jlbUapSubAccount.setVisible(false);
+			this.jcbUapSubAccount.setVisible(false);
+			this.refreshUapAccountSelection();
+		}
+	}// GEN-LAST:event_jrbSubAccountItemStateChanged
+
+	private void jrbAccountItemStateChanged(java.awt.event.ItemEvent evt) {// GEN-FIRST:event_jrbAccountItemStateChanged
+		if (evt.getStateChange() == ItemEvent.SELECTED) {
+			this.jlbUapAccount.setVisible(false);
+			this.jcbUapAccount.setVisible(false);
+			this.jlbUapSubAccount.setVisible(false);
+			this.jcbUapSubAccount.setVisible(false);
+			this.refreshUapAccountSelection();
+		}
+	}// GEN-LAST:event_jrbAccountItemStateChanged
+
 	private void jbtSaveActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jbtSaveActionPerformed
-		// TODO add your handling code here:
+		if (this.validateDataForSave()) {
+			final int confirmation = ViewUtils.showConfirmDialog(this,
+					ViewUtils.MSG_SAVE_QUESTION, ViewUtils.TITLE_SAVED);
+			if (confirmation == JOptionPane.OK_OPTION) {
+				Uap parentUap = null;
+				if (this.jrbAccount.isSelected()) {
+					parentUap = this.getUapGroupSelected();
+				} else if (this.jrbSubAccount.isSelected()) {
+					parentUap = this.getUapAccountSelected();
+				} else {
+					parentUap = this.getUapSubAccountSelected();
+				}
+				final long code = this.getCodeValue();
+				final String name = this.jtfName.getText();
+				final Uap uap = this.uapController.saveUap(parentUap, code,
+						name);
+				parentUap.getUaps().add(uap);
+				ViewUtils.showMessage(this, ViewUtils.MSG_SAVED,
+						ViewUtils.TITLE_SAVED, JOptionPane.INFORMATION_MESSAGE);
+				this.refreshUapAccountSelection();
+				this.refreshTableData();
+				this.refresh();
+			}
+		}
 	}// GEN-LAST:event_jbtSaveActionPerformed
 
 	private void jcbUapClassActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jcbUapClassActionPerformed
@@ -744,6 +995,9 @@ public class JFUap extends JDialog {
 		this.setUapAccountModel(uapList);
 		this.setUapSubAccountModel(null);
 		this.setTextToUapFields("");
+		if (this.jrbAccount.isSelected()) {
+			this.setUapCode(uap);
+		}
 	}// GEN-LAST:event_jcbUapGroupActionPerformed
 
 	private void jcbUapAccountActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jcbUapAccountActionPerformed
@@ -755,22 +1009,68 @@ public class JFUap extends JDialog {
 		}
 		this.setUapSubAccountModel(uapList);
 		this.setTextToUapFields("");
+		if (this.jrbSubAccount.isSelected()) {
+			this.setUapCode(uap);
+		}
 	}// GEN-LAST:event_jcbUapAccountActionPerformed
 
 	private void jcbUapSubAccountActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jcbUapSubAccountActionPerformed
 		final Uap uap = this.getUapSubAccountSelected();
-		if (uap != null) {
-			this.setTextToUapFields(String.valueOf(uap.getCode()));
-			this.jtfCode.requestFocus();
+		if (this.jrbEmpHelper.isSelected()) {
+			this.setUapCode(uap);
 		}
 	}// GEN-LAST:event_jcbUapSubAccountActionPerformed
 
 	private void jbtUpdateActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jbtUpdateActionPerformed
-		// TODO add your handling code here:
+		final List<Uap> uapList = this.getUapListFromTable();
+		if (uapList != null && this.hasUapToBeUpdated(uapList)) {
+			final int confirmation = ViewUtils.showConfirmDialog(this,
+					ViewUtils.MSG_UPDATE_QUESTION, ViewUtils.TITLE_SAVED);
+			if (confirmation == JOptionPane.OK_OPTION) {
+				for (final Uap uap : uapList) {
+					if (uap.getNewName() != null
+							&& !uap.getNewName().equals("")
+							&& !uap.getNewName().equals(uap.getName())) {
+						uap.setName(uap.getNewName());
+						uap.setUpdated(new Date());
+						this.uapController.saveUap(uap);
+					}
+				}
+				ViewUtils.showMessage(this, ViewUtils.MSG_UPDATED,
+						ViewUtils.TITLE_SAVED, JOptionPane.INFORMATION_MESSAGE);
+				this.refreshUapAccountSelection();
+				this.refreshTableData();
+				this.refresh();
+			}
+		} else {
+			ViewUtils.showMessage(this, ViewUtils.MSG_UNEDITED,
+					ViewUtils.TITLE_SAVED, JOptionPane.INFORMATION_MESSAGE);
+		}
 	}// GEN-LAST:event_jbtUpdateActionPerformed
 
 	private void jbtDeleteActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jbtDeleteActionPerformed
-		// TODO add your handling code here:
+		final List<Uap> uapList = this.getUapListFromTable();
+		if (uapList != null && this.hasUapToBeDeleted(uapList)) {
+			final int confirmation = ViewUtils.showConfirmDialog(this,
+					ViewUtils.MSG_DELETE_QUESTION, ViewUtils.TITLE_SAVED);
+			if (confirmation == JOptionPane.OK_OPTION) {
+				for (final Uap uap : uapList) {
+					if (uap.isDelete()) {
+						uap.setEnabled(false);
+						uap.setUpdated(new Date());
+						this.uapController.saveUap(uap);
+					}
+				}
+				ViewUtils.showMessage(this, ViewUtils.MSG_DELETED,
+						ViewUtils.TITLE_SAVED, JOptionPane.INFORMATION_MESSAGE);
+				this.refreshUapAccountSelection();
+				this.refreshTableData();
+				this.refresh();
+			}
+		} else {
+			ViewUtils.showMessage(this, ViewUtils.MSG_UNSELECTED,
+					ViewUtils.TITLE_SAVED, JOptionPane.INFORMATION_MESSAGE);
+		}
 	}// GEN-LAST:event_jbtDeleteActionPerformed
 
 	private void jbtCloseActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jbtCloseActionPerformed
@@ -778,6 +1078,7 @@ public class JFUap extends JDialog {
 	}// GEN-LAST:event_jbtCloseActionPerformed
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
+	private javax.swing.ButtonGroup bgAccountClass;
 	private javax.swing.JButton jbtClose;
 	private javax.swing.JButton jbtDelete;
 	private javax.swing.JButton jbtSave;
@@ -798,6 +1099,9 @@ public class JFUap extends JDialog {
 	private javax.swing.JPanel jpNewUap;
 	private javax.swing.JPanel jpTitle;
 	private javax.swing.JPanel jpUapList;
+	private javax.swing.JRadioButton jrbAccount;
+	private javax.swing.JRadioButton jrbEmpHelper;
+	private javax.swing.JRadioButton jrbSubAccount;
 	private javax.swing.JScrollPane jspUapList;
 	private javax.swing.JTable jtbUapList;
 	private javax.swing.JTextField jtfCode;

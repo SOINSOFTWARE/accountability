@@ -52,7 +52,7 @@
                   <Component id="jpNewCompany" max="32767" attributes="0"/>
                   <Component id="jpCompanyList" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="jpAction" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
               <Component id="lbImage" min="-2" pref="35" max="-2" attributes="0"/>
@@ -129,6 +129,7 @@
                       </Group>
                       <Component id="jtfCompanyDocument" alignment="0" max="32767" attributes="0"/>
                       <Component id="jtfCompanyName" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jtfNameCEO" alignment="0" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jcbCompanyType" alignment="0" min="-2" pref="190" max="-2" attributes="0"/>
@@ -137,9 +138,12 @@
                               <Component id="jlbCompanyName" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jlbCompanyType" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jlbDocumentType" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jlbNameCEO" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jlbIdentificationCEO" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
+                      <Component id="jtfIdentificationCEO" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -164,6 +168,14 @@
                   <Component id="jlbCompanyDocument" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jtfCompanyDocument" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="jlbNameCEO" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jtfNameCEO" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="jlbIdentificationCEO" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jtfIdentificationCEO" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="jbtSave" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
@@ -260,6 +272,39 @@
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jlbNameCEO">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="10" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Representante legal:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="jtfNameCEO">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="10" style="0"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jlbIdentificationCEO">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="10" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Cedula representante legal:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JFormattedTextField" name="jtfIdentificationCEO">
+          <Properties>
+            <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
+              <Format format="#,##0" subtype="-1" type="0"/>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="10" style="0"/>
+            </Property>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

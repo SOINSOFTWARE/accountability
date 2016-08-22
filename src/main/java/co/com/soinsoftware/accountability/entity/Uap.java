@@ -252,6 +252,8 @@ public class Uap implements Serializable, Comparable<Uap> {
 
 	@Override
 	public int compareTo(final Uap other) {
-		return Long.compare(this.code, other.code);
+		final Long firstCode = this.code;
+		final Long secondCode = other.code;
+		return firstCode.compareTo(secondCode);
 	}
 }

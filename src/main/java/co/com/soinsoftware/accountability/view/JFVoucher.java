@@ -91,6 +91,7 @@ public class JFVoucher extends JDialog {
 
 	public void refresh(final Company company, final Voucher voucher) {
 		this.company = company;
+		this.jtfCompanyName.setText(this.company.getName());
 		this.voucherTypeXCompany = null;
 		this.voucherItemSet = new HashSet<>();
 		this.setVoucherTypeXCompanyData("", "", "");
@@ -330,6 +331,7 @@ public class JFVoucher extends JDialog {
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
+	// <editor-fold defaultstate="collapsed"
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
@@ -346,6 +348,8 @@ public class JFVoucher extends JDialog {
 		jtfNumber = new javax.swing.JFormattedTextField();
 		jdcDate = new com.toedter.calendar.JDateChooser();
 		jlbDate = new javax.swing.JLabel();
+		jtfCompanyName = new javax.swing.JTextField();
+		jlbCompanyName = new javax.swing.JLabel();
 		jpUapList = new javax.swing.JPanel();
 		jspUapList = new javax.swing.JScrollPane();
 		jtbUapList = new javax.swing.JTable();
@@ -433,6 +437,12 @@ public class JFVoucher extends JDialog {
 		jlbDate.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
 		jlbDate.setText("Fecha:");
 
+		jtfCompanyName.setEditable(false);
+		jtfCompanyName.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+
+		jlbCompanyName.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
+		jlbCompanyName.setText("Empresa:");
+
 		javax.swing.GroupLayout jpVoucherTypeLayout = new javax.swing.GroupLayout(
 				jpVoucherType);
 		jpVoucherType.setLayout(jpVoucherTypeLayout);
@@ -444,68 +454,99 @@ public class JFVoucher extends JDialog {
 								jpVoucherTypeLayout
 										.createSequentialGroup()
 										.addContainerGap()
-										.addComponent(
-												jbtSearchVoucherType,
-												javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-										.addGroup(
-												jpVoucherTypeLayout
-														.createParallelGroup(
-																javax.swing.GroupLayout.Alignment.LEADING)
-														.addComponent(jlbCode)
-														.addComponent(
-																jtfCode,
-																javax.swing.GroupLayout.PREFERRED_SIZE,
-																100,
-																javax.swing.GroupLayout.PREFERRED_SIZE))
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-										.addGroup(
-												jpVoucherTypeLayout
-														.createParallelGroup(
-																javax.swing.GroupLayout.Alignment.LEADING)
-														.addComponent(jlbName)
-														.addComponent(
-																jtfName,
-																javax.swing.GroupLayout.PREFERRED_SIZE,
-																200,
-																javax.swing.GroupLayout.PREFERRED_SIZE))
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-										.addGroup(
-												jpVoucherTypeLayout
-														.createParallelGroup(
-																javax.swing.GroupLayout.Alignment.LEADING)
-														.addComponent(jlbNumber)
-														.addComponent(
-																jtfNumber,
-																javax.swing.GroupLayout.PREFERRED_SIZE,
-																100,
-																javax.swing.GroupLayout.PREFERRED_SIZE))
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
 										.addGroup(
 												jpVoucherTypeLayout
 														.createParallelGroup(
 																javax.swing.GroupLayout.Alignment.LEADING)
 														.addComponent(
-																jdcDate,
+																jtfCompanyName,
 																javax.swing.GroupLayout.PREFERRED_SIZE,
-																130,
+																199,
 																javax.swing.GroupLayout.PREFERRED_SIZE)
-														.addComponent(jlbDate))
+														.addGroup(
+																jpVoucherTypeLayout
+																		.createSequentialGroup()
+																		.addComponent(
+																				jbtSearchVoucherType,
+																				javax.swing.GroupLayout.PREFERRED_SIZE,
+																				javax.swing.GroupLayout.DEFAULT_SIZE,
+																				javax.swing.GroupLayout.PREFERRED_SIZE)
+																		.addPreferredGap(
+																				javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+																		.addGroup(
+																				jpVoucherTypeLayout
+																						.createParallelGroup(
+																								javax.swing.GroupLayout.Alignment.LEADING)
+																						.addComponent(
+																								jlbCode)
+																						.addComponent(
+																								jtfCode,
+																								javax.swing.GroupLayout.PREFERRED_SIZE,
+																								100,
+																								javax.swing.GroupLayout.PREFERRED_SIZE))
+																		.addPreferredGap(
+																				javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+																		.addGroup(
+																				jpVoucherTypeLayout
+																						.createParallelGroup(
+																								javax.swing.GroupLayout.Alignment.LEADING)
+																						.addComponent(
+																								jlbName)
+																						.addComponent(
+																								jtfName,
+																								javax.swing.GroupLayout.PREFERRED_SIZE,
+																								200,
+																								javax.swing.GroupLayout.PREFERRED_SIZE))
+																		.addPreferredGap(
+																				javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+																		.addGroup(
+																				jpVoucherTypeLayout
+																						.createParallelGroup(
+																								javax.swing.GroupLayout.Alignment.LEADING)
+																						.addComponent(
+																								jlbNumber)
+																						.addComponent(
+																								jtfNumber,
+																								javax.swing.GroupLayout.PREFERRED_SIZE,
+																								100,
+																								javax.swing.GroupLayout.PREFERRED_SIZE))
+																		.addPreferredGap(
+																				javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+																		.addGroup(
+																				jpVoucherTypeLayout
+																						.createParallelGroup(
+																								javax.swing.GroupLayout.Alignment.LEADING)
+																						.addComponent(
+																								jdcDate,
+																								javax.swing.GroupLayout.PREFERRED_SIZE,
+																								130,
+																								javax.swing.GroupLayout.PREFERRED_SIZE)
+																						.addComponent(
+																								jlbDate)))
+														.addComponent(
+																jlbCompanyName))
 										.addContainerGap(42, Short.MAX_VALUE)));
 		jpVoucherTypeLayout
 				.setVerticalGroup(jpVoucherTypeLayout
 						.createParallelGroup(
 								javax.swing.GroupLayout.Alignment.LEADING)
 						.addGroup(
+								javax.swing.GroupLayout.Alignment.TRAILING,
 								jpVoucherTypeLayout
 										.createSequentialGroup()
 										.addContainerGap()
+										.addComponent(jlbCompanyName)
+										.addPreferredGap(
+												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										.addComponent(
+												jtfCompanyName,
+												javax.swing.GroupLayout.PREFERRED_SIZE,
+												javax.swing.GroupLayout.DEFAULT_SIZE,
+												javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(
+												javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+												javax.swing.GroupLayout.DEFAULT_SIZE,
+												Short.MAX_VALUE)
 										.addGroup(
 												jpVoucherTypeLayout
 														.createParallelGroup(
@@ -567,9 +608,7 @@ public class JFVoucher extends JDialog {
 																								javax.swing.GroupLayout.PREFERRED_SIZE,
 																								javax.swing.GroupLayout.DEFAULT_SIZE,
 																								javax.swing.GroupLayout.PREFERRED_SIZE))))
-										.addContainerGap(
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												Short.MAX_VALUE)));
+										.addContainerGap()));
 
 		jpUapList.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
 				"Cuentas",
@@ -951,7 +990,7 @@ public class JFVoucher extends JDialog {
 										javax.swing.GroupLayout.DEFAULT_SIZE,
 										javax.swing.GroupLayout.PREFERRED_SIZE)
 								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 								.addComponent(jpUapList,
 										javax.swing.GroupLayout.PREFERRED_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE,
@@ -970,7 +1009,8 @@ public class JFVoucher extends JDialog {
 										javax.swing.GroupLayout.PREFERRED_SIZE)
 								.addPreferredGap(
 										javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-										18, Short.MAX_VALUE)
+										javax.swing.GroupLayout.DEFAULT_SIZE,
+										Short.MAX_VALUE)
 								.addComponent(lbImage,
 										javax.swing.GroupLayout.PREFERRED_SIZE,
 										35,
@@ -1068,6 +1108,7 @@ public class JFVoucher extends JDialog {
 	private javax.swing.JButton jbtSearchVoucherType;
 	private com.toedter.calendar.JDateChooser jdcDate;
 	private javax.swing.JLabel jlbCode;
+	private javax.swing.JLabel jlbCompanyName;
 	private javax.swing.JLabel jlbDate;
 	private javax.swing.JLabel jlbName;
 	private javax.swing.JLabel jlbNumber;
@@ -1081,6 +1122,7 @@ public class JFVoucher extends JDialog {
 	private javax.swing.JScrollPane jspUapList;
 	private javax.swing.JTable jtbUapList;
 	private javax.swing.JTextField jtfCode;
+	private javax.swing.JTextField jtfCompanyName;
 	private javax.swing.JTextField jtfName;
 	private javax.swing.JFormattedTextField jtfNumber;
 	private javax.swing.JFormattedTextField jtfTotalCredit;

@@ -75,6 +75,7 @@ public class JFUap extends JDialog {
 
 	public void refresh(final Company company) {
 		this.company = company;
+		this.jtfCompanyName.setText(this.company.getName());
 		this.refreshUapAccountSelection();
 		this.refreshTableData();
 		this.jrbEmpHelper.setSelected(true);
@@ -241,7 +242,7 @@ public class JFUap extends JDialog {
 	private boolean validateUapIsInCompany(final Uap uap) {
 		boolean isInCompany = false;
 		final Set<Uapxcompany> uapXCompSet = uap.getUapxcompanies();
-		if (uapXCompSet != null) {
+		if (uapXCompSet != null && this.company != null) {
 			for (final Uapxcompany uapXComp : uapXCompSet) {
 				if (uapXComp.getCompany().equals(this.company)
 						&& uapXComp.isEnabled()) {
@@ -369,6 +370,7 @@ public class JFUap extends JDialog {
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
+	// <editor-fold defaultstate="collapsed"
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
@@ -393,6 +395,8 @@ public class JFUap extends JDialog {
 		jrbEmpHelper = new javax.swing.JRadioButton();
 		jrbSubAccount = new javax.swing.JRadioButton();
 		jrbAccount = new javax.swing.JRadioButton();
+		jtfCompanyName = new javax.swing.JTextField();
+		jlbCompanyName = new javax.swing.JLabel();
 		jpUapList = new javax.swing.JPanel();
 		jpActionButtons = new javax.swing.JPanel();
 		jbtUpdate = new javax.swing.JButton();
@@ -529,6 +533,12 @@ public class JFUap extends JDialog {
 			}
 		});
 
+		jtfCompanyName.setEditable(false);
+		jtfCompanyName.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+
+		jlbCompanyName.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
+		jlbCompanyName.setText("Empresa:");
+
 		javax.swing.GroupLayout jpNewUapLayout = new javax.swing.GroupLayout(
 				jpNewUap);
 		jpNewUap.setLayout(jpNewUapLayout);
@@ -556,72 +566,77 @@ public class JFUap extends JDialog {
 																				javax.swing.GroupLayout.PREFERRED_SIZE,
 																				javax.swing.GroupLayout.DEFAULT_SIZE,
 																				javax.swing.GroupLayout.PREFERRED_SIZE))
+														.addComponent(
+																jrbAccount)
+														.addComponent(
+																jrbSubAccount)
+														.addComponent(
+																jrbEmpHelper)
 														.addGroup(
 																jpNewUapLayout
-																		.createSequentialGroup()
-																		.addGroup(
-																				jpNewUapLayout
-																						.createParallelGroup(
-																								javax.swing.GroupLayout.Alignment.LEADING)
-																						.addComponent(
-																								jrbAccount)
-																						.addComponent(
-																								jrbSubAccount)
-																						.addComponent(
-																								jrbEmpHelper)
-																						.addGroup(
-																								jpNewUapLayout
-																										.createParallelGroup(
-																												javax.swing.GroupLayout.Alignment.LEADING,
-																												false)
-																										.addComponent(
-																												jtfCode)
-																										.addComponent(
-																												jtfName)
-																										.addComponent(
-																												jlbUapClass)
-																										.addComponent(
-																												jlbUapGroup)
-																										.addComponent(
-																												jlbUapAccount)
-																										.addComponent(
-																												jlbCode)
-																										.addComponent(
-																												jlbUapSubAccount)
-																										.addComponent(
-																												jlbName)
-																										.addComponent(
-																												jcbUapSubAccount,
-																												0,
-																												javax.swing.GroupLayout.DEFAULT_SIZE,
-																												javax.swing.GroupLayout.PREFERRED_SIZE)
-																										.addComponent(
-																												jcbUapAccount,
-																												0,
-																												javax.swing.GroupLayout.DEFAULT_SIZE,
-																												javax.swing.GroupLayout.PREFERRED_SIZE)
-																										.addComponent(
-																												jcbUapGroup,
-																												0,
-																												javax.swing.GroupLayout.DEFAULT_SIZE,
-																												javax.swing.GroupLayout.PREFERRED_SIZE)
-																										.addComponent(
-																												jcbUapClass,
-																												0,
-																												javax.swing.GroupLayout.DEFAULT_SIZE,
-																												javax.swing.GroupLayout.PREFERRED_SIZE)))
-																		.addGap(0,
+																		.createParallelGroup(
+																				javax.swing.GroupLayout.Alignment.LEADING,
+																				false)
+																		.addComponent(
+																				jtfCode)
+																		.addComponent(
+																				jtfName)
+																		.addComponent(
+																				jlbUapClass)
+																		.addComponent(
+																				jlbUapGroup)
+																		.addComponent(
+																				jlbUapAccount)
+																		.addComponent(
+																				jlbCode)
+																		.addComponent(
+																				jlbUapSubAccount)
+																		.addComponent(
+																				jlbName)
+																		.addComponent(
+																				jcbUapSubAccount,
 																				0,
-																				Short.MAX_VALUE)))
+																				javax.swing.GroupLayout.DEFAULT_SIZE,
+																				javax.swing.GroupLayout.PREFERRED_SIZE)
+																		.addComponent(
+																				jcbUapAccount,
+																				0,
+																				javax.swing.GroupLayout.DEFAULT_SIZE,
+																				javax.swing.GroupLayout.PREFERRED_SIZE)
+																		.addComponent(
+																				jcbUapGroup,
+																				0,
+																				javax.swing.GroupLayout.DEFAULT_SIZE,
+																				javax.swing.GroupLayout.PREFERRED_SIZE)
+																		.addComponent(
+																				jcbUapClass,
+																				0,
+																				javax.swing.GroupLayout.DEFAULT_SIZE,
+																				javax.swing.GroupLayout.PREFERRED_SIZE))
+														.addComponent(
+																jtfCompanyName)
+														.addComponent(
+																jlbCompanyName))
 										.addContainerGap()));
 		jpNewUapLayout
 				.setVerticalGroup(jpNewUapLayout
 						.createParallelGroup(
 								javax.swing.GroupLayout.Alignment.LEADING)
 						.addGroup(
+								javax.swing.GroupLayout.Alignment.TRAILING,
 								jpNewUapLayout
 										.createSequentialGroup()
-										.addGap(19, 19, 19)
+										.addContainerGap()
+										.addComponent(jlbCompanyName)
+										.addPreferredGap(
+												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										.addComponent(
+												jtfCompanyName,
+												javax.swing.GroupLayout.PREFERRED_SIZE,
+												javax.swing.GroupLayout.DEFAULT_SIZE,
+												javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(
+												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
 										.addComponent(jrbEmpHelper)
 										.addPreferredGap(
 												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -696,9 +711,7 @@ public class JFUap extends JDialog {
 												javax.swing.GroupLayout.PREFERRED_SIZE,
 												javax.swing.GroupLayout.DEFAULT_SIZE,
 												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addContainerGap(
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												Short.MAX_VALUE)));
+										.addContainerGap(32, Short.MAX_VALUE)));
 
 		jpUapList.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
 				"Listado de cuentas",
@@ -807,9 +820,7 @@ public class JFUap extends JDialog {
 												javax.swing.GroupLayout.PREFERRED_SIZE)));
 		jpUapListLayout.setVerticalGroup(jpUapListLayout
 				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addComponent(jspUapList,
-						javax.swing.GroupLayout.PREFERRED_SIZE, 0,
-						Short.MAX_VALUE)
+				.addComponent(jspUapList)
 				.addComponent(jpActionButtons,
 						javax.swing.GroupLayout.DEFAULT_SIZE,
 						javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
@@ -1135,6 +1146,7 @@ public class JFUap extends JDialog {
 	private javax.swing.JComboBox<String> jcbUapGroup;
 	private javax.swing.JComboBox<String> jcbUapSubAccount;
 	private javax.swing.JLabel jlbCode;
+	private javax.swing.JLabel jlbCompanyName;
 	private javax.swing.JLabel jlbName;
 	private javax.swing.JLabel jlbTitle;
 	private javax.swing.JLabel jlbUapAccount;
@@ -1152,6 +1164,7 @@ public class JFUap extends JDialog {
 	private javax.swing.JScrollPane jspUapList;
 	private javax.swing.JTable jtbUapList;
 	private javax.swing.JTextField jtfCode;
+	private javax.swing.JTextField jtfCompanyName;
 	private javax.swing.JTextField jtfName;
 	private javax.swing.JLabel lbImage;
 	// End of variables declaration//GEN-END:variables

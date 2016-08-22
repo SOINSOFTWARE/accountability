@@ -199,14 +199,14 @@ public class Vouchertypexcompany implements Serializable,
 
 	@Override
 	public int compareTo(final Vouchertypexcompany other) {
-		final String compFirstName = (this.company.getName() != null) ? this.company
-				.getName() : "";
-		final String compSecondName = (other.company.getName() != null) ? other.company
-				.getName() : "";
-		final String firstName = (this.vouchertype.getName() != null) ? this.vouchertype
-				.getName() : "";
-		final String secondName = (other.vouchertype.getName() != null) ? other.vouchertype
-				.getName() : "";
+		final String compFirstName = (this.company != null && this.company
+				.getName() != null) ? this.company.getName() : "";
+		final String compSecondName = (other.company != null && other.company
+				.getName() != null) ? other.company.getName() : "";
+		final String firstName = (this.vouchertype != null && this.vouchertype
+				.getName() != null) ? this.vouchertype.getName() : "";
+		final String secondName = (other.vouchertype != null && other.vouchertype
+				.getName() != null) ? other.vouchertype.getName() : "";
 		if (compFirstName.compareToIgnoreCase(compSecondName) == 0) {
 			return firstName.compareToIgnoreCase(secondName);
 		} else {

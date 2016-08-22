@@ -42,6 +42,22 @@ public class VoucherDAO extends AbstractDAO {
 	}
 
 	@SuppressWarnings("unchecked")
+	public Set<Voucher> select(final int year, final Company company) {
+		Set<Voucher> voucherSet = new HashSet<>();
+		try {
+			final Query query = this.createQuery(this
+					.getSelectStatementByYearAndCompany());
+			query.setParameter(PARAM_YEAR, year);
+			query.setParameter(PARAM_COMPANY, company);
+			voucherSet = (query.list().isEmpty()) ? null
+					: new HashSet<Voucher>(query.list());
+		} catch (HibernateException ex) {
+			System.out.println(ex);
+		}
+		return voucherSet;
+	}
+
+	@SuppressWarnings("unchecked")
 	public Set<Voucher> select(final int year, final int month,
 			final Company company) {
 		Set<Voucher> voucherSet = new HashSet<>();
@@ -90,7 +106,7 @@ public class VoucherDAO extends AbstractDAO {
 		return query.toString();
 	}
 
-	private String getSelectStatementByDate() {
+	private String getSelectStatementByYear() {
 		final StringBuilder query = new StringBuilder(
 				this.getSelectStatementEnabled());
 		query.append(SQL_AND);
@@ -100,6 +116,12 @@ public class VoucherDAO extends AbstractDAO {
 		query.append(")");
 		query.append(SQL_EQUALS_WITH_PARAM);
 		query.append(PARAM_YEAR);
+		return query.toString();
+	}
+
+	private String getSelectStatementByDate() {
+		final StringBuilder query = new StringBuilder(
+				this.getSelectStatementByYear());
 		query.append(SQL_AND);
 		query.append(SQL_MONTH_FUNC);
 		query.append("(");
@@ -113,6 +135,16 @@ public class VoucherDAO extends AbstractDAO {
 	private String getSelectStatementByDateAndCompany() {
 		final StringBuilder query = new StringBuilder(
 				this.getSelectStatementByDate());
+		query.append(SQL_AND);
+		query.append("vouchertypexcompany.company");
+		query.append(SQL_EQUALS_WITH_PARAM);
+		query.append(PARAM_COMPANY);
+		return query.toString();
+	}
+
+	private String getSelectStatementByYearAndCompany() {
+		final StringBuilder query = new StringBuilder(
+				this.getSelectStatementByYear());
 		query.append(SQL_AND);
 		query.append("vouchertypexcompany.company");
 		query.append(SQL_EQUALS_WITH_PARAM);

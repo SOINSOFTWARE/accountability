@@ -5,6 +5,7 @@ import java.util.List;
 import co.com.soinsoftware.accountability.entity.Company;
 import co.com.soinsoftware.accountability.entity.Rol;
 import co.com.soinsoftware.accountability.entity.User;
+import co.com.soinsoftware.accountability.view.JFBalance;
 import co.com.soinsoftware.accountability.view.JFCompany;
 import co.com.soinsoftware.accountability.view.JFCompanyList;
 import co.com.soinsoftware.accountability.view.JFUap;
@@ -22,6 +23,8 @@ import co.com.soinsoftware.accountability.view.JFVoucherTypeXCompany;
 public class MenuController {
 
 	private final CompanyController companyController;
+
+	private final JFBalance balanceFrame;
 
 	private final JFCompany companyFrame;
 
@@ -45,15 +48,29 @@ public class MenuController {
 		super();
 		this.loggedUser = user;
 		this.companyController = new CompanyController();
+		this.balanceFrame = new JFBalance();
 		this.companyFrame = new JFCompany();
 		this.voucherFrame = new JFVoucher();
 		this.uapFrame = new JFUap();
 		this.voucherListFrame = new JFVoucherList(this.voucherFrame);
-		this.companyListFrame = new JFCompanyList(this.voucherFrame,
-				this.voucherListFrame, this.uapFrame);
+		this.companyListFrame = new JFCompanyList(this.balanceFrame,
+				this.voucherFrame, this.voucherListFrame, this.uapFrame);
 		this.userFrame = new JFUser();
 		this.voucherTypeFrame = new JFVoucherType();
 		this.voucherTypeXCompFrame = new JFVoucherTypeXCompany();
+	}
+
+	public void showBalanceFrame() {
+		final List<Company> companyList = this.companyController
+				.selectCompanies();
+		if (companyList == null || companyList.size() > 1) {
+			this.companyListFrame.refresh(JFCompanyList.BALANCE_FRAME);
+			this.companyListFrame.setVisible(true);
+		} else {
+			this.uapFrame.refresh(companyList.get(0));
+			this.balanceFrame.refresh(companyList.get(0));
+			this.balanceFrame.setVisible(true);
+		}
 	}
 
 	public void showCompanyFrame() {

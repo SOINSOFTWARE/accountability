@@ -30,6 +30,8 @@ public class JFCompanyList extends JDialog {
 
 	private final CompanyController companyController;
 
+	private final JFBalance balanceFrame;
+
 	private final JFVoucher voucherFrame;
 
 	private final JFVoucherList voucherListFrame;
@@ -44,9 +46,13 @@ public class JFCompanyList extends JDialog {
 
 	public static final int UAP_FRAME = 2;
 
-	public JFCompanyList(final JFVoucher voucherFrame,
-			final JFVoucherList voucherListFrame, final JFUap uapFrame) {
+	public static final int BALANCE_FRAME = 3;
+
+	public JFCompanyList(final JFBalance balanceFrame,
+			final JFVoucher voucherFrame, final JFVoucherList voucherListFrame,
+			final JFUap uapFrame) {
 		this.companyController = new CompanyController();
+		this.balanceFrame = balanceFrame;
 		this.voucherFrame = voucherFrame;
 		this.voucherListFrame = voucherListFrame;
 		this.uapFrame = uapFrame;
@@ -90,6 +96,12 @@ public class JFCompanyList extends JDialog {
 	private void showUapFrame(final Company company) {
 		this.uapFrame.refresh(company);
 		this.uapFrame.setVisible(true);
+	}
+
+	private void showBalanceFrame(final Company company) {
+		this.uapFrame.refresh(company);
+		this.balanceFrame.refresh(company);
+		this.balanceFrame.setVisible(true);
 	}
 
 	/**
@@ -303,8 +315,10 @@ public class JFCompanyList extends JDialog {
 				this.showVoucherFrame(company);
 			} else if (this.frameSelected == VOUCHER_LIST_FRAME) {
 				this.showVoucherListFrame(company);
-			} else {
+			} else if (this.frameSelected == UAP_FRAME) {
 				this.showUapFrame(company);
+			} else if (this.frameSelected == BALANCE_FRAME) {
+				this.showBalanceFrame(company);
 			}
 		} else {
 			ViewUtils.showMessage(this, MSG_COMPANY_REQUIRED,

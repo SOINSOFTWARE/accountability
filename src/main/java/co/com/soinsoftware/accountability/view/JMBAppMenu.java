@@ -38,12 +38,17 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 
 	private static final String MENU_CONFIGURATION_VOUCHER_TYPE_COMPANY = "Comprobantes por empresa";
 
+	private static final String MENU_REPORTS = "Informes";
+
+	private static final String MENU_REPORTS_BALANCE = "Balance general";
+
 	private final MenuController controller;
 
 	public JMBAppMenu(final MenuController controller) {
 		super();
 		this.controller = controller;
 		this.addMenuAction();
+		this.addMenuReports();
 		this.addMenuConfiguration();
 	}
 
@@ -71,6 +76,9 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 			break;
 		case MENU_CONFIGURATION_VOUCHER_TYPE_COMPANY:
 			this.controller.showVoucherTypeXCompanyFrame();
+			break;
+		case MENU_REPORTS_BALANCE:
+			this.controller.showBalanceFrame();
 			break;
 		}
 	}
@@ -128,6 +136,17 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 			miUser.addActionListener(this);
 			menu.add(miUser);
 		}
+		this.add(menu);
+	}
+
+	private void addMenuReports() {
+		final JMenu menu = new JMenu(MENU_REPORTS);
+		menu.setMnemonic(KeyEvent.VK_I);
+		final JMenuItem miBalance = ViewUtils.createJMenuItem(
+				MENU_REPORTS_BALANCE, KeyEvent.VK_B,
+				KeyStroke.getKeyStroke(KeyEvent.VK_3, ActionEvent.ALT_MASK));
+		miBalance.addActionListener(this);
+		menu.add(miBalance);
 		this.add(menu);
 	}
 }

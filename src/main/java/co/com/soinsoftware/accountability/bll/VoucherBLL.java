@@ -33,7 +33,11 @@ public class VoucherBLL {
 			final Company company, final Vouchertypexcompany voucherTypeXComp) {
 		Set<Voucher> voucherSet = null;
 		if (voucherTypeXComp == null) {
-			voucherSet = this.dao.select(year, month, company);
+			if (month > -1) {
+				voucherSet = this.dao.select(year, month, company);
+			} else {
+				voucherSet = this.dao.select(year, company);
+			}
 		} else {
 			voucherSet = this.dao.select(year, month, voucherTypeXComp);
 		}

@@ -59,6 +59,9 @@ public class JFVoucherList extends JDialog {
 
 	public void refresh(final Company company) {
 		this.company = company;
+		this.jtfCompanyName.setText(this.company.getName());
+		this.jtfYear.setText(String.valueOf(Calendar.getInstance().get(
+				Calendar.YEAR)));
 		this.setJlsMonthToCurrentMonth();
 		this.setVoucherTypeModel();
 		this.refreshTableData();
@@ -133,6 +136,7 @@ public class JFVoucherList extends JDialog {
 	 */
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
+	// <editor-fold defaultstate="collapsed"
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
@@ -147,6 +151,8 @@ public class JFVoucherList extends JDialog {
 		jlbVoucherType = new javax.swing.JLabel();
 		jbtSearch = new javax.swing.JButton();
 		jcbVoucherType = new javax.swing.JComboBox<String>();
+		jlbCompanyName = new javax.swing.JLabel();
+		jtfCompanyName = new javax.swing.JTextField();
 		lbImage = new javax.swing.JLabel();
 		jpVoucherList = new javax.swing.JPanel();
 		jspVoucherList = new javax.swing.JScrollPane();
@@ -216,6 +222,12 @@ public class JFVoucherList extends JDialog {
 
 		jcbVoucherType.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
 
+		jlbCompanyName.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
+		jlbCompanyName.setText("Empresa:");
+
+		jtfCompanyName.setEditable(false);
+		jtfCompanyName.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+
 		javax.swing.GroupLayout jpSearchLayout = new javax.swing.GroupLayout(
 				jpSearch);
 		jpSearch.setLayout(jpSearchLayout);
@@ -231,45 +243,70 @@ public class JFVoucherList extends JDialog {
 												jpSearchLayout
 														.createParallelGroup(
 																javax.swing.GroupLayout.Alignment.LEADING)
-														.addComponent(jlbYear)
 														.addComponent(
-																jtfYear,
-																javax.swing.GroupLayout.PREFERRED_SIZE,
-																80,
-																javax.swing.GroupLayout.PREFERRED_SIZE)
-														.addComponent(jlbMonth)
-														.addComponent(
-																jspMonth,
-																javax.swing.GroupLayout.PREFERRED_SIZE,
-																160,
-																javax.swing.GroupLayout.PREFERRED_SIZE)
-														.addComponent(
-																jlbVoucherType)
+																jtfCompanyName)
 														.addGroup(
 																jpSearchLayout
-																		.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.TRAILING)
-																		.addComponent(
-																				jbtSearch,
-																				javax.swing.GroupLayout.PREFERRED_SIZE,
-																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																				javax.swing.GroupLayout.PREFERRED_SIZE)
-																		.addComponent(
-																				jcbVoucherType,
-																				javax.swing.GroupLayout.PREFERRED_SIZE,
-																				160,
-																				javax.swing.GroupLayout.PREFERRED_SIZE)))
-										.addContainerGap(
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												Short.MAX_VALUE)));
+																		.createSequentialGroup()
+																		.addGroup(
+																				jpSearchLayout
+																						.createParallelGroup(
+																								javax.swing.GroupLayout.Alignment.LEADING)
+																						.addComponent(
+																								jlbYear)
+																						.addComponent(
+																								jtfYear,
+																								javax.swing.GroupLayout.PREFERRED_SIZE,
+																								80,
+																								javax.swing.GroupLayout.PREFERRED_SIZE)
+																						.addComponent(
+																								jlbMonth)
+																						.addComponent(
+																								jspMonth,
+																								javax.swing.GroupLayout.PREFERRED_SIZE,
+																								160,
+																								javax.swing.GroupLayout.PREFERRED_SIZE)
+																						.addComponent(
+																								jlbVoucherType)
+																						.addGroup(
+																								jpSearchLayout
+																										.createParallelGroup(
+																												javax.swing.GroupLayout.Alignment.TRAILING)
+																										.addComponent(
+																												jbtSearch,
+																												javax.swing.GroupLayout.PREFERRED_SIZE,
+																												javax.swing.GroupLayout.DEFAULT_SIZE,
+																												javax.swing.GroupLayout.PREFERRED_SIZE)
+																										.addComponent(
+																												jcbVoucherType,
+																												javax.swing.GroupLayout.PREFERRED_SIZE,
+																												160,
+																												javax.swing.GroupLayout.PREFERRED_SIZE))
+																						.addComponent(
+																								jlbCompanyName))
+																		.addGap(0,
+																				0,
+																				Short.MAX_VALUE)))
+										.addContainerGap()));
 		jpSearchLayout
 				.setVerticalGroup(jpSearchLayout
 						.createParallelGroup(
 								javax.swing.GroupLayout.Alignment.LEADING)
 						.addGroup(
+								javax.swing.GroupLayout.Alignment.TRAILING,
 								jpSearchLayout
 										.createSequentialGroup()
 										.addContainerGap()
+										.addComponent(jlbCompanyName)
+										.addPreferredGap(
+												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										.addComponent(
+												jtfCompanyName,
+												javax.swing.GroupLayout.PREFERRED_SIZE,
+												javax.swing.GroupLayout.DEFAULT_SIZE,
+												javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(
+												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
 										.addComponent(jlbYear)
 										.addPreferredGap(
 												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -304,7 +341,9 @@ public class JFVoucherList extends JDialog {
 												javax.swing.GroupLayout.PREFERRED_SIZE,
 												javax.swing.GroupLayout.DEFAULT_SIZE,
 												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addContainerGap(25, Short.MAX_VALUE)));
+										.addContainerGap(
+												javax.swing.GroupLayout.DEFAULT_SIZE,
+												Short.MAX_VALUE)));
 
 		lbImage.setIcon(new javax.swing.ImageIcon(getClass().getResource(
 				"/images/soin.png"))); // NOI18N
@@ -459,15 +498,14 @@ public class JFVoucherList extends JDialog {
 										javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
 								.addGroup(
 										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.LEADING,
-												false)
+												javax.swing.GroupLayout.Alignment.LEADING)
 												.addComponent(
-														jpSearch,
+														jpVoucherList,
 														javax.swing.GroupLayout.DEFAULT_SIZE,
 														javax.swing.GroupLayout.DEFAULT_SIZE,
 														Short.MAX_VALUE)
 												.addComponent(
-														jpVoucherList,
+														jpSearch,
 														javax.swing.GroupLayout.DEFAULT_SIZE,
 														javax.swing.GroupLayout.DEFAULT_SIZE,
 														Short.MAX_VALUE))
@@ -478,9 +516,7 @@ public class JFVoucherList extends JDialog {
 										javax.swing.GroupLayout.DEFAULT_SIZE,
 										javax.swing.GroupLayout.PREFERRED_SIZE)
 								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-										javax.swing.GroupLayout.DEFAULT_SIZE,
-										Short.MAX_VALUE)
+										javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
 								.addComponent(lbImage,
 										javax.swing.GroupLayout.PREFERRED_SIZE,
 										35,
@@ -514,6 +550,7 @@ public class JFVoucherList extends JDialog {
 	private javax.swing.JButton jbtSearch;
 	private javax.swing.JButton jbtView;
 	private javax.swing.JComboBox<String> jcbVoucherType;
+	private javax.swing.JLabel jlbCompanyName;
 	private javax.swing.JLabel jlbMonth;
 	private javax.swing.JLabel jlbTitle;
 	private javax.swing.JLabel jlbVoucherType;
@@ -526,6 +563,7 @@ public class JFVoucherList extends JDialog {
 	private javax.swing.JScrollPane jspMonth;
 	private javax.swing.JScrollPane jspVoucherList;
 	private javax.swing.JTable jtbVoucherList;
+	private javax.swing.JTextField jtfCompanyName;
 	private javax.swing.JFormattedTextField jtfYear;
 	private javax.swing.JLabel lbImage;
 	// End of variables declaration//GEN-END:variables

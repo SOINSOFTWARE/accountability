@@ -20,9 +20,11 @@ public class ReportItem implements Comparable<ReportItem> {
 
 	private Long value;
 
+	private final long order;
+
 	private final Set<ReportItem> reportItemSet;
 
-	public ReportItem(final Uap uap, final Long value) {
+	public ReportItem(final Uap uap, final Long value, final long order) {
 		super();
 		this.code = uap.getCode();
 		this.name = (uap.getLevel() < 3) ? uap.getName().toUpperCase() : uap
@@ -30,6 +32,7 @@ public class ReportItem implements Comparable<ReportItem> {
 		this.level = uap.getLevel();
 		this.uap = uap;
 		this.value = value;
+		this.order = order;
 		this.reportItemSet = new HashSet<>();
 	}
 
@@ -59,6 +62,10 @@ public class ReportItem implements Comparable<ReportItem> {
 
 	public void addToValue(final long value) {
 		this.value += value;
+	}
+
+	public long getOrder() {
+		return order;
 	}
 
 	public Set<ReportItem> getReportItemSet() {
@@ -101,12 +108,12 @@ public class ReportItem implements Comparable<ReportItem> {
 		final Integer firstLevel = this.level;
 		final Integer secondLevel = other.level;
 		if (firstLevel.compareTo(secondLevel) == 0) {
-			final Long firstCode = this.code;
-			final Long secondCode = other.code;
-			if (firstCode.compareTo(secondCode) == 0) {
+			final Long firstOrder = this.order;
+			final Long secondOrder = other.order;
+			if (firstOrder.compareTo(secondOrder) == 0) {
 				return this.name.compareTo(other.name);
 			} else {
-				return firstCode.compareTo(secondCode);
+				return firstOrder.compareTo(secondOrder);
 			}
 		} else {
 			return firstLevel.compareTo(secondLevel);

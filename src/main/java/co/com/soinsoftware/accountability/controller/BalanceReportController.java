@@ -53,7 +53,8 @@ public class BalanceReportController {
 				if (this.isBalanceReportClassUap(uap)) {
 					final Uap accountUap = this.getAccountUap(uap);
 					final long value = this.calculateItemValue(voucherItem);
-					final ReportItem item = new ReportItem(accountUap, value);
+					final ReportItem item = new ReportItem(accountUap, value,
+							accountUap.getCode());
 					this.addReportItemToSet(accountReportItemSet, item);
 				}
 			}
@@ -216,7 +217,8 @@ public class BalanceReportController {
 			for (final ReportItem reportItem : reportItemSet) {
 				final Uap groupUap = reportItem.getUap().getUap();
 				final long value = reportItem.getValue();
-				final ReportItem item = new ReportItem(groupUap, value);
+				final ReportItem item = new ReportItem(groupUap, value,
+						groupUap.getCode());
 				item.getReportItemSet().add(reportItem);
 				this.addReportItemToSet(groupReportItemSet, item);
 			}
@@ -233,7 +235,8 @@ public class BalanceReportController {
 			for (final ReportItem reportItem : groupReportItemSet) {
 				final Uap classUap = reportItem.getUap().getUap();
 				final long value = reportItem.getValue();
-				final ReportItem item = new ReportItem(classUap, null);
+				final ReportItem item = new ReportItem(classUap, null,
+						classUap.getCode());
 				final ReportItem itemWithTotal = this.buildTotalClassUap(
 						classUap, value);
 				item.getReportItemSet().add(reportItem);
@@ -273,7 +276,7 @@ public class BalanceReportController {
 	private ReportItem getReportItemActivo() {
 		for (final Uap uap : this.uapSet) {
 			if (uap.getCode() == CLASS_ACTIVO) {
-				final ReportItem item = new ReportItem(uap, null);
+				final ReportItem item = new ReportItem(uap, null, uap.getCode());
 				return item;
 			}
 		}
@@ -283,7 +286,7 @@ public class BalanceReportController {
 	private ReportItem getReportItemPasivo() {
 		for (final Uap uap : this.uapSet) {
 			if (uap.getCode() == CLASS_PASIVO) {
-				final ReportItem item = new ReportItem(uap, null);
+				final ReportItem item = new ReportItem(uap, null, uap.getCode());
 				return item;
 			}
 		}
@@ -293,7 +296,7 @@ public class BalanceReportController {
 	private ReportItem getReportItemPatrimonio() {
 		for (final Uap uap : this.uapSet) {
 			if (uap.getCode() == CLASS_PATRIMONIO) {
-				final ReportItem item = new ReportItem(uap, null);
+				final ReportItem item = new ReportItem(uap, null, uap.getCode());
 				return item;
 			}
 		}
@@ -304,6 +307,6 @@ public class BalanceReportController {
 		final Uap uap = new Uap(classUap.getCode(), "TOTAL "
 				+ classUap.getName(), 1, classUap.isDebt(),
 				classUap.isCredit(), false, new Date(), new Date(), true);
-		return new ReportItem(uap, value);
+		return new ReportItem(uap, value, classUap.getCode());
 	}
 }

@@ -140,7 +140,7 @@ public class JFBalance extends JDialog {
 				+ this.formatTotalValue(valueForPasivo));
 		this.jlbTotalPatrimonio.setText("Total Patrimonio:"
 				+ this.formatTotalValue(valueForPatrimonio));
-		this.jlbTotalPasivo1.setText("Total Pasivo + Patrimonio:"
+		this.jlbTotalPasivoPatrimonio.setText("Total Pasivo + Patrimonio:"
 				+ this.formatTotalValue(valueForPasAndPat));
 		this.jlbBalanceRange.setText(balanceReport.getFormattedDate());
 	}
@@ -177,6 +177,7 @@ public class JFBalance extends JDialog {
 	 */
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
+	// <editor-fold defaultstate="collapsed"
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
@@ -200,11 +201,13 @@ public class JFBalance extends JDialog {
 		jlbTotalActivo = new javax.swing.JLabel();
 		jlbTotalPasivo = new javax.swing.JLabel();
 		jlbTotalPatrimonio = new javax.swing.JLabel();
-		jlbTotalPasivo1 = new javax.swing.JLabel();
+		jlbTotalPasivoPatrimonio = new javax.swing.JLabel();
 		jpAction = new javax.swing.JPanel();
 		jbtClose = new javax.swing.JButton();
 		jbtPrint = new javax.swing.JButton();
 		lbImage = new javax.swing.JLabel();
+
+		setTitle("Balance general");
 
 		jpTitle.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -431,8 +434,8 @@ public class JFBalance extends JDialog {
 		jlbTotalPatrimonio.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
 		jlbTotalPatrimonio.setText("Total Patrimonio:");
 
-		jlbTotalPasivo1.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
-		jlbTotalPasivo1.setText("Total Pasivo + Patrimonio:");
+		jlbTotalPasivoPatrimonio.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
+		jlbTotalPasivoPatrimonio.setText("Total Pasivo + Patrimonio:");
 
 		javax.swing.GroupLayout jpBalanceLayout = new javax.swing.GroupLayout(
 				jpBalance);
@@ -458,7 +461,7 @@ public class JFBalance extends JDialog {
 																				18,
 																				18)
 																		.addComponent(
-																				jlbTotalPasivo1)
+																				jlbTotalPasivoPatrimonio)
 																		.addGap(0,
 																				0,
 																				Short.MAX_VALUE))
@@ -477,18 +480,12 @@ public class JFBalance extends JDialog {
 																						.addGroup(
 																								jpBalanceLayout
 																										.createSequentialGroup()
-																										.addComponent(
-																												jlbBalanceRange)
-																										.addGap(0,
-																												0,
-																												Short.MAX_VALUE))
-																						.addGroup(
-																								jpBalanceLayout
-																										.createSequentialGroup()
 																										.addGroup(
 																												jpBalanceLayout
 																														.createParallelGroup(
 																																javax.swing.GroupLayout.Alignment.LEADING)
+																														.addComponent(
+																																jlbBalanceRange)
 																														.addComponent(
 																																jlbTotalPasivo)
 																														.addComponent(
@@ -528,7 +525,7 @@ public class JFBalance extends JDialog {
 														.addComponent(
 																jlbTotalPatrimonio)
 														.addComponent(
-																jlbTotalPasivo1))
+																jlbTotalPasivoPatrimonio))
 										.addContainerGap()));
 
 		jpAction.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
@@ -720,7 +717,7 @@ public class JFBalance extends JDialog {
 	private javax.swing.JLabel jlbTitle;
 	private javax.swing.JLabel jlbTotalActivo;
 	private javax.swing.JLabel jlbTotalPasivo;
-	private javax.swing.JLabel jlbTotalPasivo1;
+	private javax.swing.JLabel jlbTotalPasivoPatrimonio;
 	private javax.swing.JLabel jlbTotalPatrimonio;
 	private javax.swing.JLabel jlbYear;
 	private javax.swing.JList<String> jlsMonth;

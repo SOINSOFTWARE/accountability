@@ -32,6 +32,8 @@ public class JFCompanyList extends JDialog {
 
 	private final JFBalance balanceFrame;
 
+	private final JFResultState resultStateFrame;
+
 	private final JFVoucher voucherFrame;
 
 	private final JFVoucherList voucherListFrame;
@@ -48,11 +50,14 @@ public class JFCompanyList extends JDialog {
 
 	public static final int BALANCE_FRAME = 3;
 
+	public static final int RESULT_STATE_FRAME = 4;
+
 	public JFCompanyList(final JFBalance balanceFrame,
-			final JFVoucher voucherFrame, final JFVoucherList voucherListFrame,
-			final JFUap uapFrame) {
+			final JFResultState resultStateFrame, final JFVoucher voucherFrame,
+			final JFVoucherList voucherListFrame, final JFUap uapFrame) {
 		this.companyController = new CompanyController();
 		this.balanceFrame = balanceFrame;
+		this.resultStateFrame = resultStateFrame;
 		this.voucherFrame = voucherFrame;
 		this.voucherListFrame = voucherListFrame;
 		this.uapFrame = uapFrame;
@@ -102,6 +107,12 @@ public class JFCompanyList extends JDialog {
 		this.uapFrame.refresh(company);
 		this.balanceFrame.refresh(company);
 		this.balanceFrame.setVisible(true);
+	}
+
+	private void showResultStateFrame(final Company company) {
+		this.uapFrame.refresh(company);
+		this.resultStateFrame.refresh(company);
+		this.resultStateFrame.setVisible(true);
 	}
 
 	/**
@@ -319,6 +330,8 @@ public class JFCompanyList extends JDialog {
 				this.showUapFrame(company);
 			} else if (this.frameSelected == BALANCE_FRAME) {
 				this.showBalanceFrame(company);
+			} else if (this.frameSelected == RESULT_STATE_FRAME) {
+				this.showResultStateFrame(company);
 			}
 		} else {
 			ViewUtils.showMessage(this, MSG_COMPANY_REQUIRED,

@@ -18,7 +18,7 @@ import co.com.soinsoftware.accountability.entity.ReportItem;
  * @since 18/08/2016
  * @version 1.0
  */
-public class BalanceReportTableModel extends AbstractTableModel {
+public class ReportTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 8408209589620109955L;
 
@@ -29,7 +29,7 @@ public class BalanceReportTableModel extends AbstractTableModel {
 
 	private Object[][] data;
 
-	public BalanceReportTableModel(final Report balanceReport) {
+	public ReportTableModel(final Report balanceReport) {
 		super();
 		this.balanceReport = balanceReport;
 		this.buildData();

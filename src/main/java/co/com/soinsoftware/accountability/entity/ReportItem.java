@@ -24,11 +24,11 @@ public class ReportItem implements Comparable<ReportItem> {
 
 	private final Set<ReportItem> reportItemSet;
 
-	public ReportItem(final Uap uap, final Long value, final long order) {
+	public ReportItem(final Uap uap, final String name, final Long value,
+			final long order) {
 		super();
 		this.code = uap.getCode();
-		this.name = (uap.getLevel() < 3) ? uap.getName().toUpperCase() : uap
-				.getName();
+		this.name = (uap.getLevel() < 3) ? name.toUpperCase() : name;
 		this.level = uap.getLevel();
 		this.uap = uap;
 		this.value = value;

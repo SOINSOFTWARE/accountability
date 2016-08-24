@@ -42,6 +42,8 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 
 	private static final String MENU_REPORTS_BALANCE = "Balance general";
 
+	private static final String MENU_REPORTS_RESULT_STATE = "Estado de resultado";
+
 	private final MenuController controller;
 
 	public JMBAppMenu(final MenuController controller) {
@@ -79,6 +81,9 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 			break;
 		case MENU_REPORTS_BALANCE:
 			this.controller.showBalanceFrame();
+			break;
+		case MENU_REPORTS_RESULT_STATE:
+			this.controller.showResultStateFrame();
 			break;
 		}
 	}
@@ -147,6 +152,11 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 				KeyStroke.getKeyStroke(KeyEvent.VK_3, ActionEvent.ALT_MASK));
 		miBalance.addActionListener(this);
 		menu.add(miBalance);
+		final JMenuItem miResultState = ViewUtils.createJMenuItem(
+				MENU_REPORTS_RESULT_STATE, KeyEvent.VK_E,
+				KeyStroke.getKeyStroke(KeyEvent.VK_4, ActionEvent.ALT_MASK));
+		miResultState.addActionListener(this);
+		menu.add(miResultState);
 		this.add(menu);
 	}
 }

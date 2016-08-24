@@ -20,25 +20,31 @@ import co.com.soinsoftware.accountability.entity.Company;
 import co.com.soinsoftware.accountability.entity.Report;
 import co.com.soinsoftware.accountability.entity.ReportItem;
 
-public class Balance {
+public class AccountabilityReport {
 
-	private static final String REPORT_NAME = "/reports/balance.jasper";
+	private static final String REPORT_NAME = "/reports/accountabilityReport.jasper";
 
 	private static final String PARAM_CEO = "CEO";
 	private static final String PARAM_COMPANY = "Company";
 	private static final String PARAM_DOCUMENT = "Document";
 	private static final String PARAM_DOCUMENT_CEO = "DocumentCEO";
+	private static final String PARAM_IS_JURIDICA = "IsJuridica";
+	private static final String PARAM_IS_BALANCE_REPORT = "IsBalanceReport";
 	private static final String PARAM_REPORT_DATE = "ReportDate";
 	private static final String PARAM_REPORT_NAME = "ReportName";
 	private static final String PARAM_VALUE_PASS_PLUS_PAT = "ValuePassPat";
 
-	private final Report balanceReport;
+	private final Report report;
+
+	private final boolean isBalanceReport;
 
 	private final BalanceReportController balanceReportController;
 
-	public Balance(final Report balanceReport) {
+	public AccountabilityReport(final Report balanceReport,
+			final boolean isBalanceReport) {
 		super();
-		this.balanceReport = balanceReport;
+		this.report = balanceReport;
+		this.isBalanceReport = isBalanceReport;
 		this.balanceReportController = new BalanceReportController();
 	}
 
@@ -68,37 +74,42 @@ public class Balance {
 	}
 
 	private Map<String, Object> createParameters() {
-		final Company company = this.balanceReport.getCompany();
+		final Company company = this.report.getCompany();
 		final Map<String, Object> parameters = new HashMap<>();
 		parameters.put(PARAM_COMPANY, company.getName());
 		parameters.put(PARAM_DOCUMENT, company.getDocument());
-		parameters
-				.put(PARAM_REPORT_DATE, this.balanceReport.getFormattedDate());
-		parameters.put(PARAM_REPORT_NAME, this.balanceReport.getName());
+		parameters.put(PARAM_REPORT_DATE, this.report.getFormattedDate());
+		parameters.put(PARAM_REPORT_NAME, this.report.getName());
 		String nameCEO = company.getName();
 		String documentCEO = company.getDocument();
-		if (company.getNameceo() != null || !company.getNameceo().equals("")) {
+		if (company.getNameceo() != null && !company.getNameceo().equals("")) {
 			nameCEO = company.getNameceo();
 			documentCEO = String.valueOf(company.getDocumentceo());
 		}
+		parameters.put(PARAM_IS_JURIDICA, company.getCompanytype().getName()
+				.equals("Persona jurídica"));
+		parameters.put(PARAM_IS_BALANCE_REPORT, this.isBalanceReport);
 		parameters.put(PARAM_CEO, nameCEO);
 		parameters.put(PARAM_DOCUMENT_CEO, documentCEO);
-		parameters.put(PARAM_VALUE_PASS_PLUS_PAT,
-				this.getValueForPassivePlusPatrimonio());
+		if (isBalanceReport) {
+			parameters.put(PARAM_VALUE_PASS_PLUS_PAT,
+					this.getValueForPassivePlusPatrimonio());
+		}
 		return parameters;
 	}
 
 	private long getValueForPassivePlusPatrimonio() {
-		final long valueForPasivo = this.balanceReportController.getClassValue(
-				this.balanceReport, BalanceReportController.CLASS_PASIVO);
+		final long valueForPasivo = this.balanceReportController
+				.getReportItemValue(this.report,
+						BalanceReportController.CLASS_PASIVO);
 		final long valueForPatrimonio = this.balanceReportController
-				.getClassValue(this.balanceReport,
+				.getReportItemValue(this.report,
 						BalanceReportController.CLASS_PATRIMONIO);
 		return valueForPasivo + valueForPatrimonio;
 	}
 
 	private JRBeanCollectionDataSource createDataSource() {
-		final Set<ReportItem> itemSet = this.balanceReport.getReportItemSet();
+		final Set<ReportItem> itemSet = this.report.getReportItemSet();
 		final List<ReportItem> itemList = this.buildReportItemList(this
 				.sortReportItemSet(itemSet));
 		return new JRBeanCollectionDataSource(itemList);

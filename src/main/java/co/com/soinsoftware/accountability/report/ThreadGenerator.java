@@ -4,11 +4,14 @@ import co.com.soinsoftware.accountability.entity.Report;
 
 public class ThreadGenerator extends Thread {
 
-	private Report balanceReport;
+	private final Report report;
 
-	public ThreadGenerator(final Report balanceReport) {
+	private final boolean isBalanceReport;
+
+	public ThreadGenerator(final Report report, final boolean isBalanceReport) {
 		super();
-		this.balanceReport = balanceReport;
+		this.report = report;
+		this.isBalanceReport = isBalanceReport;
 		this.setPriority(Thread.MAX_PRIORITY);
 		this.setName("Report Generator");
 	}
@@ -16,14 +19,15 @@ public class ThreadGenerator extends Thread {
 	@Override
 	public void run() {
 		System.out.println("Starting report generation");
-		if (this.balanceReport != null) {
-			this.generateReceiptReport();
+		if (this.report != null) {
+			this.generateReport();
 		}
 		System.out.println("Finishing report generation");
 	}
 
-	public void generateReceiptReport() {
-		final Balance balance = new Balance(this.balanceReport);
+	public void generateReport() {
+		final AccountabilityReport balance = new AccountabilityReport(
+				this.report, this.isBalanceReport);
 		balance.generate();
 	}
 }

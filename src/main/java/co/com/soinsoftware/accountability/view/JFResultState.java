@@ -7,17 +7,14 @@ package co.com.soinsoftware.accountability.view;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
 import javax.swing.table.TableModel;
-import javax.swing.text.NumberFormatter;
 
-import co.com.soinsoftware.accountability.controller.BalanceReportController;
+import co.com.soinsoftware.accountability.controller.ResultStateController;
 import co.com.soinsoftware.accountability.controller.VoucherController;
 import co.com.soinsoftware.accountability.entity.Company;
 import co.com.soinsoftware.accountability.entity.Report;
@@ -27,10 +24,10 @@ import co.com.soinsoftware.accountability.util.ReportTableModel;
 
 /**
  * @author Carlos Rodriguez
- * @since 18/08/2016
+ * @since 23/08/2016
  * @version 1.0
  */
-public class JFBalance extends JDialog {
+public class JFResultState extends JDialog {
 
 	public static final String RANGE_MONTH = "Mensual";
 
@@ -40,13 +37,13 @@ public class JFBalance extends JDialog {
 
 	private final VoucherController voucherController;
 
-	private final BalanceReportController balanceReportController;
+	private final ResultStateController reportController;
 
 	private Company company;
 
-	public JFBalance() {
+	public JFResultState() {
 		this.voucherController = new VoucherController();
-		this.balanceReportController = new BalanceReportController();
+		this.reportController = new ResultStateController();
 		this.initComponents();
 		final Dimension screenSize = Toolkit.getDefaultToolkit()
 				.getScreenSize();
@@ -68,12 +65,12 @@ public class JFBalance extends JDialog {
 	}
 
 	public void refreshTableData() {
-		final Report balanceReport = this.buildBalanceReport();
-		this.refreshTableData(balanceReport);
-		this.setBalanceValuesAndDescription(balanceReport);
+		final Report report = this.buildReport();
+		this.refreshTableData(report);
+		this.jlbRangeSelected.setText(report.getFormattedDate());
 	}
 
-	private Report buildBalanceReport() {
+	private Report buildReport() {
 		final int year = this.getYear();
 		final String rangeSel = (String) this.jcbRange.getSelectedItem();
 		final int month = (rangeSel.equals(RANGE_MONTH)) ? this.jlsMonth
@@ -81,11 +78,11 @@ public class JFBalance extends JDialog {
 		final String monthName = this.jlsMonth.getSelectedValue();
 		final List<Voucher> voucherList = this.voucherController.select(year,
 				month, this.company, null);
-		final String description = this.balanceReportController
+		final String description = this.reportController
 				.getReportDateDescription(rangeSel, year, month, monthName);
-		final Report balanceReport = this.balanceReportController.buildReport(
-				this.company, voucherList, description);
-		return balanceReport;
+		final Report report = this.reportController.buildReport(this.company,
+				voucherList, description);
+		return report;
 	}
 
 	private void setJlsMonthToCurrentMonth() {
@@ -114,8 +111,8 @@ public class JFBalance extends JDialog {
 
 	private void refreshTableData(final Report balanceReport) {
 		final TableModel model = new ReportTableModel(balanceReport);
-		this.jtbBalance.setModel(model);
-		this.jtbBalance.setFillsViewportHeight(true);
+		this.jtbReport.setModel(model);
+		this.jtbReport.setFillsViewportHeight(true);
 	}
 
 	private int getYear() {
@@ -124,50 +121,8 @@ public class JFBalance extends JDialog {
 		return Integer.parseInt(yearStr);
 	}
 
-	private void setBalanceValuesAndDescription(final Report balanceReport) {
-		final long valueForActivo = this.balanceReportController
-				.getReportItemValue(balanceReport,
-						BalanceReportController.CLASS_ACTIVO);
-		final long valueForPasivo = this.balanceReportController
-				.getReportItemValue(balanceReport,
-						BalanceReportController.CLASS_PASIVO);
-		final long valueForPatrimonio = this.balanceReportController
-				.getReportItemValue(balanceReport,
-						BalanceReportController.CLASS_PATRIMONIO);
-		final long valueForPasAndPat = valueForPasivo + valueForPatrimonio;
-		this.jlbTotalActivo.setText("Total Activo:"
-				+ this.formatTotalValue(valueForActivo));
-		this.jlbTotalPasivo.setText("Total Pasivo:"
-				+ this.formatTotalValue(valueForPasivo));
-		this.jlbTotalPatrimonio.setText("Total Patrimonio:"
-				+ this.formatTotalValue(valueForPatrimonio));
-		this.jlbTotalPasivoPatrimonio.setText("Total Pasivo + Patrimonio:"
-				+ this.formatTotalValue(valueForPasAndPat));
-		this.jlbBalanceRange.setText(balanceReport.getFormattedDate());
-	}
-
-	private String formatTotalValue(final long totalValue) {
-		final boolean isPositive = (totalValue >= 0);
-		final long value = (isPositive) ? totalValue : totalValue * -1;
-		final String formattedValue = this.formatValue(value);
-		final String valueStr = (isPositive) ? "$" + formattedValue : "($"
-				+ formattedValue + ")";
-		return valueStr;
-	}
-
-	private String formatValue(final long value) {
-		final NumberFormatter formatter = new NumberFormatter(
-				new DecimalFormat("#,##0"));
-		try {
-			return formatter.valueToString(value);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return String.valueOf(value);
-	}
-
-	private Report getBalanceFromTableModel() {
-		final TableModel model = this.jtbBalance.getModel();
+	private Report getReportFromTableModel() {
+		final TableModel model = this.jtbReport.getModel();
 		return ((ReportTableModel) model).getBalanceReport();
 	}
 
@@ -179,12 +134,13 @@ public class JFBalance extends JDialog {
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
+	// <editor-fold defaultstate="collapsed"
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
 		jpTitle = new javax.swing.JPanel();
 		jlbTitle = new javax.swing.JLabel();
-		jpBuildBalance = new javax.swing.JPanel();
+		jpBuildReport = new javax.swing.JPanel();
 		jlbYear = new javax.swing.JLabel();
 		jtfYear = new javax.swing.JFormattedTextField();
 		jlbMonth = new javax.swing.JLabel();
@@ -195,25 +151,21 @@ public class JFBalance extends JDialog {
 		jlbRange = new javax.swing.JLabel();
 		jtfCompanyName = new javax.swing.JTextField();
 		jlbCompanyName = new javax.swing.JLabel();
-		jpBalance = new javax.swing.JPanel();
-		jspBalance = new javax.swing.JScrollPane();
-		jtbBalance = new javax.swing.JTable();
-		jlbBalanceRange = new javax.swing.JLabel();
-		jlbTotalActivo = new javax.swing.JLabel();
-		jlbTotalPasivo = new javax.swing.JLabel();
-		jlbTotalPatrimonio = new javax.swing.JLabel();
-		jlbTotalPasivoPatrimonio = new javax.swing.JLabel();
+		jpReport = new javax.swing.JPanel();
+		jspReport = new javax.swing.JScrollPane();
+		jtbReport = new javax.swing.JTable();
+		jlbRangeSelected = new javax.swing.JLabel();
 		jpAction = new javax.swing.JPanel();
 		jbtClose = new javax.swing.JButton();
 		jbtPrint = new javax.swing.JButton();
 		lbImage = new javax.swing.JLabel();
 
-		setTitle("Balance general");
+		setTitle("Estado de resultado");
 
 		jpTitle.setBackground(new java.awt.Color(255, 255, 255));
 
 		jlbTitle.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
-		jlbTitle.setText("Balance general");
+		jlbTitle.setText("Estado de resultado");
 
 		javax.swing.GroupLayout jpTitleLayout = new javax.swing.GroupLayout(
 				jpTitle);
@@ -232,7 +184,7 @@ public class JFBalance extends JDialog {
 						.addComponent(jlbTitle)
 						.addContainerGap(34, Short.MAX_VALUE)));
 
-		jpBuildBalance.setBorder(javax.swing.BorderFactory.createTitledBorder(
+		jpBuildReport.setBorder(javax.swing.BorderFactory.createTitledBorder(
 				null, "Generar",
 				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
 				javax.swing.border.TitledBorder.DEFAULT_POSITION,
@@ -283,26 +235,26 @@ public class JFBalance extends JDialog {
 		jlbCompanyName.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
 		jlbCompanyName.setText("Empresa:");
 
-		javax.swing.GroupLayout jpBuildBalanceLayout = new javax.swing.GroupLayout(
-				jpBuildBalance);
-		jpBuildBalance.setLayout(jpBuildBalanceLayout);
-		jpBuildBalanceLayout
-				.setHorizontalGroup(jpBuildBalanceLayout
+		javax.swing.GroupLayout jpBuildReportLayout = new javax.swing.GroupLayout(
+				jpBuildReport);
+		jpBuildReport.setLayout(jpBuildReportLayout);
+		jpBuildReportLayout
+				.setHorizontalGroup(jpBuildReportLayout
 						.createParallelGroup(
 								javax.swing.GroupLayout.Alignment.LEADING)
 						.addGroup(
-								jpBuildBalanceLayout
+								jpBuildReportLayout
 										.createSequentialGroup()
 										.addGroup(
-												jpBuildBalanceLayout
+												jpBuildReportLayout
 														.createParallelGroup(
 																javax.swing.GroupLayout.Alignment.LEADING)
 														.addGroup(
-																jpBuildBalanceLayout
+																jpBuildReportLayout
 																		.createSequentialGroup()
 																		.addContainerGap()
 																		.addGroup(
-																				jpBuildBalanceLayout
+																				jpBuildReportLayout
 																						.createParallelGroup(
 																								javax.swing.GroupLayout.Alignment.LEADING)
 																						.addComponent(
@@ -310,14 +262,14 @@ public class JFBalance extends JDialog {
 																						.addComponent(
 																								jlbCompanyName)))
 														.addGroup(
-																jpBuildBalanceLayout
+																jpBuildReportLayout
 																		.createSequentialGroup()
 																		.addGroup(
-																				jpBuildBalanceLayout
+																				jpBuildReportLayout
 																						.createParallelGroup(
 																								javax.swing.GroupLayout.Alignment.LEADING)
 																						.addGroup(
-																								jpBuildBalanceLayout
+																								jpBuildReportLayout
 																										.createSequentialGroup()
 																										.addGap(81,
 																												81,
@@ -328,11 +280,11 @@ public class JFBalance extends JDialog {
 																												javax.swing.GroupLayout.DEFAULT_SIZE,
 																												javax.swing.GroupLayout.PREFERRED_SIZE))
 																						.addGroup(
-																								jpBuildBalanceLayout
+																								jpBuildReportLayout
 																										.createSequentialGroup()
 																										.addContainerGap()
 																										.addGroup(
-																												jpBuildBalanceLayout
+																												jpBuildReportLayout
 																														.createParallelGroup(
 																																javax.swing.GroupLayout.Alignment.LEADING)
 																														.addComponent(
@@ -360,12 +312,12 @@ public class JFBalance extends JDialog {
 																				0,
 																				Short.MAX_VALUE)))
 										.addContainerGap()));
-		jpBuildBalanceLayout
-				.setVerticalGroup(jpBuildBalanceLayout
+		jpBuildReportLayout
+				.setVerticalGroup(jpBuildReportLayout
 						.createParallelGroup(
 								javax.swing.GroupLayout.Alignment.LEADING)
 						.addGroup(
-								jpBuildBalanceLayout
+								jpBuildReportLayout
 										.createSequentialGroup()
 										.addContainerGap()
 										.addComponent(jlbCompanyName)
@@ -414,120 +366,63 @@ public class JFBalance extends JDialog {
 												javax.swing.GroupLayout.PREFERRED_SIZE)
 										.addContainerGap(28, Short.MAX_VALUE)));
 
-		jpBalance.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
-				"Balance general",
+		jpReport.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
+				"Estado de resultado",
 				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
 				javax.swing.border.TitledBorder.DEFAULT_POSITION,
 				new java.awt.Font("Verdana", 1, 12))); // NOI18N
 
-		jtbBalance.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
-		jspBalance.setViewportView(jtbBalance);
+		jtbReport.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+		jspReport.setViewportView(jtbReport);
 
-		jlbBalanceRange.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
-		jlbBalanceRange.setText("Rango seleccionado + mes");
+		jlbRangeSelected.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
+		jlbRangeSelected.setText("Rango seleccionado + mes");
 
-		jlbTotalActivo.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
-		jlbTotalActivo.setText("Total Activo:");
-
-		jlbTotalPasivo.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
-		jlbTotalPasivo.setText("Total Pasivo:");
-
-		jlbTotalPatrimonio.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
-		jlbTotalPatrimonio.setText("Total Patrimonio:");
-
-		jlbTotalPasivoPatrimonio.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
-		jlbTotalPasivoPatrimonio.setText("Total Pasivo + Patrimonio:");
-
-		javax.swing.GroupLayout jpBalanceLayout = new javax.swing.GroupLayout(
-				jpBalance);
-		jpBalance.setLayout(jpBalanceLayout);
-		jpBalanceLayout
-				.setHorizontalGroup(jpBalanceLayout
+		javax.swing.GroupLayout jpReportLayout = new javax.swing.GroupLayout(
+				jpReport);
+		jpReport.setLayout(jpReportLayout);
+		jpReportLayout
+				.setHorizontalGroup(jpReportLayout
 						.createParallelGroup(
 								javax.swing.GroupLayout.Alignment.LEADING)
 						.addGroup(
-								jpBalanceLayout
+								jpReportLayout
 										.createSequentialGroup()
 										.addContainerGap()
 										.addGroup(
-												jpBalanceLayout
+												jpReportLayout
 														.createParallelGroup(
 																javax.swing.GroupLayout.Alignment.LEADING)
+														.addComponent(
+																jspReport,
+																javax.swing.GroupLayout.DEFAULT_SIZE,
+																696,
+																Short.MAX_VALUE)
 														.addGroup(
-																jpBalanceLayout
+																jpReportLayout
 																		.createSequentialGroup()
 																		.addComponent(
-																				jlbTotalPatrimonio)
-																		.addGap(18,
-																				18,
-																				18)
-																		.addComponent(
-																				jlbTotalPasivoPatrimonio)
+																				jlbRangeSelected)
 																		.addGap(0,
 																				0,
-																				Short.MAX_VALUE))
-														.addGroup(
-																jpBalanceLayout
-																		.createSequentialGroup()
-																		.addGroup(
-																				jpBalanceLayout
-																						.createParallelGroup(
-																								javax.swing.GroupLayout.Alignment.LEADING)
-																						.addComponent(
-																								jspBalance,
-																								javax.swing.GroupLayout.DEFAULT_SIZE,
-																								696,
-																								Short.MAX_VALUE)
-																						.addGroup(
-																								jpBalanceLayout
-																										.createSequentialGroup()
-																										.addGroup(
-																												jpBalanceLayout
-																														.createParallelGroup(
-																																javax.swing.GroupLayout.Alignment.LEADING)
-																														.addComponent(
-																																jlbBalanceRange)
-																														.addComponent(
-																																jlbTotalPasivo)
-																														.addComponent(
-																																jlbTotalActivo))
-																										.addGap(0,
-																												0,
-																												Short.MAX_VALUE)))
-																		.addContainerGap()))));
-		jpBalanceLayout
-				.setVerticalGroup(jpBalanceLayout
+																				Short.MAX_VALUE)))
+										.addContainerGap()));
+		jpReportLayout
+				.setVerticalGroup(jpReportLayout
 						.createParallelGroup(
 								javax.swing.GroupLayout.Alignment.LEADING)
 						.addGroup(
 								javax.swing.GroupLayout.Alignment.TRAILING,
-								jpBalanceLayout
+								jpReportLayout
 										.createSequentialGroup()
 										.addContainerGap()
-										.addComponent(jlbBalanceRange)
+										.addComponent(jlbRangeSelected)
 										.addPreferredGap(
 												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 										.addComponent(
-												jspBalance,
+												jspReport,
 												javax.swing.GroupLayout.PREFERRED_SIZE,
-												0, Short.MAX_VALUE)
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(jlbTotalActivo)
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(jlbTotalPasivo)
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addGroup(
-												jpBalanceLayout
-														.createParallelGroup(
-																javax.swing.GroupLayout.Alignment.BASELINE)
-														.addComponent(
-																jlbTotalPatrimonio)
-														.addComponent(
-																jlbTotalPasivoPatrimonio))
-										.addContainerGap()));
+												0, Short.MAX_VALUE)));
 
 		jpAction.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
 				"", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
@@ -621,14 +516,14 @@ public class JFBalance extends JDialog {
 												.addGroup(
 														layout.createSequentialGroup()
 																.addComponent(
-																		jpBuildBalance,
+																		jpBuildReport,
 																		javax.swing.GroupLayout.PREFERRED_SIZE,
 																		javax.swing.GroupLayout.DEFAULT_SIZE,
 																		javax.swing.GroupLayout.PREFERRED_SIZE)
 																.addPreferredGap(
 																		javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
 																.addComponent(
-																		jpBalance,
+																		jpReport,
 																		javax.swing.GroupLayout.DEFAULT_SIZE,
 																		javax.swing.GroupLayout.DEFAULT_SIZE,
 																		Short.MAX_VALUE))
@@ -661,12 +556,12 @@ public class JFBalance extends JDialog {
 										layout.createParallelGroup(
 												javax.swing.GroupLayout.Alignment.LEADING)
 												.addComponent(
-														jpBalance,
+														jpReport,
 														javax.swing.GroupLayout.DEFAULT_SIZE,
 														javax.swing.GroupLayout.DEFAULT_SIZE,
 														Short.MAX_VALUE)
 												.addComponent(
-														jpBuildBalance,
+														jpBuildReport,
 														javax.swing.GroupLayout.DEFAULT_SIZE,
 														javax.swing.GroupLayout.DEFAULT_SIZE,
 														Short.MAX_VALUE))
@@ -700,9 +595,9 @@ public class JFBalance extends JDialog {
 	}// GEN-LAST:event_jbtCloseActionPerformed
 
 	private void jbtPrintActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jbtPrintActionPerformed
-		final Report balanceReport = this.getBalanceFromTableModel();
+		final Report balanceReport = this.getReportFromTableModel();
 		final ThreadGenerator generator = new ThreadGenerator(balanceReport,
-				true);
+				false);
 		generator.start();
 		this.setVisible(false);
 	}// GEN-LAST:event_jbtPrintActionPerformed
@@ -712,24 +607,20 @@ public class JFBalance extends JDialog {
 	private javax.swing.JButton jbtGenerate;
 	private javax.swing.JButton jbtPrint;
 	private javax.swing.JComboBox<String> jcbRange;
-	private javax.swing.JLabel jlbBalanceRange;
 	private javax.swing.JLabel jlbCompanyName;
 	private javax.swing.JLabel jlbMonth;
 	private javax.swing.JLabel jlbRange;
+	private javax.swing.JLabel jlbRangeSelected;
 	private javax.swing.JLabel jlbTitle;
-	private javax.swing.JLabel jlbTotalActivo;
-	private javax.swing.JLabel jlbTotalPasivo;
-	private javax.swing.JLabel jlbTotalPasivoPatrimonio;
-	private javax.swing.JLabel jlbTotalPatrimonio;
 	private javax.swing.JLabel jlbYear;
 	private javax.swing.JList<String> jlsMonth;
 	private javax.swing.JPanel jpAction;
-	private javax.swing.JPanel jpBalance;
-	private javax.swing.JPanel jpBuildBalance;
+	private javax.swing.JPanel jpBuildReport;
+	private javax.swing.JPanel jpReport;
 	private javax.swing.JPanel jpTitle;
-	private javax.swing.JScrollPane jspBalance;
 	private javax.swing.JScrollPane jspMonth;
-	private javax.swing.JTable jtbBalance;
+	private javax.swing.JScrollPane jspReport;
+	private javax.swing.JTable jtbReport;
 	private javax.swing.JTextField jtfCompanyName;
 	private javax.swing.JFormattedTextField jtfYear;
 	private javax.swing.JLabel lbImage;

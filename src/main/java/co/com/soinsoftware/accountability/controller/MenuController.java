@@ -8,6 +8,7 @@ import co.com.soinsoftware.accountability.entity.User;
 import co.com.soinsoftware.accountability.view.JFBalance;
 import co.com.soinsoftware.accountability.view.JFCompany;
 import co.com.soinsoftware.accountability.view.JFCompanyList;
+import co.com.soinsoftware.accountability.view.JFResultState;
 import co.com.soinsoftware.accountability.view.JFUap;
 import co.com.soinsoftware.accountability.view.JFUser;
 import co.com.soinsoftware.accountability.view.JFVoucher;
@@ -30,6 +31,8 @@ public class MenuController {
 
 	private final JFCompanyList companyListFrame;
 
+	private final JFResultState resultStateFrame;
+
 	private final JFUap uapFrame;
 
 	private final JFUser userFrame;
@@ -49,12 +52,14 @@ public class MenuController {
 		this.loggedUser = user;
 		this.companyController = new CompanyController();
 		this.balanceFrame = new JFBalance();
+		this.resultStateFrame = new JFResultState();
 		this.companyFrame = new JFCompany();
 		this.voucherFrame = new JFVoucher();
 		this.uapFrame = new JFUap();
 		this.voucherListFrame = new JFVoucherList(this.voucherFrame);
 		this.companyListFrame = new JFCompanyList(this.balanceFrame,
-				this.voucherFrame, this.voucherListFrame, this.uapFrame);
+				this.resultStateFrame, this.voucherFrame,
+				this.voucherListFrame, this.uapFrame);
 		this.userFrame = new JFUser();
 		this.voucherTypeFrame = new JFVoucherType();
 		this.voucherTypeXCompFrame = new JFVoucherTypeXCompany();
@@ -76,6 +81,19 @@ public class MenuController {
 	public void showCompanyFrame() {
 		this.companyFrame.refresh();
 		this.companyFrame.setVisible(true);
+	}
+
+	public void showResultStateFrame() {
+		final List<Company> companyList = this.companyController
+				.selectCompanies();
+		if (companyList == null || companyList.size() > 1) {
+			this.companyListFrame.refresh(JFCompanyList.RESULT_STATE_FRAME);
+			this.companyListFrame.setVisible(true);
+		} else {
+			this.uapFrame.refresh(companyList.get(0));
+			this.resultStateFrame.refresh(companyList.get(0));
+			this.resultStateFrame.setVisible(true);
+		}
 	}
 
 	public void showUserFrame() {

@@ -186,10 +186,16 @@ public class Voucheritem implements Serializable, Comparable<Voucheritem> {
 
 	@Override
 	public int compareTo(final Voucheritem other) {
-		final String firstName = (this.uap.getName() != null) ? this.uap
-				.getName() : "";
-		final String secondName = (other.uap.getName() != null) ? other.uap
-				.getName() : "";
-		return firstName.compareToIgnoreCase(secondName);
+		final Long firstCode = this.uap.getCode();
+		final Long secondCode = other.uap.getCode();
+		if (firstCode.compareTo(secondCode) == 0) {
+			final String firstName = (this.uap.getName() != null) ? this.uap
+					.getName() : "";
+			final String secondName = (other.uap.getName() != null) ? other.uap
+					.getName() : "";
+			return firstName.compareToIgnoreCase(secondName);
+		} else {
+			return firstCode.compareTo(secondCode);
+		}
 	}
 }

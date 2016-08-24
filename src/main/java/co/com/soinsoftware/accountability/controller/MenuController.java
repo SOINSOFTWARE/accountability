@@ -8,6 +8,7 @@ import co.com.soinsoftware.accountability.entity.User;
 import co.com.soinsoftware.accountability.view.JFBalance;
 import co.com.soinsoftware.accountability.view.JFCompany;
 import co.com.soinsoftware.accountability.view.JFCompanyList;
+import co.com.soinsoftware.accountability.view.JFMain;
 import co.com.soinsoftware.accountability.view.JFResultState;
 import co.com.soinsoftware.accountability.view.JFUap;
 import co.com.soinsoftware.accountability.view.JFUser;
@@ -47,13 +48,13 @@ public class MenuController {
 
 	private final User loggedUser;
 
-	public MenuController(final User user) {
+	public MenuController(final JFMain mainFrame, final User user) {
 		super();
 		this.loggedUser = user;
 		this.companyController = new CompanyController();
 		this.balanceFrame = new JFBalance();
 		this.resultStateFrame = new JFResultState();
-		this.companyFrame = new JFCompany();
+		this.companyFrame = new JFCompany(mainFrame);
 		this.voucherFrame = new JFVoucher();
 		this.uapFrame = new JFUap();
 		this.voucherListFrame = new JFVoucherList(this.voucherFrame);

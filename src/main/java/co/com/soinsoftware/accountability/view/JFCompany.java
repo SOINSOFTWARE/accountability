@@ -57,13 +57,16 @@ public class JFCompany extends JDialog {
 
 	private final Documenttype docTypeNit;
 
+	private final JFMain mainFrame;
+
 	private final UapController uapController;
 
 	private List<Companytype> companyTypeList;
 
 	private List<Documenttype> documentTypeList;
 
-	public JFCompany() {
+	public JFCompany(final JFMain mainFrame) {
+		this.mainFrame = mainFrame;
 		this.companyController = new CompanyController();
 		this.companyTypeNatural = this.companyController
 				.selectCompanyTypeNatural();
@@ -815,6 +818,7 @@ public class JFCompany extends JDialog {
 				ViewUtils.showMessage(this, ViewUtils.MSG_SAVED,
 						ViewUtils.TITLE_SAVED, JOptionPane.INFORMATION_MESSAGE);
 				this.refresh();
+				this.mainFrame.refresh();
 			}
 		}
 	}// GEN-LAST:event_jbtSaveActionPerformed
@@ -864,6 +868,7 @@ public class JFCompany extends JDialog {
 				ViewUtils.showMessage(this, ViewUtils.MSG_UPDATED,
 						ViewUtils.TITLE_SAVED, JOptionPane.INFORMATION_MESSAGE);
 				this.refresh();
+				this.mainFrame.refresh();
 			}
 		} else {
 			ViewUtils.showMessage(this, ViewUtils.MSG_UNEDITED,
@@ -887,6 +892,7 @@ public class JFCompany extends JDialog {
 				ViewUtils.showMessage(this, ViewUtils.MSG_DELETED,
 						ViewUtils.TITLE_SAVED, JOptionPane.INFORMATION_MESSAGE);
 				this.refresh();
+				this.mainFrame.refresh();
 			}
 		} else {
 			ViewUtils.showMessage(this, ViewUtils.MSG_UNSELECTED,

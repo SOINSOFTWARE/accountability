@@ -277,6 +277,7 @@ public class JFCompany extends JDialog {
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
+	// <editor-fold defaultstate="collapsed"
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
@@ -306,7 +307,7 @@ public class JFCompany extends JDialog {
 		jpAction = new javax.swing.JPanel();
 		jbtClose = new javax.swing.JButton();
 
-		setTitle("Contabilidad");
+		setTitle("Empresas");
 		setResizable(false);
 
 		jpTitle.setBackground(new java.awt.Color(255, 255, 255));

@@ -84,6 +84,7 @@ public class JFUapList extends JDialog {
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
+	// <editor-fold defaultstate="collapsed"
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
@@ -97,7 +98,7 @@ public class JFUapList extends JDialog {
 		jbtSelect = new javax.swing.JButton();
 		lbImage = new javax.swing.JLabel();
 
-		setTitle("Contabilidad");
+		setTitle("Seleccione una cuenta");
 
 		jpTitle.setBackground(new java.awt.Color(255, 255, 255));
 

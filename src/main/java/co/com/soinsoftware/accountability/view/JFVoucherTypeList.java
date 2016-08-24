@@ -87,6 +87,7 @@ public class JFVoucherTypeList extends JDialog {
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
+	// <editor-fold defaultstate="collapsed"
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
@@ -100,7 +101,7 @@ public class JFVoucherTypeList extends JDialog {
 		jbtClose = new javax.swing.JButton();
 		jbtSelect = new javax.swing.JButton();
 
-		setTitle("Contabilidad");
+		setTitle("Seleccione un comprobante");
 
 		jpTitle.setBackground(new java.awt.Color(255, 255, 255));
 

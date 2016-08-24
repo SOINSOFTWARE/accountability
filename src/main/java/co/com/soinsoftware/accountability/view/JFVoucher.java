@@ -332,6 +332,7 @@ public class JFVoucher extends JDialog {
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
+	// <editor-fold defaultstate="collapsed"
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
@@ -365,7 +366,7 @@ public class JFVoucher extends JDialog {
 		jbtClean = new javax.swing.JButton();
 		jbtDeleteVoucher = new javax.swing.JButton();
 
-		setTitle("Contabilidad");
+		setTitle("Asiento contable");
 
 		lbImage.setIcon(new javax.swing.ImageIcon(getClass().getResource(
 				"/images/soin.png"))); // NOI18N

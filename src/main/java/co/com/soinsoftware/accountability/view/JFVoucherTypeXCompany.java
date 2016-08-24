@@ -202,6 +202,7 @@ public class JFVoucherTypeXCompany extends JDialog {
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
+	// <editor-fold defaultstate="collapsed"
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
@@ -226,7 +227,7 @@ public class JFVoucherTypeXCompany extends JDialog {
 		jpAction = new javax.swing.JPanel();
 		jbtClose = new javax.swing.JButton();
 
-		setTitle("Contabilidad");
+		setTitle("Comprobantes por empresa");
 
 		jpTitle.setBackground(new java.awt.Color(255, 255, 255));
 

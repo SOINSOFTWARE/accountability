@@ -55,7 +55,7 @@ public class MenuController {
 		this.balanceFrame = new JFBalance();
 		this.resultStateFrame = new JFResultState();
 		this.companyFrame = new JFCompany(mainFrame);
-		this.voucherFrame = new JFVoucher();
+		this.voucherFrame = new JFVoucher(mainFrame);
 		this.uapFrame = new JFUap();
 		this.voucherListFrame = new JFVoucherList(this.voucherFrame);
 		this.companyListFrame = new JFCompanyList(this.balanceFrame,

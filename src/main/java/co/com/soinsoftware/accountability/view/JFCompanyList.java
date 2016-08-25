@@ -123,6 +123,7 @@ public class JFCompanyList extends JDialog {
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
+	// <editor-fold defaultstate="collapsed"
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
@@ -137,6 +138,8 @@ public class JFCompanyList extends JDialog {
 		jbtSelect = new javax.swing.JButton();
 
 		setTitle("Seleccione una empresa");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(
+				getClass().getResource("/images/accountability.png")));
 
 		jpTitle.setBackground(new java.awt.Color(255, 255, 255));
 

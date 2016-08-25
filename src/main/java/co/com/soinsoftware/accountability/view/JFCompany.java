@@ -281,6 +281,7 @@ public class JFCompany extends JDialog {
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
+	// <editor-fold defaultstate="collapsed"
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
@@ -311,6 +312,8 @@ public class JFCompany extends JDialog {
 		jbtClose = new javax.swing.JButton();
 
 		setTitle("Empresas");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(
+				getClass().getResource("/images/accountability.png")));
 		setResizable(false);
 
 		jpTitle.setBackground(new java.awt.Color(255, 255, 255));

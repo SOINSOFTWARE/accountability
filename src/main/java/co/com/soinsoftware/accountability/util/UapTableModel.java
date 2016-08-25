@@ -1,9 +1,10 @@
 package co.com.soinsoftware.accountability.util;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -105,12 +106,9 @@ public class UapTableModel extends AbstractTableModel {
 				boolean isInCompany = this.validateUapIsInCompany(uap);
 				if (isInCompany) {
 					this.uapList.add(uap);
-					final Set<Uap> uapSet = uap.getUaps();
-					if (uapSet != null && uapSet.size() > 0) {
-						List<Uap> uapChildrenList = new ArrayList<>(uapSet);
-						Collections.sort(uapChildrenList);
-						this.unpackageChildrenList(uapChildrenList);
-					}
+					final List<Uap> uapChildrenList = this.sortUapSet(uap
+							.getUaps());
+					this.unpackageChildrenList(uapChildrenList);
 				}
 			}
 		}
@@ -137,5 +135,18 @@ public class UapTableModel extends AbstractTableModel {
 			}
 		}
 		return isInCompany;
+	}
+
+	private List<Uap> sortUapSet(final Set<Uap> uapSet) {
+		List<Uap> uapList = new ArrayList<>(uapSet);
+		List<Uap> sortedUapList = new ArrayList<>();
+		if (uapList != null && uapList.size() > 0) {
+			uapList = new ArrayList<>(uapSet);
+			final Comparator<Uap> byCode = (uap1, uap2) -> Long.compare(
+					uap1.getCode(), uap2.getCode());
+			sortedUapList = uapList.stream().sorted(byCode)
+					.collect(Collectors.toCollection(ArrayList::new));
+		}
+		return sortedUapList;
 	}
 }

@@ -10,7 +10,7 @@ import java.util.Set;
  * @since 01/08/2016
  * @version 1.0
  */
-public class Uap implements Serializable, Comparable<Uap> {
+public class Uap implements Serializable {
 
 	private static final long serialVersionUID = 7873071882028195499L;
 
@@ -248,12 +248,5 @@ public class Uap implements Serializable, Comparable<Uap> {
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
-	}
-
-	@Override
-	public int compareTo(final Uap other) {
-		final Long firstCode = this.code;
-		final Long secondCode = other.code;
-		return firstCode.compareTo(secondCode);
 	}
 }

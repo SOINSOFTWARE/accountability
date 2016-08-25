@@ -1,8 +1,11 @@
 package co.com.soinsoftware.accountability.util;
 
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
+import javax.swing.text.NumberFormatter;
 
 import co.com.soinsoftware.accountability.entity.Uap;
 import co.com.soinsoftware.accountability.entity.Voucheritem;
@@ -71,8 +74,8 @@ public class VoucherItemUapTableModel extends AbstractTableModel {
 			for (final Voucheritem voucherItem : this.voucherItemList) {
 				final Uap uap = voucherItem.getUap();
 				data[index][0] = uap.getName();
-				data[index][1] = voucherItem.getDebtvalue();
-				data[index][2] = voucherItem.getCreditvalue();
+				data[index][1] = this.formatValue(voucherItem.getDebtvalue());
+				data[index][2] = this.formatValue(voucherItem.getCreditvalue());
 				index++;
 			}
 		}
@@ -84,5 +87,18 @@ public class VoucherItemUapTableModel extends AbstractTableModel {
 			rowSize = this.voucherItemList.size();
 		}
 		return rowSize;
+	}
+
+	private String formatValue(final Long value) {
+		if (value != null) {
+			final NumberFormatter formatter = new NumberFormatter(
+					new DecimalFormat("$#,##0"));
+			try {
+				return formatter.valueToString(value);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		return (value != null) ? String.valueOf(value) : "";
 	}
 }

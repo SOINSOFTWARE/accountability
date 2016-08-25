@@ -10,8 +10,7 @@ import java.util.Set;
  * @since 05/08/2016
  * @version 1.0
  */
-public class Vouchertypexcompany implements Serializable,
-		Comparable<Vouchertypexcompany> {
+public class Vouchertypexcompany implements Serializable {
 
 	private static final long serialVersionUID = -1066837084117495273L;
 
@@ -195,23 +194,5 @@ public class Vouchertypexcompany implements Serializable,
 		} else if (!vouchertype.equals(other.vouchertype))
 			return false;
 		return true;
-	}
-
-	@Override
-	public int compareTo(final Vouchertypexcompany other) {
-		final String compFirstName = (this.company != null && this.company
-				.getName() != null) ? this.company.getName() : "";
-		final String compSecondName = (other.company != null && other.company
-				.getName() != null) ? other.company.getName() : "";
-		final String firstName = (this.vouchertype != null && this.vouchertype
-				.getName() != null) ? this.vouchertype.getName() : "";
-		final String secondName = (other.vouchertype != null && other.vouchertype
-				.getName() != null) ? other.vouchertype.getName() : "";
-		if (compFirstName.compareToIgnoreCase(compSecondName) == 0) {
-			return firstName.compareToIgnoreCase(secondName);
-		} else {
-			return compFirstName.compareToIgnoreCase(compSecondName);
-		}
-
 	}
 }

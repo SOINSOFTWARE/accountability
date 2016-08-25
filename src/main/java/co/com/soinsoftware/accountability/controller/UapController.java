@@ -1,10 +1,11 @@
 package co.com.soinsoftware.accountability.controller;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import co.com.soinsoftware.accountability.bll.UapBLL;
 import co.com.soinsoftware.accountability.bll.UapXCompanyBLL;
@@ -80,12 +81,15 @@ public class UapController {
 		this.uapXCompBLL.save(uapXCompanySet);
 	}
 
-	private List<Uap> sortUapSet(final Set<Uap> uapSet) {
-		List<Uap> uapList = new ArrayList<>();
+	public List<Uap> sortUapSet(final Set<Uap> uapSet) {
+		List<Uap> sortedUapList = new ArrayList<>();
 		if (uapSet != null && uapSet.size() > 0) {
-			uapList = new ArrayList<>(uapSet);
-			Collections.sort(uapList);
+			final List<Uap> uapList = new ArrayList<>(uapSet);
+			final Comparator<Uap> byCode = (uap1, uap2) -> Long.compare(
+					uap1.getCode(), uap2.getCode());
+			sortedUapList = uapList.stream().sorted(byCode)
+					.collect(Collectors.toCollection(ArrayList::new));
 		}
-		return uapList;
+		return sortedUapList;
 	}
 }

@@ -73,7 +73,6 @@ public class MenuController {
 			this.companyListFrame.refresh(JFCompanyList.BALANCE_FRAME);
 			this.companyListFrame.setVisible(true);
 		} else {
-			this.uapFrame.refresh(companyList.get(0));
 			this.balanceFrame.refresh(companyList.get(0));
 			this.balanceFrame.setVisible(true);
 		}
@@ -91,7 +90,6 @@ public class MenuController {
 			this.companyListFrame.refresh(JFCompanyList.RESULT_STATE_FRAME);
 			this.companyListFrame.setVisible(true);
 		} else {
-			this.uapFrame.refresh(companyList.get(0));
 			this.resultStateFrame.refresh(companyList.get(0));
 			this.resultStateFrame.setVisible(true);
 		}

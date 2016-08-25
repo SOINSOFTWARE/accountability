@@ -29,8 +29,8 @@ public class AccountabilityApp {
 							.println("Finalizing initialization of jasper report context");
 					UIManager.setLookAndFeel(LOOK_AND_FEEL);
 					final JFLogin login = new JFLogin();
-					login.setVisible(true);
 					logo.setVisible(false);
+					login.setVisible(true);
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}

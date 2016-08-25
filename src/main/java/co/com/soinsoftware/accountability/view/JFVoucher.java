@@ -82,7 +82,7 @@ public class JFVoucher extends JDialog {
 		final Dimension screenSize = Toolkit.getDefaultToolkit()
 				.getScreenSize();
 		this.setLocation((int) (screenSize.getWidth() / 2 - 390),
-				(int) (screenSize.getHeight() / 2 - 350));
+				(int) (screenSize.getHeight() / 2 - 370));
 		this.setModal(true);
 		final JTextFieldDateEditor dateEditor = (JTextFieldDateEditor) this.jdcDate
 				.getDateEditor();

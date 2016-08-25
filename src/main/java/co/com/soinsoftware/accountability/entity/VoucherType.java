@@ -10,7 +10,7 @@ import java.util.Set;
  * @since 01/08/2016
  * @version 1.0
  */
-public class Vouchertype implements Serializable, Comparable<Vouchertype> {
+public class Vouchertype implements Serializable {
 
 	private static final long serialVersionUID = -1066837084117495273L;
 
@@ -164,12 +164,5 @@ public class Vouchertype implements Serializable, Comparable<Vouchertype> {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
-
-	@Override
-	public int compareTo(final Vouchertype other) {
-		final String firstName = (this.name != null) ? this.name : "";
-		final String secondName = (other.name != null) ? other.name : "";
-		return firstName.compareToIgnoreCase(secondName);
 	}
 }

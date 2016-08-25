@@ -29,11 +29,13 @@ public class UapListTableModel extends AbstractTableModel {
 
 	private Object[][] data;
 
-	public UapListTableModel(final Company company, final List<Uap> uapList) {
+	public UapListTableModel(final Company company, final List<Uap> uapList, final boolean mustUnpackge) {
 		super();
 		this.company = company;
-		this.uapList = new ArrayList<>();
-		this.unpackageChildrenList(uapList);
+		this.uapList = (mustUnpackge) ? new ArrayList<>() : uapList;
+		if (mustUnpackge) {
+			this.unpackageChildrenList(uapList);
+		}
 		this.buildData();
 	}
 
@@ -71,6 +73,10 @@ public class UapListTableModel extends AbstractTableModel {
 		return uap;
 	}
 
+	public List<Uap> getUapList() {
+		return this.uapList;
+	}
+
 	private void buildData() {
 		final int rowSize = this.getRowSizeToBuild();
 		data = new Object[rowSize][2];
@@ -85,14 +91,16 @@ public class UapListTableModel extends AbstractTableModel {
 	}
 
 	private void unpackageChildrenList(final List<Uap> uapList) {
-		for (final Uap uap : uapList) {
-			if (uap.isEnabled()) {
-				boolean isInCompany = this.validateUapIsInCompany(uap);
-				if (isInCompany) {
-					this.uapList.add(uap);
-					final List<Uap> uapChildrenList = this.sortUapSet(uap
-							.getUaps());
-					this.unpackageChildrenList(uapChildrenList);
+		if (uapList != null && uapList.size() > 0) {
+			for (final Uap uap : uapList) {
+				if (uap.isEnabled()) {
+					boolean isInCompany = this.validateUapIsInCompany(uap);
+					if (isInCompany) {
+						this.uapList.add(uap);
+						final List<Uap> uapChildrenList = this.sortUapSet(uap
+								.getUaps());
+						this.unpackageChildrenList(uapChildrenList);
+					}
 				}
 			}
 		}

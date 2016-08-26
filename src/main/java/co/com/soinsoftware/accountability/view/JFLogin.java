@@ -43,6 +43,11 @@ public class JFLogin extends JFrame {
 		this.setTextFieldLimits();
 	}
 
+	public void refresh() {
+		this.jtfUser.setText("");
+		this.jpfPassword.setText("");
+	}
+
 	private void setMaximized() {
 		final GraphicsEnvironment env = GraphicsEnvironment
 				.getLocalGraphicsEnvironment();
@@ -68,9 +73,8 @@ public class JFLogin extends JFrame {
 		} else {
 			final User user = controller.selectUser(login, password);
 			if (user != null) {
-				final JFMain mainFrame = new JFMain(user);
-				mainFrame.setVisible(true);
-				this.setVisible(false);
+				final JFCompany companyFrame = new JFCompany(this, user);
+				companyFrame.setVisible(true);
 			} else {
 				ViewUtils.showMessage(this, WRONG_LOGIN,
 						ViewUtils.TITLE_REQUIRED_FIELDS, infoMessage);

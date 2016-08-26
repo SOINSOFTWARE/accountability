@@ -28,13 +28,11 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 
 	private static final String MENU_CONFIGURATION = "Configuración";
 
-	private static final String MENU_CONFIGURATION_COMPANY = "Empresa";
-
 	private static final String MENU_CONFIGURATION_UNIQUE_ACCOUNT_PLAN = "Plan único de cuentas";
 
-	private static final String MENU_CONFIGURATION_USER = "Usuario";
+	private static final String MENU_CONFIGURATION_USER = "Usuarios";
 
-	private static final String MENU_CONFIGURATION_VOUCHER_TYPE = "Comprobante";
+	private static final String MENU_CONFIGURATION_VOUCHER_TYPE = "Comprobantes";
 
 	private static final String MENU_CONFIGURATION_VOUCHER_TYPE_COMPANY = "Comprobantes por empresa";
 
@@ -63,9 +61,6 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 			break;
 		case MENU_ACTION_VIEW_VOUCHER:
 			this.controller.showVoucherListFrame();
-			break;
-		case MENU_CONFIGURATION_COMPANY:
-			this.controller.showCompanyFrame();
 			break;
 		case MENU_CONFIGURATION_UNIQUE_ACCOUNT_PLAN:
 			this.controller.showUapFrame();
@@ -120,14 +115,6 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 				KeyStroke.getKeyStroke(KeyEvent.VK_6, ActionEvent.ALT_MASK));
 		miVoucherTypeXComp.addActionListener(this);
 		menu.add(miVoucherTypeXComp);
-		if (this.controller.isAdminRol() || this.controller.isAccountRol()) {
-			final JMenuItem miCompany = ViewUtils
-					.createJMenuItem(MENU_CONFIGURATION_COMPANY, KeyEvent.VK_E,
-							KeyStroke.getKeyStroke(KeyEvent.VK_7,
-									ActionEvent.ALT_MASK));
-			miCompany.addActionListener(this);
-			menu.add(miCompany);
-		}
 		final JMenuItem miUap = ViewUtils.createJMenuItem(
 				MENU_CONFIGURATION_UNIQUE_ACCOUNT_PLAN, KeyEvent.VK_P,
 				KeyStroke.getKeyStroke(KeyEvent.VK_8, ActionEvent.ALT_MASK));

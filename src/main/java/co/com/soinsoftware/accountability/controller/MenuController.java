@@ -1,13 +1,9 @@
 package co.com.soinsoftware.accountability.controller;
 
-import java.util.List;
-
 import co.com.soinsoftware.accountability.entity.Company;
 import co.com.soinsoftware.accountability.entity.Rol;
 import co.com.soinsoftware.accountability.entity.User;
 import co.com.soinsoftware.accountability.view.JFBalance;
-import co.com.soinsoftware.accountability.view.JFCompany;
-import co.com.soinsoftware.accountability.view.JFCompanyList;
 import co.com.soinsoftware.accountability.view.JFMain;
 import co.com.soinsoftware.accountability.view.JFResultState;
 import co.com.soinsoftware.accountability.view.JFUap;
@@ -24,13 +20,9 @@ import co.com.soinsoftware.accountability.view.JFVoucherTypeXCompany;
  */
 public class MenuController {
 
-	private final CompanyController companyController;
+	private final Company company;
 
 	private final JFBalance balanceFrame;
-
-	private final JFCompany companyFrame;
-
-	private final JFCompanyList companyListFrame;
 
 	private final JFResultState resultStateFrame;
 
@@ -48,51 +40,29 @@ public class MenuController {
 
 	private final User loggedUser;
 
-	public MenuController(final JFMain mainFrame, final User user) {
+	public MenuController(final JFMain mainFrame, final Company company,
+			final User user) {
 		super();
+		this.company = company;
 		this.loggedUser = user;
-		this.companyController = new CompanyController();
 		this.balanceFrame = new JFBalance();
 		this.resultStateFrame = new JFResultState();
-		this.companyFrame = new JFCompany(mainFrame);
 		this.voucherFrame = new JFVoucher(mainFrame);
 		this.uapFrame = new JFUap();
 		this.voucherListFrame = new JFVoucherList(this.voucherFrame);
-		this.companyListFrame = new JFCompanyList(this.balanceFrame,
-				this.resultStateFrame, this.voucherFrame,
-				this.voucherListFrame, this.uapFrame);
 		this.userFrame = new JFUser();
 		this.voucherTypeFrame = new JFVoucherType();
 		this.voucherTypeXCompFrame = new JFVoucherTypeXCompany();
 	}
 
 	public void showBalanceFrame() {
-		final List<Company> companyList = this.companyController
-				.selectCompanies();
-		if (companyList == null || companyList.size() > 1) {
-			this.companyListFrame.refresh(JFCompanyList.BALANCE_FRAME);
-			this.companyListFrame.setVisible(true);
-		} else {
-			this.balanceFrame.refresh(companyList.get(0));
-			this.balanceFrame.setVisible(true);
-		}
-	}
-
-	public void showCompanyFrame() {
-		this.companyFrame.refresh();
-		this.companyFrame.setVisible(true);
+		this.balanceFrame.refresh(company);
+		this.balanceFrame.setVisible(true);
 	}
 
 	public void showResultStateFrame() {
-		final List<Company> companyList = this.companyController
-				.selectCompanies();
-		if (companyList == null || companyList.size() > 1) {
-			this.companyListFrame.refresh(JFCompanyList.RESULT_STATE_FRAME);
-			this.companyListFrame.setVisible(true);
-		} else {
-			this.resultStateFrame.refresh(companyList.get(0));
-			this.resultStateFrame.setVisible(true);
-		}
+		this.resultStateFrame.refresh(company);
+		this.resultStateFrame.setVisible(true);
 	}
 
 	public void showUserFrame() {
@@ -101,15 +71,8 @@ public class MenuController {
 	}
 
 	public void showUapFrame() {
-		final List<Company> companyList = this.companyController
-				.selectCompanies();
-		if (companyList == null || companyList.size() > 1) {
-			this.companyListFrame.refresh(JFCompanyList.UAP_FRAME);
-			this.companyListFrame.setVisible(true);
-		} else {
-			this.uapFrame.refresh(companyList.get(0));
-			this.uapFrame.setVisible(true);
-		}
+		this.uapFrame.refresh(company);
+		this.uapFrame.setVisible(true);
 	}
 
 	public void showVoucherTypeFrame() {
@@ -123,27 +86,13 @@ public class MenuController {
 	}
 
 	public void showVoucherFrame() {
-		final List<Company> companyList = this.companyController
-				.selectCompanies();
-		if (companyList == null || companyList.size() > 1) {
-			this.companyListFrame.refresh(JFCompanyList.VOUCHER_FRAME);
-			this.companyListFrame.setVisible(true);
-		} else {
-			this.voucherFrame.refresh(companyList.get(0), null);
-			this.voucherFrame.setVisible(true);
-		}
+		this.voucherFrame.refresh(company, null);
+		this.voucherFrame.setVisible(true);
 	}
 
 	public void showVoucherListFrame() {
-		final List<Company> companyList = this.companyController
-				.selectCompanies();
-		if (companyList == null || companyList.size() > 1) {
-			this.companyListFrame.refresh(JFCompanyList.VOUCHER_LIST_FRAME);
-			this.companyListFrame.setVisible(true);
-		} else {
-			this.voucherListFrame.refresh(companyList.get(0));
-			this.voucherListFrame.setVisible(true);
-		}
+		this.voucherListFrame.refresh(company);
+		this.voucherListFrame.setVisible(true);
 	}
 
 	public boolean isAdminRol() {

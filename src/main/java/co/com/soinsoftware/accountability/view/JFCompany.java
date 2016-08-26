@@ -298,16 +298,19 @@ public class JFCompany extends JDialog {
 	}
 
 	private void saveDefaultUap(final Company company) {
-		final List<Uap> uapList = uapController.selectUapDefault();
+		final Set<Uapxcompany> defaultUapXCompSet = this.uapController
+				.selectUapXCompany();
+		final Set<Uap> uapSet = uapController.selectUapDefault();
 		final Set<Uapxcompany> uapXCompSet = new HashSet<>();
-		if (uapList != null && uapList.size() > 0) {
+		if (uapSet != null && uapSet.size() > 0) {
 			final Date currentDate = new Date();
-			for (final Uap uap : uapList) {
+			for (final Uap uap : uapSet) {
 				final Uapxcompany uapXComp = new Uapxcompany(uap, company,
 						currentDate, currentDate, true);
 				uapXCompSet.add(uapXComp);
 			}
 			this.uapController.saveUapXCompanySet(uapXCompSet);
+			defaultUapXCompSet.addAll(uapXCompSet);
 		}
 	}
 

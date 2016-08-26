@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import co.com.soinsoftware.accountability.bll.UapBLL;
 import co.com.soinsoftware.accountability.entity.Company;
 import co.com.soinsoftware.accountability.entity.Report;
 import co.com.soinsoftware.accountability.entity.ReportItem;
@@ -17,16 +16,16 @@ public class BalanceReportController extends AbstractReportController {
 
 	private static final String REPORT_NAME = "BALANCE GENERAL";
 
-	private final Set<Uap> uapSet;
+	private List<Uap> uapList;
 
 	public BalanceReportController() {
 		super();
-		this.uapSet = UapBLL.getInstance().select(1);
 	}
 
 	@Override
 	public Report buildReport(final Company company,
 			final List<Voucher> voucherList, final String description) {
+		this.uapList = new UapController().selectUapClassLevel(company);
 		final Set<ReportItem> accountReportItemSet = new HashSet<>();
 		for (final Voucher voucher : voucherList) {
 			final Set<Voucheritem> voucherItemSet = voucher.getVoucheritems();
@@ -114,7 +113,7 @@ public class BalanceReportController extends AbstractReportController {
 	}
 
 	private ReportItem getReportItemActivo() {
-		for (final Uap uap : this.uapSet) {
+		for (final Uap uap : this.uapList) {
 			if (uap.getCode() == CLASS_ACTIVO) {
 				return this.getNewReportItem(uap, null);
 			}
@@ -123,7 +122,7 @@ public class BalanceReportController extends AbstractReportController {
 	}
 
 	private ReportItem getReportItemPasivo() {
-		for (final Uap uap : this.uapSet) {
+		for (final Uap uap : this.uapList) {
 			if (uap.getCode() == CLASS_PASIVO) {
 				return this.getNewReportItem(uap, null);
 			}
@@ -132,7 +131,7 @@ public class BalanceReportController extends AbstractReportController {
 	}
 
 	private ReportItem getReportItemPatrimonio() {
-		for (final Uap uap : this.uapSet) {
+		for (final Uap uap : this.uapList) {
 			if (uap.getCode() == CLASS_PATRIMONIO) {
 				return this.getNewReportItem(uap, null);
 			}

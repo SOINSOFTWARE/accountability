@@ -27,10 +27,6 @@ public class UapBLL {
 		return this.dao.select();
 	}
 
-	public Set<Uap> select(final int level) {
-		return this.dao.select(level);
-	}
-
 	public Set<Uap> select(final Uap uap) {
 		return this.dao.select(uap);
 	}

@@ -57,7 +57,8 @@ public class JFUapList extends JDialog {
 		this.company = company;
 		this.uapList = null;
 		this.jtfCode.setText("");
-		final List<Uap> uapList = this.uapController.selectUapClassLevel();
+		final List<Uap> uapList = this.uapController
+				.selectUapClassLevel(this.company);
 		this.refreshTableData(uapList, true);
 	}
 

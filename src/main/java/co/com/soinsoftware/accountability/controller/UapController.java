@@ -3,6 +3,7 @@ package co.com.soinsoftware.accountability.controller;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -32,13 +33,30 @@ public class UapController {
 		this.uapXCompBLL = UapXCompanyBLL.getInstance();
 	}
 
-	public List<Uap> selectUapDefault() {
+	public Set<Uap> selectUapDefault() {
 		final Set<Uap> uapSet = this.uapBLL.select();
-		return this.sortUapSet(uapSet);
+		return uapSet;
+	}
+	
+	public List<Uap> selectUapClassLevel(final Company company) {
+		final List<Uap> companyUapList = this.selectCompanyUap(company);
+		final List<Uap> classUapList = new ArrayList<>();
+		for (final Uap uap : companyUapList) {
+			if (uap.getLevel() == ACCOUNT_CLASS_LEVEL) {
+				classUapList.add(uap);
+			}
+		}
+		return classUapList;
 	}
 
-	public List<Uap> selectUapClassLevel() {
-		final Set<Uap> uapSet = this.uapBLL.select(ACCOUNT_CLASS_LEVEL);
+	public List<Uap> selectCompanyUap(final Company company) {
+		final Set<Uapxcompany> uapXCompSet = this.uapXCompBLL.select(company);
+		final Set<Uap> uapSet = new HashSet<>();
+		for (final Uapxcompany uapXComp : uapXCompSet) {
+			final Uap uap = uapXComp.getUap();
+			uap.getUapxcompanies().add(uapXComp);
+			uapSet.add(uap);
+		}
 		return this.sortUapSet(uapSet);
 	}
 
@@ -65,6 +83,10 @@ public class UapController {
 		this.uapBLL.save(uap);
 	}
 
+	public Set<Uapxcompany> selectUapXCompany() {
+		return this.uapXCompBLL.select();
+	}
+
 	public Uapxcompany saveUapXCompany(final Company company, final Uap uap) {
 		final Date currentDate = new Date();
 		final Uapxcompany uapXComp = new Uapxcompany(uap, company, currentDate,
@@ -85,9 +107,12 @@ public class UapController {
 		List<Uap> sortedUapList = new ArrayList<>();
 		if (uapSet != null && uapSet.size() > 0) {
 			final List<Uap> uapList = new ArrayList<>(uapSet);
+			final Comparator<Uap> byLevel = (uap1, uap2) -> Integer.compare(
+					uap1.getLevel(), uap2.getLevel());
 			final Comparator<Uap> byCode = (uap1, uap2) -> Long.compare(
 					uap1.getCode(), uap2.getCode());
-			sortedUapList = uapList.stream().sorted(byCode)
+			sortedUapList = uapList.stream()
+					.sorted(byLevel.thenComparing(byCode))
 					.collect(Collectors.toCollection(ArrayList::new));
 		}
 		return sortedUapList;

@@ -19,8 +19,6 @@ public class UapDAO extends AbstractDAO {
 
 	private static final String COLUMN_EDITABLE = "editable";
 
-	private static final String COLUMN_LEVEL = "level";
-
 	private static final String COLUMN_UAP = "uap";
 
 	@SuppressWarnings("unchecked")
@@ -29,21 +27,6 @@ public class UapDAO extends AbstractDAO {
 		try {
 			final Query query = this.createQuery(this
 					.getSelectStatementDefaultUAP());
-			uapSet = (query.list().isEmpty()) ? null : new HashSet<Uap>(
-					query.list());
-		} catch (HibernateException ex) {
-			System.out.println(ex);
-		}
-		return uapSet;
-	}
-
-	@SuppressWarnings("unchecked")
-	public Set<Uap> select(final int level) {
-		Set<Uap> uapSet = null;
-		try {
-			final Query query = this
-					.createQuery(this.getSelectStatementLevel());
-			query.setParameter(COLUMN_LEVEL, level);
 			uapSet = (query.list().isEmpty()) ? null : new HashSet<Uap>(
 					query.list());
 		} catch (HibernateException ex) {
@@ -99,16 +82,6 @@ public class UapDAO extends AbstractDAO {
 		query.append(COLUMN_CODE);
 		query.append(SQL_EQUALS_WITH_PARAM);
 		query.append(COLUMN_CODE);
-		return query.toString();
-	}
-
-	private String getSelectStatementLevel() {
-		final StringBuilder query = new StringBuilder(
-				this.getSelectStatementEnabled());
-		query.append(SQL_AND);
-		query.append(COLUMN_LEVEL);
-		query.append(SQL_EQUALS_WITH_PARAM);
-		query.append(COLUMN_LEVEL);
 		return query.toString();
 	}
 

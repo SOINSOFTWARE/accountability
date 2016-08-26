@@ -3,6 +3,7 @@ package co.com.soinsoftware.accountability.bll;
 import java.util.Set;
 
 import co.com.soinsoftware.accountability.dao.UapXCompanyDAO;
+import co.com.soinsoftware.accountability.entity.Company;
 import co.com.soinsoftware.accountability.entity.Uapxcompany;
 
 /**
@@ -25,6 +26,10 @@ public class UapXCompanyBLL {
 
 	public Set<Uapxcompany> select() {
 		return this.dao.select();
+	}
+
+	public Set<Uapxcompany> select(final Company company) {
+		return this.dao.select(company);
 	}
 
 	public void save(final Uapxcompany uapXCompany) {

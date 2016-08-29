@@ -526,6 +526,7 @@ public class JFMain extends JFrame {
 
 	private void jbtSelectClassActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jbtSelectClassActionPerformed
 		this.refreshGroupUapTable();
+		this.refreshAccountUapTable();
 	}// GEN-LAST:event_jbtSelectClassActionPerformed
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables

@@ -34,19 +34,19 @@ public class JFUap extends JDialog {
 
 	private static final long serialVersionUID = -2905273704835020301L;
 
-	private static final String MSG_CODE_REQUIRED = "Complete el campo código";
+	public static final String MSG_CODE_REQUIRED = "Complete el campo código";
 
-	private static final String MSG_INVALID_CODE_REQUIRED = "El código no es valido";
+	public static final String MSG_INVALID_CODE_REQUIRED = "El código no es valido";
 
-	private static final String MSG_USED_CODE_REQUIRED = "El código ya está siendo usado";
+	public static final String MSG_USED_CODE_REQUIRED = "El código ya está siendo usado";
 
-	private static final String MSG_NAME_REQUIRED = "Complete el campo nombre";
+	public static final String MSG_NAME_REQUIRED = "Complete el campo nombre";
 
-	private static final String MSG_SELECT_ONE_GROUP_REQUIRED = "Seleccione el grupo al que pertenece la nueva cuenta";
+	public static final String MSG_SELECT_ONE_GROUP_REQUIRED = "Seleccione el grupo al que pertenece la nueva cuenta";
 
-	private static final String MSG_SELECT_ONE_ACCOUNT_REQUIRED = "Seleccione la cuenta a la que pertenece la nueva sub-cuenta";
+	public static final String MSG_SELECT_ONE_ACCOUNT_REQUIRED = "Seleccione la cuenta a la que pertenece la nueva sub-cuenta";
 
-	private static final String MSG_SELECT_ONE_SUBACCOUNT_REQUIRED = "Seleccione la sub-cuenta a la que pertenece la nueva cuenta auxiliar";
+	public static final String MSG_SELECT_ONE_SUBACCOUNT_REQUIRED = "Seleccione la sub-cuenta a la que pertenece la nueva cuenta auxiliar";
 
 	private final UapController uapController;
 

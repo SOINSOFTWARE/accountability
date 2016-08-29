@@ -47,7 +47,7 @@ public class MenuController {
 		this.loggedUser = user;
 		this.balanceFrame = new JFBalance();
 		this.resultStateFrame = new JFResultState();
-		this.voucherFrame = new JFVoucher(mainFrame);
+		this.voucherFrame = new JFVoucher(mainFrame, this.company);
 		this.uapFrame = new JFUap(this.company);
 		this.voucherListFrame = new JFVoucherList(this.voucherFrame);
 		this.userFrame = new JFUser();
@@ -86,7 +86,7 @@ public class MenuController {
 	}
 
 	public void showVoucherFrame() {
-		this.voucherFrame.refresh(company, null);
+		this.voucherFrame.refresh(null);
 		this.voucherFrame.setVisible(true);
 	}
 

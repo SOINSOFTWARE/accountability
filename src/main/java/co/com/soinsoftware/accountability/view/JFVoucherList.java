@@ -540,7 +540,7 @@ public class JFVoucherList extends JDialog {
 	private void jbtViewActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jbtViewActionPerformed
 		final Voucher voucher = this.getSelectedVoucher();
 		if (voucher != null) {
-			this.voucherFrame.refresh(this.company, voucher);
+			this.voucherFrame.refresh(voucher);
 			this.voucherFrame.setVoucherListFrame(this);
 			this.voucherFrame.setVisible(true);
 		} else {

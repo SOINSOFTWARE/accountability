@@ -65,7 +65,7 @@ public class JFVoucher extends JDialog {
 
 	private final VoucherTypeController voucherTypeController;
 
-	private Company company;
+	private final Company company;
 
 	private JFVoucherList voucherListFrame;
 
@@ -75,11 +75,12 @@ public class JFVoucher extends JDialog {
 
 	private Vouchertypexcompany voucherTypeXCompany;
 
-	public JFVoucher(final JFMain mainFrame) {
+	public JFVoucher(final JFMain mainFrame, final Company company) {
 		this.mainFrame = mainFrame;
+		this.company = company;
 		this.voucherController = new VoucherController();
 		this.voucherTypeController = new VoucherTypeController();
-		this.uapListFrame = new JFUapList(this);
+		this.uapListFrame = new JFUapList(this, this.company);
 		this.voucherTypeListFrame = new JFVoucherTypeList(this);
 		this.initComponents();
 		final Dimension screenSize = Toolkit.getDefaultToolkit()
@@ -92,8 +93,7 @@ public class JFVoucher extends JDialog {
 		dateEditor.setEditable(false);
 	}
 
-	public void refresh(final Company company, final Voucher voucher) {
-		this.company = company;
+	public void refresh(final Voucher voucher) {
 		this.jtfCompanyName.setText(this.company.getName());
 		this.voucherTypeXCompany = null;
 		this.voucherItemSet = new HashSet<>();
@@ -143,7 +143,7 @@ public class JFVoucher extends JDialog {
 	}
 
 	public Uap getUap(final long code) {
-		this.uapListFrame.refresh(this.company);
+		this.uapListFrame.refresh();
 		return this.uapListFrame.getUap(code);
 	}
 
@@ -1083,11 +1083,11 @@ public class JFVoucher extends JDialog {
 	}// GEN-LAST:event_jbtDeleteVoucherActionPerformed
 
 	private void jbtCleanActionPerformed(java.awt.event.ActionEvent evt) {
-		this.refresh(this.company, null);
+		this.refresh(null);
 	}// GEN-LAST:event_jbtCleanActionPerformed
 
 	private void jbtAddActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jbtAddActionPerformed
-		this.uapListFrame.refresh(this.company);
+		this.uapListFrame.refresh();
 		this.uapListFrame.setVisible(true);
 	}// GEN-LAST:event_jbtAddActionPerformed
 
@@ -1135,7 +1135,7 @@ public class JFVoucher extends JDialog {
 						.saveVoucherTypeXCompany(this.voucherTypeXCompany);
 				ViewUtils.showMessage(this, ViewUtils.MSG_SAVED,
 						ViewUtils.TITLE_SAVED, JOptionPane.INFORMATION_MESSAGE);
-				this.refresh(this.company, null);
+				this.refresh(null);
 				this.mainFrame.refresh();
 			} else {
 				this.addVoucherItem();

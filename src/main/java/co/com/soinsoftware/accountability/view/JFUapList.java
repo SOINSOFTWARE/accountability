@@ -61,6 +61,17 @@ public class JFUapList extends JDialog {
 				.selectUapClassLevel(this.company);
 		this.refreshTableData(uapList, true);
 	}
+	
+	public Uap getUap(final long code) {
+		Uap uapWithCode = null;
+		for (final Uap uap : this.uapList) {
+			if (uap.getCode() == code) {
+				uapWithCode = uap;
+				break;
+			}
+		}
+		return uapWithCode;
+	}
 
 	private void refreshTableData(final List<Uap> uapList,
 			final boolean mustUnpackage) {

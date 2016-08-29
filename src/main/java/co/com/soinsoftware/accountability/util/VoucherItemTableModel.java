@@ -1,12 +1,15 @@
 package co.com.soinsoftware.accountability.util;
 
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.List;
 
-import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.text.NumberFormatter;
 
 import co.com.soinsoftware.accountability.entity.Uap;
 import co.com.soinsoftware.accountability.entity.Voucheritem;
+import co.com.soinsoftware.accountability.view.JFVoucher;
 
 /**
  * @author Carlos Rodriguez
@@ -20,20 +23,17 @@ public class VoucherItemTableModel extends AbstractTableModel {
 	private static final String[] COLUMN_NAMES = { "Código", "Nombre",
 			"Concepto", "Fuente", "Debito", "Credito", "Eliminar" };
 
-	private final JTextField jtfDebtValue;
-
-	private final JTextField jtfCreditValue;
+	private final JFVoucher voucherFrame;
 
 	private final List<Voucheritem> voucherItemList;
 
 	private Object[][] data;
 
 	public VoucherItemTableModel(final List<Voucheritem> voucherItemList,
-			final JTextField jtfDebtValue, final JTextField jtfCreditValue) {
+			final JFVoucher voucherFrame) {
 		super();
 		this.voucherItemList = voucherItemList;
-		this.jtfDebtValue = jtfDebtValue;
-		this.jtfCreditValue = jtfCreditValue;
+		this.voucherFrame = voucherFrame;
 		this.buildData();
 	}
 
@@ -59,13 +59,22 @@ public class VoucherItemTableModel extends AbstractTableModel {
 
 	@Override
 	public boolean isCellEditable(final int row, final int col) {
-		return col > 1;
+		final int lastRow = this.voucherItemList.size() - 1;
+		return (col == 0 && row == lastRow) || (col > 1 && row < lastRow);
 	}
 
 	@Override
 	public void setValueAt(final Object value, final int row, final int col) {
 		final Voucheritem voucherItem = this.voucherItemList.get(row);
-		if (col == 2) {
+		if (col == 0) {
+			final Uap uap = this.getUap((String) value);
+			if (uap != null) {
+				this.voucherFrame.addVoucherItem(uap);
+				return;
+			} else {
+				return;
+			}
+		} else if (col == 2) {
 			voucherItem.setConcept((String) value);
 		} else if (col == 3) {
 			voucherItem.setSource((String) value);
@@ -98,12 +107,15 @@ public class VoucherItemTableModel extends AbstractTableModel {
 			int index = 0;
 			for (final Voucheritem voucherItem : this.voucherItemList) {
 				final Uap uap = voucherItem.getUap();
-				data[index][0] = String.valueOf(uap.getCode());
+				data[index][0] = (uap.getCode() == 0) ? "" : String.valueOf(uap
+						.getCode());
 				data[index][1] = uap.getName();
 				data[index][2] = voucherItem.getConcept();
 				data[index][3] = voucherItem.getSource();
-				data[index][4] = voucherItem.getDebtvalue();
-				data[index][5] = voucherItem.getCreditvalue();
+				data[index][4] = (uap.getCode() == 0) ? "" : voucherItem
+						.getDebtvalue();
+				data[index][5] = (uap.getCode() == 0) ? "" : voucherItem
+						.getCreditvalue();
 				data[index][6] = new Boolean(false);
 				index++;
 			}
@@ -126,9 +138,32 @@ public class VoucherItemTableModel extends AbstractTableModel {
 			totalDebt += voucherItem.getDebtvalue();
 			totalCredit += voucherItem.getCreditvalue();
 		}
-		this.jtfDebtValue.setText(String.valueOf(totalDebt));
-		this.jtfCreditValue.setText(String.valueOf(totalCredit));
-		this.jtfDebtValue.requestFocus();
-		this.jtfCreditValue.requestFocus();
+		this.voucherFrame.setTextToJtfTotalDebt(this.formatValue(totalDebt));
+		this.voucherFrame
+				.setTextToJtfTotalCredit(this.formatValue(totalCredit));
+	}
+
+	private String formatValue(final Long value) {
+		if (value != null) {
+			final NumberFormatter formatter = new NumberFormatter(
+					new DecimalFormat("#,##0"));
+			try {
+				return formatter.valueToString(value);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		return (value != null) ? String.valueOf(value) : "";
+	}
+
+	private Uap getUap(final String codeStr) {
+		Uap uap = null;
+		try {
+			final long code = Long.parseLong(codeStr);
+			uap = this.voucherFrame.getUap(code);
+		} catch (NumberFormatException ex) {
+			System.out.println(ex.getMessage());
+		}
+		return uap;
 	}
 }

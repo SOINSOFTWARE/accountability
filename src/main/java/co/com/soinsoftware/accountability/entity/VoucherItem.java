@@ -188,6 +188,11 @@ public class Voucheritem implements Serializable, Comparable<Voucheritem> {
 	public int compareTo(final Voucheritem other) {
 		final Long firstCode = this.uap.getCode();
 		final Long secondCode = other.uap.getCode();
+		if (firstCode == 0) {
+			return 1;
+		} else if (secondCode == 0) {
+			return -1;
+		}
 		if (firstCode.compareTo(secondCode) == 0) {
 			final String firstName = (this.uap.getName() != null) ? this.uap
 					.getName() : "";

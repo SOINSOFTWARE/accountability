@@ -97,8 +97,9 @@ public class JFVoucher extends JDialog {
 		this.jtfCompanyName.setText(this.company.getName());
 		this.voucherTypeXCompany = null;
 		this.voucherItemSet = new HashSet<>();
+		this.addVoucherItem();
 		this.setVoucherTypeXCompanyData("", "", "");
-		this.jdcDate.setDate(null);
+		this.jdcDate.setDate(new Date());
 		this.jdcDate.setMaxSelectableDate(new Date());
 		this.jtfTotalDebt.setText("0");
 		this.jtfTotalCredit.setText("0");
@@ -119,6 +120,15 @@ public class JFVoucher extends JDialog {
 		this.jdcDate.requestFocus();
 	}
 
+	public void setTextToJtfTotalDebt(final String value) {
+		this.jtfTotalDebt.setText(value);
+
+	}
+
+	public void setTextToJtfTotalCredit(final String value) {
+		this.jtfTotalCredit.setText(value);
+	}
+
 	public void addVoucherItem(final Uap uap) {
 		final Date currentDate = new Date();
 		final Voucheritem voucherItem = new Voucheritem(uap, null, "", "", 0,
@@ -130,6 +140,20 @@ public class JFVoucher extends JDialog {
 		}
 		this.voucherItemSet.add(voucherItem);
 		this.refreshTableData();
+	}
+
+	public Uap getUap(final long code) {
+		this.uapListFrame.refresh(this.company);
+		return this.uapListFrame.getUap(code);
+	}
+
+	private void addVoucherItem() {
+		final Date currentDate = new Date();
+		final Uap uap = new Uap(0, "", 3, true, true, true, currentDate,
+				currentDate, true);
+		final Voucheritem voucherItem = new Voucheritem(uap, null, "", "", 0,
+				0, currentDate, currentDate, true);
+		this.voucherItemSet.add(voucherItem);
 	}
 
 	public void setVoucherListFrame(final JFVoucherList voucherListFrame) {
@@ -146,7 +170,7 @@ public class JFVoucher extends JDialog {
 	private void refreshTableData() {
 		final List<Voucheritem> voucherItemList = this.buildVoucherItemList();
 		final TableModel model = new VoucherItemTableModel(voucherItemList,
-				this.jtfTotalDebt, this.jtfTotalCredit);
+				this);
 		this.jtbUapList.setModel(model);
 		this.jtbUapList.setFillsViewportHeight(true);
 		this.setTableColumnDimensions();
@@ -323,6 +347,21 @@ public class JFVoucher extends JDialog {
 		this.jpActionButtons.setVisible(visible);
 		this.jbtSave.setVisible(visible);
 		this.jbtClean.setVisible(visible);
+	}
+
+	private void removeEmptyUap() {
+		if (this.voucherItemSet != null && this.voucherItemSet.size() > 0) {
+			final Iterator<Voucheritem> itemIterator = this.voucherItemSet
+					.iterator();
+			while (itemIterator.hasNext()) {
+				final Voucheritem item = itemIterator.next();
+				final Uap uap = item.getUap();
+				if (uap.getCode() == 0) {
+					itemIterator.remove();
+					break;
+				}
+			}
+		}
 	}
 
 	/**
@@ -1081,6 +1120,7 @@ public class JFVoucher extends JDialog {
 	}// GEN-LAST:event_jbtCloseActionPerformed
 
 	private void jbtSaveActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jbtSaveActionPerformed
+		this.removeEmptyUap();
 		if (this.validateDataForSave()) {
 			final int confirmation = ViewUtils.showConfirmDialog(this,
 					ViewUtils.MSG_SAVE_QUESTION, ViewUtils.TITLE_SAVED);
@@ -1097,7 +1137,11 @@ public class JFVoucher extends JDialog {
 						ViewUtils.TITLE_SAVED, JOptionPane.INFORMATION_MESSAGE);
 				this.refresh(this.company, null);
 				this.mainFrame.refresh();
+			} else {
+				this.addVoucherItem();
 			}
+		} else {
+			this.addVoucherItem();
 		}
 	}// GEN-LAST:event_jbtSaveActionPerformed
 

@@ -61,7 +61,7 @@ public class JFUapList extends JDialog {
 		this.initComponents();
 		final Dimension screenSize = Toolkit.getDefaultToolkit()
 				.getScreenSize();
-		this.setLocation((int) (screenSize.getWidth() / 2 - 420),
+		this.setLocation((int) (screenSize.getWidth() / 2 - 290),
 				(int) (screenSize.getHeight() / 2 - 350));
 		this.setModal(true);
 		this.addDocumentListenerToJtfCode();

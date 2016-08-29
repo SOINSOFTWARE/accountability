@@ -59,12 +59,13 @@ public class VoucherItemTableModel extends AbstractTableModel {
 
 	@Override
 	public boolean isCellEditable(final int row, final int col) {
+		this.validateToRemoveZeroValue(row, col);
 		final int lastRow = this.voucherItemList.size() - 1;
 		return (col == 0 && row == lastRow) || (col > 1 && row < lastRow);
 	}
 
 	@Override
-	public void setValueAt(final Object value, final int row, final int col) {
+	public void setValueAt(Object value, final int row, final int col) {
 		final Voucheritem voucherItem = this.voucherItemList.get(row);
 		if (col == 0) {
 			final Uap uap = this.getUap((String) value);
@@ -79,8 +80,14 @@ public class VoucherItemTableModel extends AbstractTableModel {
 		} else if (col == 3) {
 			voucherItem.setSource((String) value);
 		} else if (col == 4) {
+			if (value instanceof String) {
+				value = this.getLongValue((String) value);
+			}
 			voucherItem.setDebtvalue((Long) value);
 		} else if (col == 5) {
+			if (value instanceof String) {
+				value = this.getLongValue((String) value);
+			}
 			voucherItem.setCreditvalue((Long) value);
 		} else {
 			voucherItem.setDelete((Boolean) value);
@@ -165,5 +172,28 @@ public class VoucherItemTableModel extends AbstractTableModel {
 			System.out.println(ex.getMessage());
 		}
 		return uap;
+	}
+
+	private void validateToRemoveZeroValue(final int row, final int col) {
+		if (col == 4 || col == 5) {
+			final Voucheritem item = this.voucherItemList.get(row);
+			if (item.getUap().getCode() > 0) {
+				if ((col == 4 && item.getDebtvalue() == 0)
+						|| (col == 5 && item.getCreditvalue() == 0)) {
+					data[row][col] = "";
+					fireTableCellUpdated(row, col);
+				}
+			}
+		}
+	}
+
+	private long getLongValue(final String valueStr) {
+		long value = 0;
+		try {
+			value = Long.parseLong(valueStr);
+		} catch (NumberFormatException ex) {
+			System.out.println(ex.getMessage());
+		}
+		return value;
 	}
 }

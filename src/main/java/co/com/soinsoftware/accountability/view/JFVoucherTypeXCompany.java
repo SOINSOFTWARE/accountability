@@ -16,8 +16,10 @@ import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;
 
 import co.com.soinsoftware.accountability.controller.CompanyController;
+import co.com.soinsoftware.accountability.controller.RoleController;
 import co.com.soinsoftware.accountability.controller.VoucherTypeController;
 import co.com.soinsoftware.accountability.entity.Company;
+import co.com.soinsoftware.accountability.entity.User;
 import co.com.soinsoftware.accountability.entity.Vouchertype;
 import co.com.soinsoftware.accountability.entity.Vouchertypexcompany;
 import co.com.soinsoftware.accountability.util.VoucherTypesXCompaniesTableModel;
@@ -25,7 +27,7 @@ import co.com.soinsoftware.accountability.util.VoucherTypesXCompaniesTableModel;
 /**
  * @author Carlos Rodriguez
  * @since 09/08/2016
- * @version 1.0
+ * @version 1.1
  */
 public class JFVoucherTypeXCompany extends JDialog {
 
@@ -39,16 +41,22 @@ public class JFVoucherTypeXCompany extends JDialog {
 
 	private static final String MSG_VOUCHER_TYPE_REQUIRED = "Seleccione un comprobante";
 
-	private final VoucherTypeController voucherTypeController;
+	private final Company company;
 
 	private final CompanyController companyController;
+
+	private final User loggedUser;
+
+	private final VoucherTypeController voucherTypeController;
 
 	private List<Company> companyList;
 
 	private List<Vouchertype> voucherTypeList;
 
-	public JFVoucherTypeXCompany() {
+	public JFVoucherTypeXCompany(final User loggedUser, final Company company) {
+		this.company = company;
 		this.companyController = new CompanyController();
+		this.loggedUser = loggedUser;
 		this.voucherTypeController = new VoucherTypeController();
 		this.initComponents();
 		final Dimension screenSize = Toolkit.getDefaultToolkit()
@@ -56,28 +64,35 @@ public class JFVoucherTypeXCompany extends JDialog {
 		this.setLocation((int) (screenSize.getWidth() / 2 - 500),
 				(int) (screenSize.getHeight() / 2 - 350));
 		this.setModal(true);
+		this.jcbCompany.setEnabled(false);
+		final RoleController roleController = RoleController.getInstance();
+		this.jbtDelete.setVisible(!roleController.isAuxRol(this.loggedUser));
 	}
 
 	public void refresh() {
 		this.jtfNumberFrom.setText("0");
 		this.jtfNumberTo.setText("0");
 		this.setCompanyModel();
-		this.setCompanySelectedItem();
 		this.setVoucherTypeModel();
 		this.jcbVoucherType.setSelectedIndex(0);
 		this.refreshTableData();
 	}
 
 	private void setCompanyModel() {
+		int selectedIndex = 0;
 		this.companyList = this.companyController.selectCompanies();
 		final DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>();
 		model.addElement("Seleccione uno...");
 		if (this.companyList != null && this.companyList.size() > 0) {
 			for (final Company company : this.companyList) {
 				model.addElement(company.getName());
+				if (this.company.equals(company)) {
+					selectedIndex = this.companyList.indexOf(company) + 1;
+				}
 			}
 		}
 		this.jcbCompany.setModel(model);
+		this.jcbCompany.setSelectedIndex(selectedIndex);
 	}
 
 	private void setVoucherTypeModel() {
@@ -94,19 +109,9 @@ public class JFVoucherTypeXCompany extends JDialog {
 		this.jcbVoucherType.setModel(model);
 	}
 
-	private void setCompanySelectedItem() {
-		if (this.jcbCompany.getItemCount() == 2) {
-			this.jcbCompany.setSelectedIndex(1);
-			this.jcbCompany.setEnabled(false);
-		} else {
-			this.jcbCompany.setSelectedIndex(0);
-			this.jcbCompany.setEnabled(true);
-		}
-	}
-
 	private void refreshTableData() {
 		final List<Vouchertypexcompany> voucherTypeXCompList = this.voucherTypeController
-				.selectVoucherTypesXCompany();
+				.selectVoucherTypesXCompany(this.company);
 		final TableModel model = new VoucherTypesXCompaniesTableModel(
 				voucherTypeXCompList);
 		this.jtbVoucherTypeList.setModel(model);

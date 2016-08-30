@@ -19,16 +19,18 @@ import javax.swing.JOptionPane;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
+import co.com.soinsoftware.accountability.controller.RoleController;
 import co.com.soinsoftware.accountability.controller.UapController;
 import co.com.soinsoftware.accountability.entity.Company;
 import co.com.soinsoftware.accountability.entity.Uap;
 import co.com.soinsoftware.accountability.entity.Uapxcompany;
+import co.com.soinsoftware.accountability.entity.User;
 import co.com.soinsoftware.accountability.util.UapTableModel;
 
 /**
  * @author Carlos Rodriguez
  * @since 18/08/2016
- * @version 1.0
+ * @version 1.1
  */
 public class JFUap extends JDialog {
 
@@ -48,9 +50,11 @@ public class JFUap extends JDialog {
 
 	public static final String MSG_SELECT_ONE_SUBACCOUNT_REQUIRED = "Seleccione la sub-cuenta a la que pertenece la nueva cuenta auxiliar";
 
+	private final Company company;
+
 	private final UapController uapController;
 
-	private Company company;
+	private final User loggedUser;
 
 	private List<Uap> uapClassList;
 
@@ -60,8 +64,9 @@ public class JFUap extends JDialog {
 
 	private List<Uap> uapSubAccountList;
 
-	public JFUap(final Company company) {
+	public JFUap(final User loggedUser, final Company company) {
 		this.company = company;
+		this.loggedUser = loggedUser;
 		this.uapController = new UapController();
 		this.initComponents();
 		final Dimension screenSize = Toolkit.getDefaultToolkit()
@@ -71,6 +76,8 @@ public class JFUap extends JDialog {
 		this.setModal(true);
 		this.buildButtonGroup();
 		this.setTextFieldLimits();
+		final RoleController roleController = RoleController.getInstance();
+		this.jbtDelete.setVisible(!roleController.isAuxRol(this.loggedUser));
 	}
 
 	public void refresh() {

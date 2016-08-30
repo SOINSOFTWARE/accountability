@@ -20,10 +20,12 @@ import javax.swing.JOptionPane;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
+import co.com.soinsoftware.accountability.controller.RoleController;
 import co.com.soinsoftware.accountability.controller.VoucherController;
 import co.com.soinsoftware.accountability.controller.VoucherTypeController;
 import co.com.soinsoftware.accountability.entity.Company;
 import co.com.soinsoftware.accountability.entity.Uap;
+import co.com.soinsoftware.accountability.entity.User;
 import co.com.soinsoftware.accountability.entity.Voucher;
 import co.com.soinsoftware.accountability.entity.Voucheritem;
 import co.com.soinsoftware.accountability.entity.Vouchertype;
@@ -35,7 +37,7 @@ import com.toedter.calendar.JTextFieldDateEditor;
 /**
  * @author Carlos Rodriguez
  * @since 11/08/2016
- * @version 1.0
+ * @version 1.1
  */
 public class JFVoucher extends JDialog {
 
@@ -67,6 +69,8 @@ public class JFVoucher extends JDialog {
 
 	private final Company company;
 
+	private final User loggedUser;
+
 	private JFVoucherList voucherListFrame;
 
 	private Voucher voucher;
@@ -75,9 +79,11 @@ public class JFVoucher extends JDialog {
 
 	private Vouchertypexcompany voucherTypeXCompany;
 
-	public JFVoucher(final JFMain mainFrame, final Company company) {
+	public JFVoucher(final JFMain mainFrame, final User loggedUser,
+			final Company company) {
 		this.mainFrame = mainFrame;
 		this.company = company;
+		this.loggedUser = loggedUser;
 		this.voucherController = new VoucherController();
 		this.voucherTypeController = new VoucherTypeController();
 		this.uapListFrame = new JFUapList(this, this.company);
@@ -133,11 +139,8 @@ public class JFVoucher extends JDialog {
 		final Date currentDate = new Date();
 		final Voucheritem voucherItem = new Voucheritem(uap, null, "", "", 0,
 				0, currentDate, currentDate, true);
-		if (uap.getLevel() > 3) {
-			this.removeParentVoucherItem(voucherItem);
-		} else {
-			this.removeChildrenVoucherItem(voucherItem);
-		}
+		this.removeParentVoucherItem(voucherItem);
+		this.removeChildrenVoucherItem(voucherItem);
 		this.voucherItemSet.add(voucherItem);
 		this.refreshTableData();
 	}
@@ -210,12 +213,13 @@ public class JFVoucher extends JDialog {
 					if (newVIUap.getLevel() == 5) {
 						final Uap subAccount = newVIUap.getUap();
 						final Uap account = subAccount.getUap();
-						if (uap.equals(subAccount) || uap.equals(account)) {
+						if (uap.getCode() == subAccount.getCode()
+								|| uap.getCode() == account.getCode()) {
 							voucherItemIterator.remove();
 						}
 					} else {
 						final Uap account = newVIUap.getUap();
-						if (uap.equals(account)) {
+						if (uap.getCode() == account.getCode()) {
 							voucherItemIterator.remove();
 						}
 					}
@@ -235,14 +239,14 @@ public class JFVoucher extends JDialog {
 				if (uap.getLevel() > newVIUap.getLevel()) {
 					if (uap.getLevel() == 5) {
 						final Uap subAccount = uap.getUap();
-						final Uap account = uap.getUap();
-						if (newVIUap.equals(subAccount)
-								|| newVIUap.equals(account)) {
+						final Uap account = subAccount.getUap();
+						if (newVIUap.getCode() == subAccount.getCode()
+								|| newVIUap.getCode() == account.getCode()) {
 							voucherItemIterator.remove();
 						}
 					} else {
 						final Uap account = uap.getUap();
-						if (newVIUap.equals(account)) {
+						if (newVIUap.getCode() == account.getCode()) {
 							voucherItemIterator.remove();
 						}
 					}
@@ -326,6 +330,7 @@ public class JFVoucher extends JDialog {
 	}
 
 	private void showVoucherData(final Voucher voucher) {
+		final RoleController roleController = RoleController.getInstance();
 		if (voucher != null) {
 			final Vouchertype voucherType = voucher.getVouchertypexcompany()
 					.getVouchertype();
@@ -335,7 +340,8 @@ public class JFVoucher extends JDialog {
 			this.jdcDate.setDate(voucher.getVoucherdate());
 			this.voucherItemSet = voucher.getVoucheritems();
 		}
-		this.jbtDeleteVoucher.setVisible((voucher != null));
+		this.jbtDeleteVoucher.setVisible((voucher != null)
+				&& !roleController.isAuxRol(this.loggedUser));
 		this.jtbUapList.setEnabled((voucher == null));
 		this.jdcDate.setEnabled((voucher == null));
 		this.showActionButtons((voucher == null));

@@ -69,7 +69,7 @@ public class VoucherItemTableModel extends AbstractTableModel {
 		final Voucheritem voucherItem = this.voucherItemList.get(row);
 		if (col == 0) {
 			final Uap uap = this.getUap((String) value);
-			if (uap != null) {
+			if (uap != null && uap.getLevel() > 2) {
 				this.voucherFrame.addVoucherItem(uap);
 				return;
 			} else {

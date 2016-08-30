@@ -15,7 +15,7 @@ import co.com.soinsoftware.accountability.view.JFVoucherTypeXCompany;
 /**
  * @author Carlos Rodriguez
  * @since 01/08/2016
- * @version 1.0
+ * @version 1.1
  */
 public class MenuController {
 
@@ -46,12 +46,14 @@ public class MenuController {
 		this.loggedUser = user;
 		this.balanceFrame = new JFBalance();
 		this.resultStateFrame = new JFResultState();
-		this.voucherFrame = new JFVoucher(mainFrame, this.company);
-		this.uapFrame = new JFUap(this.company);
+		this.voucherFrame = new JFVoucher(mainFrame, this.loggedUser,
+				this.company);
+		this.uapFrame = new JFUap(this.loggedUser, this.company);
 		this.voucherListFrame = new JFVoucherList(this.voucherFrame);
 		this.userFrame = new JFUser();
 		this.voucherTypeFrame = new JFVoucherType();
-		this.voucherTypeXCompFrame = new JFVoucherTypeXCompany();
+		this.voucherTypeXCompFrame = new JFVoucherTypeXCompany(this.loggedUser,
+				this.company);
 	}
 
 	public void showBalanceFrame() {

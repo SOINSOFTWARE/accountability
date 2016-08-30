@@ -30,7 +30,7 @@ import co.com.soinsoftware.accountability.util.UapListTableModel;
 /**
  * @author Carlos Rodriguez
  * @since 11/08/2016
- * @version 1.0
+ * @version 2.0
  */
 public class JFUapList extends JDialog {
 
@@ -429,6 +429,7 @@ public class JFUapList extends JDialog {
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
+	// <editor-fold defaultstate="collapsed"
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
@@ -465,6 +466,8 @@ public class JFUapList extends JDialog {
 		jrbEmpHelper = new javax.swing.JRadioButton();
 		jrbSubAccount = new javax.swing.JRadioButton();
 		jrbAccount = new javax.swing.JRadioButton();
+		jpTitleNewAccount = new javax.swing.JPanel();
+		jlbTitleNewAccount = new javax.swing.JLabel();
 
 		setTitle("Seleccione una cuenta");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(
@@ -692,7 +695,7 @@ public class JFUapList extends JDialog {
 														.addComponent(
 																jspUapList,
 																javax.swing.GroupLayout.DEFAULT_SIZE,
-																330,
+																345,
 																Short.MAX_VALUE)
 														.addComponent(
 																jpActionSelect,
@@ -734,12 +737,10 @@ public class JFUapList extends JDialog {
 												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 										.addComponent(
 												jpUapList,
-												javax.swing.GroupLayout.PREFERRED_SIZE,
 												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addContainerGap(
 												javax.swing.GroupLayout.DEFAULT_SIZE,
-												Short.MAX_VALUE)));
+												Short.MAX_VALUE)
+										.addContainerGap()));
 
 		jtpUapList.addTab("Plan único de cuentas", jpUapListTab);
 
@@ -1004,6 +1005,32 @@ public class JFUapList extends JDialog {
 												javax.swing.GroupLayout.DEFAULT_SIZE,
 												Short.MAX_VALUE)));
 
+		jpTitleNewAccount.setBackground(new java.awt.Color(255, 255, 255));
+
+		jlbTitleNewAccount.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+		jlbTitleNewAccount.setText("Nueva cuenta");
+
+		javax.swing.GroupLayout jpTitleNewAccountLayout = new javax.swing.GroupLayout(
+				jpTitleNewAccount);
+		jpTitleNewAccount.setLayout(jpTitleNewAccountLayout);
+		jpTitleNewAccountLayout.setHorizontalGroup(jpTitleNewAccountLayout
+				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(
+						jpTitleNewAccountLayout
+								.createSequentialGroup()
+								.addContainerGap()
+								.addComponent(jlbTitleNewAccount)
+								.addContainerGap(
+										javax.swing.GroupLayout.DEFAULT_SIZE,
+										Short.MAX_VALUE)));
+		jpTitleNewAccountLayout.setVerticalGroup(jpTitleNewAccountLayout
+				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(
+						jpTitleNewAccountLayout.createSequentialGroup()
+								.addGap(32, 32, 32)
+								.addComponent(jlbTitleNewAccount)
+								.addContainerGap(34, Short.MAX_VALUE)));
+
 		javax.swing.GroupLayout jpNewUapTabLayout = new javax.swing.GroupLayout(
 				jpNewUapTab);
 		jpNewUapTab.setLayout(jpNewUapTabLayout);
@@ -1017,18 +1044,33 @@ public class JFUapList extends JDialog {
 										javax.swing.GroupLayout.PREFERRED_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE,
 										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addContainerGap(341, Short.MAX_VALUE)));
-		jpNewUapTabLayout.setVerticalGroup(jpNewUapTabLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(
-						jpNewUapTabLayout
-								.createSequentialGroup()
-								.addContainerGap()
-								.addComponent(jpNewUap,
-										javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE,
-										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addContainerGap(59, Short.MAX_VALUE)));
+								.addContainerGap(341, Short.MAX_VALUE))
+				.addComponent(jpTitleNewAccount,
+						javax.swing.GroupLayout.DEFAULT_SIZE,
+						javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
+		jpNewUapTabLayout
+				.setVerticalGroup(jpNewUapTabLayout
+						.createParallelGroup(
+								javax.swing.GroupLayout.Alignment.LEADING)
+						.addGroup(
+								javax.swing.GroupLayout.Alignment.TRAILING,
+								jpNewUapTabLayout
+										.createSequentialGroup()
+										.addComponent(
+												jpTitleNewAccount,
+												javax.swing.GroupLayout.PREFERRED_SIZE,
+												javax.swing.GroupLayout.DEFAULT_SIZE,
+												javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(
+												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										.addComponent(
+												jpNewUap,
+												javax.swing.GroupLayout.PREFERRED_SIZE,
+												javax.swing.GroupLayout.DEFAULT_SIZE,
+												javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addContainerGap(
+												javax.swing.GroupLayout.DEFAULT_SIZE,
+												Short.MAX_VALUE)));
 
 		jtpUapList.addTab("Nueva cuenta", jpNewUapTab);
 
@@ -1054,18 +1096,18 @@ public class JFUapList extends JDialog {
 						layout.createSequentialGroup()
 								.addComponent(jtpUapList,
 										javax.swing.GroupLayout.PREFERRED_SIZE,
-										546,
+										572,
 										javax.swing.GroupLayout.PREFERRED_SIZE)
 								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-										javax.swing.GroupLayout.DEFAULT_SIZE,
-										Short.MAX_VALUE)
+										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 								.addComponent(jpAction,
 										javax.swing.GroupLayout.PREFERRED_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE,
 										javax.swing.GroupLayout.PREFERRED_SIZE)
 								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+										javax.swing.GroupLayout.DEFAULT_SIZE,
+										Short.MAX_VALUE)
 								.addComponent(lbImage,
 										javax.swing.GroupLayout.PREFERRED_SIZE,
 										35,
@@ -1205,6 +1247,7 @@ public class JFUapList extends JDialog {
 	private javax.swing.JLabel jlbCode1;
 	private javax.swing.JLabel jlbName;
 	private javax.swing.JLabel jlbTitle;
+	private javax.swing.JLabel jlbTitleNewAccount;
 	private javax.swing.JLabel jlbUapAccount;
 	private javax.swing.JLabel jlbUapClass;
 	private javax.swing.JLabel jlbUapGroup;
@@ -1215,6 +1258,7 @@ public class JFUapList extends JDialog {
 	private javax.swing.JPanel jpNewUap;
 	private javax.swing.JPanel jpNewUapTab;
 	private javax.swing.JPanel jpTitle;
+	private javax.swing.JPanel jpTitleNewAccount;
 	private javax.swing.JPanel jpUapList;
 	private javax.swing.JPanel jpUapListTab;
 	private javax.swing.JRadioButton jrbAccount;

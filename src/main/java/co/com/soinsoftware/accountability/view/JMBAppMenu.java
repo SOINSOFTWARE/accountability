@@ -14,7 +14,7 @@ import co.com.soinsoftware.accountability.controller.MenuController;
 /**
  * @author Carlos Rodriguez
  * @since 01/08/2016
- * @version 1.0
+ * @version 1.1
  */
 public class JMBAppMenu extends JMenuBar implements ActionListener {
 
@@ -48,7 +48,9 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 		super();
 		this.controller = controller;
 		this.addMenuAction();
-		this.addMenuReports();
+		if (!this.controller.isAuxRol()) {
+			this.addMenuReports();
+		}
 		this.addMenuConfiguration();
 	}
 

@@ -14,11 +14,11 @@ import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;
 
 import co.com.soinsoftware.accountability.controller.CompanyController;
+import co.com.soinsoftware.accountability.controller.RoleController;
 import co.com.soinsoftware.accountability.controller.UapController;
 import co.com.soinsoftware.accountability.entity.Company;
 import co.com.soinsoftware.accountability.entity.Companytype;
 import co.com.soinsoftware.accountability.entity.Documenttype;
-import co.com.soinsoftware.accountability.entity.Rol;
 import co.com.soinsoftware.accountability.entity.Uap;
 import co.com.soinsoftware.accountability.entity.Uapxcompany;
 import co.com.soinsoftware.accountability.entity.User;
@@ -109,7 +109,7 @@ public class JFCompany extends JDialog {
 
 	private void showCompanyEditionTab() {
 		final int indexOfTab = this.jtpCompany.indexOfTab("Editar empresas");
-		if ((this.isLoggedUserAdminRol() || this.isLoggedUserAccountRol())) {
+		if (this.canEditCompanies()) {
 			if (indexOfTab == -1) {
 				this.jtpCompany.addTab("Editar empresas", jpCompanyTab);
 			}
@@ -120,16 +120,10 @@ public class JFCompany extends JDialog {
 		}
 	}
 
-	private boolean isLoggedUserAdminRol() {
-		final Rol rol = this.loggedUser.getRol();
-		final String code = rol.getCode();
-		return code.equals("ADMIN");
-	}
-
-	private boolean isLoggedUserAccountRol() {
-		final Rol rol = this.loggedUser.getRol();
-		final String code = rol.getCode();
-		return code.equals("CONT");
+	private boolean canEditCompanies() {
+		final RoleController roleController = RoleController.getInstance();
+		return roleController.isAdminRol(this.loggedUser)
+				|| roleController.isAccountRol(this.loggedUser);
 	}
 
 	private void setCompanyTypeModel() {

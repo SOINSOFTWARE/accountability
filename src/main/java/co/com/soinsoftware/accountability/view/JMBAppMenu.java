@@ -102,7 +102,7 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 	private void addMenuConfiguration() {
 		final JMenu menu = new JMenu(MENU_CONFIGURATION);
 		menu.setMnemonic(KeyEvent.VK_C);
-		if (this.controller.isAdminRol() || this.controller.isAccountRol()) {
+		if (!this.controller.isAuxRol()) {
 			final JMenuItem miVoucherType = ViewUtils
 					.createJMenuItem(MENU_CONFIGURATION_VOUCHER_TYPE,
 							KeyEvent.VK_C, KeyStroke.getKeyStroke(

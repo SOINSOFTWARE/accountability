@@ -1,7 +1,6 @@
 package co.com.soinsoftware.accountability.controller;
 
 import co.com.soinsoftware.accountability.entity.Company;
-import co.com.soinsoftware.accountability.entity.Rol;
 import co.com.soinsoftware.accountability.entity.User;
 import co.com.soinsoftware.accountability.view.JFBalance;
 import co.com.soinsoftware.accountability.view.JFMain;
@@ -95,13 +94,18 @@ public class MenuController {
 		this.voucherListFrame.setVisible(true);
 	}
 
-	public boolean isAdminRol() {
-		final Rol rol = this.loggedUser.getRol();
-		return rol.getCode().equals("ADMIN");
+	public boolean isAccountRol() {
+		final RoleController roleController = RoleController.getInstance();
+		return roleController.isAccountRol(this.loggedUser);
 	}
 
-	public boolean isAccountRol() {
-		final Rol rol = this.loggedUser.getRol();
-		return rol.getCode().equals("CONT");
+	public boolean isAdminRol() {
+		final RoleController roleController = RoleController.getInstance();
+		return roleController.isAdminRol(this.loggedUser);
+	}
+
+	public boolean isAuxRol() {
+		final RoleController roleController = RoleController.getInstance();
+		return roleController.isAuxRol(this.loggedUser);
 	}
 }

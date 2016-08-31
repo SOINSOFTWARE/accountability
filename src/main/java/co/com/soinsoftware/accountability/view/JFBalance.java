@@ -22,7 +22,7 @@ import co.com.soinsoftware.accountability.controller.VoucherController;
 import co.com.soinsoftware.accountability.entity.Company;
 import co.com.soinsoftware.accountability.entity.Report;
 import co.com.soinsoftware.accountability.entity.Voucher;
-import co.com.soinsoftware.accountability.report.ThreadGenerator;
+import co.com.soinsoftware.accountability.report.ReportGenerator;
 import co.com.soinsoftware.accountability.util.ReportTableModel;
 
 /**
@@ -704,7 +704,7 @@ public class JFBalance extends JDialog {
 
 	private void jbtPrintActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jbtPrintActionPerformed
 		final Report balanceReport = this.getBalanceFromTableModel();
-		final ThreadGenerator generator = new ThreadGenerator(balanceReport,
+		final ReportGenerator generator = new ReportGenerator(balanceReport,
 				true);
 		generator.start();
 		this.setVisible(false);

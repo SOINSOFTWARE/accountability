@@ -14,7 +14,7 @@ import co.com.soinsoftware.accountability.controller.MenuController;
 /**
  * @author Carlos Rodriguez
  * @since 01/08/2016
- * @version 1.1
+ * @version 1.2
  */
 public class JMBAppMenu extends JMenuBar implements ActionListener {
 
@@ -40,6 +40,8 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 
 	private static final String MENU_REPORTS_BALANCE = "Balance general";
 
+	private static final String MENU_REPORTS_DIARY_BOOK = "Libro diario";
+
 	private static final String MENU_REPORTS_RESULT_STATE = "Estado de resultado";
 
 	private final MenuController controller;
@@ -48,9 +50,7 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 		super();
 		this.controller = controller;
 		this.addMenuAction();
-		if (!this.controller.isAuxRol()) {
-			this.addMenuReports();
-		}
+		this.addMenuReports();
 		this.addMenuConfiguration();
 	}
 
@@ -79,6 +79,9 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 		case MENU_REPORTS_BALANCE:
 			this.controller.showBalanceFrame();
 			break;
+		case MENU_REPORTS_DIARY_BOOK:
+			this.controller.showDiaryBookFrame();
+			break;
 		case MENU_REPORTS_RESULT_STATE:
 			this.controller.showResultStateFrame();
 			break;
@@ -105,28 +108,22 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 		final JMenu menu = new JMenu(MENU_CONFIGURATION);
 		menu.setMnemonic(KeyEvent.VK_C);
 		if (!this.controller.isAuxRol()) {
-			final JMenuItem miVoucherType = ViewUtils
-					.createJMenuItem(MENU_CONFIGURATION_VOUCHER_TYPE,
-							KeyEvent.VK_C, KeyStroke.getKeyStroke(
-									KeyEvent.VK_5, ActionEvent.ALT_MASK));
+			final JMenuItem miVoucherType = ViewUtils.createJMenuItem(
+					MENU_CONFIGURATION_VOUCHER_TYPE, KeyEvent.VK_C, null);
 			miVoucherType.addActionListener(this);
 			menu.add(miVoucherType);
 		}
 		final JMenuItem miVoucherTypeXComp = ViewUtils.createJMenuItem(
-				MENU_CONFIGURATION_VOUCHER_TYPE_COMPANY, KeyEvent.VK_X,
-				KeyStroke.getKeyStroke(KeyEvent.VK_6, ActionEvent.ALT_MASK));
+				MENU_CONFIGURATION_VOUCHER_TYPE_COMPANY, KeyEvent.VK_X, null);
 		miVoucherTypeXComp.addActionListener(this);
 		menu.add(miVoucherTypeXComp);
 		final JMenuItem miUap = ViewUtils.createJMenuItem(
-				MENU_CONFIGURATION_UNIQUE_ACCOUNT_PLAN, KeyEvent.VK_P,
-				KeyStroke.getKeyStroke(KeyEvent.VK_8, ActionEvent.ALT_MASK));
+				MENU_CONFIGURATION_UNIQUE_ACCOUNT_PLAN, KeyEvent.VK_P, null);
 		miUap.addActionListener(this);
 		menu.add(miUap);
 		if (this.controller.isAdminRol()) {
-			final JMenuItem miUser = ViewUtils
-					.createJMenuItem(MENU_CONFIGURATION_USER, KeyEvent.VK_U,
-							KeyStroke.getKeyStroke(KeyEvent.VK_9,
-									ActionEvent.ALT_MASK));
+			final JMenuItem miUser = ViewUtils.createJMenuItem(
+					MENU_CONFIGURATION_USER, KeyEvent.VK_U, null);
 			miUser.addActionListener(this);
 			menu.add(miUser);
 		}
@@ -134,18 +131,28 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 	}
 
 	private void addMenuReports() {
-		final JMenu menu = new JMenu(MENU_REPORTS);
-		menu.setMnemonic(KeyEvent.VK_I);
-		final JMenuItem miBalance = ViewUtils.createJMenuItem(
-				MENU_REPORTS_BALANCE, KeyEvent.VK_B,
-				KeyStroke.getKeyStroke(KeyEvent.VK_3, ActionEvent.ALT_MASK));
-		miBalance.addActionListener(this);
-		menu.add(miBalance);
-		final JMenuItem miResultState = ViewUtils.createJMenuItem(
-				MENU_REPORTS_RESULT_STATE, KeyEvent.VK_E,
-				KeyStroke.getKeyStroke(KeyEvent.VK_4, ActionEvent.ALT_MASK));
-		miResultState.addActionListener(this);
-		menu.add(miResultState);
-		this.add(menu);
+		if (!this.controller.isAuxRol()) {
+			final JMenu menu = new JMenu(MENU_REPORTS);
+			menu.setMnemonic(KeyEvent.VK_I);
+			final JMenuItem miBalance = ViewUtils
+					.createJMenuItem(MENU_REPORTS_BALANCE, KeyEvent.VK_B,
+							KeyStroke.getKeyStroke(KeyEvent.VK_3,
+									ActionEvent.ALT_MASK));
+			miBalance.addActionListener(this);
+			menu.add(miBalance);
+			final JMenuItem miResultState = ViewUtils
+					.createJMenuItem(MENU_REPORTS_RESULT_STATE, KeyEvent.VK_E,
+							KeyStroke.getKeyStroke(KeyEvent.VK_4,
+									ActionEvent.ALT_MASK));
+			miResultState.addActionListener(this);
+			menu.add(miResultState);
+			final JMenuItem miDiaryBook = ViewUtils
+					.createJMenuItem(MENU_REPORTS_DIARY_BOOK, KeyEvent.VK_L,
+							KeyStroke.getKeyStroke(KeyEvent.VK_5,
+									ActionEvent.ALT_MASK));
+			miDiaryBook.addActionListener(this);
+			menu.add(miDiaryBook);
+			this.add(menu);
+		}
 	}
 }

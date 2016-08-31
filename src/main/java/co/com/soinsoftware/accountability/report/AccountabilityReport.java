@@ -20,19 +20,14 @@ import co.com.soinsoftware.accountability.entity.Company;
 import co.com.soinsoftware.accountability.entity.Report;
 import co.com.soinsoftware.accountability.entity.ReportItem;
 
+/**
+ * @author Carlos Rodriguez
+ * @since 24/08/2016
+ * @version 1.0
+ */
 public class AccountabilityReport {
 
 	private static final String REPORT_NAME = "/reports/accountabilityReport.jasper";
-
-	private static final String PARAM_CEO = "CEO";
-	private static final String PARAM_COMPANY = "Company";
-	private static final String PARAM_DOCUMENT = "Document";
-	private static final String PARAM_DOCUMENT_CEO = "DocumentCEO";
-	private static final String PARAM_IS_JURIDICA = "IsJuridica";
-	private static final String PARAM_IS_BALANCE_REPORT = "IsBalanceReport";
-	private static final String PARAM_REPORT_DATE = "ReportDate";
-	private static final String PARAM_REPORT_NAME = "ReportName";
-	private static final String PARAM_VALUE_PASS_PLUS_PAT = "ValuePassPat";
 
 	private final Report report;
 
@@ -76,23 +71,26 @@ public class AccountabilityReport {
 	private Map<String, Object> createParameters() {
 		final Company company = this.report.getCompany();
 		final Map<String, Object> parameters = new HashMap<>();
-		parameters.put(PARAM_COMPANY, company.getName());
-		parameters.put(PARAM_DOCUMENT, company.getDocument());
-		parameters.put(PARAM_REPORT_DATE, this.report.getFormattedDate());
-		parameters.put(PARAM_REPORT_NAME, this.report.getName());
+		parameters.put(ReportGenerator.PARAM_COMPANY, company.getName());
+		parameters.put(ReportGenerator.PARAM_DOCUMENT, company.getDocument());
+		parameters.put(ReportGenerator.PARAM_REPORT_DATE,
+				this.report.getFormattedDate());
+		parameters
+				.put(ReportGenerator.PARAM_REPORT_NAME, this.report.getName());
 		String nameCEO = company.getName();
 		String documentCEO = company.getDocument();
 		if (company.getNameceo() != null && !company.getNameceo().equals("")) {
 			nameCEO = company.getNameceo();
 			documentCEO = String.valueOf(company.getDocumentceo());
 		}
-		parameters.put(PARAM_IS_JURIDICA, company.getCompanytype().getName()
-				.equals("Persona jurídica"));
-		parameters.put(PARAM_IS_BALANCE_REPORT, this.isBalanceReport);
-		parameters.put(PARAM_CEO, nameCEO);
-		parameters.put(PARAM_DOCUMENT_CEO, documentCEO);
+		parameters.put(ReportGenerator.PARAM_IS_JURIDICA, company
+				.getCompanytype().getName().equals("Persona jurídica"));
+		parameters.put(ReportGenerator.PARAM_IS_BALANCE_REPORT,
+				this.isBalanceReport);
+		parameters.put(ReportGenerator.PARAM_CEO, nameCEO);
+		parameters.put(ReportGenerator.PARAM_DOCUMENT_CEO, documentCEO);
 		if (isBalanceReport) {
-			parameters.put(PARAM_VALUE_PASS_PLUS_PAT,
+			parameters.put(ReportGenerator.PARAM_VALUE_PASS_PLUS_PAT,
 					this.getValueForPassivePlusPatrimonio());
 		}
 		return parameters;

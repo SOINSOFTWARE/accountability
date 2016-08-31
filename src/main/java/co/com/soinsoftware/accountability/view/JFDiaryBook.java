@@ -10,79 +10,57 @@ import java.awt.Toolkit;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
-import co.com.soinsoftware.accountability.controller.ResultStateController;
 import co.com.soinsoftware.accountability.controller.VoucherController;
 import co.com.soinsoftware.accountability.entity.Company;
-import co.com.soinsoftware.accountability.entity.Report;
 import co.com.soinsoftware.accountability.entity.Voucher;
+import co.com.soinsoftware.accountability.entity.Voucheritem;
 import co.com.soinsoftware.accountability.report.ReportGenerator;
-import co.com.soinsoftware.accountability.util.ReportTableModel;
+import co.com.soinsoftware.accountability.util.VoucherItemListTableModel;
 
 /**
  * @author Carlos Rodriguez
- * @since 23/08/2016
+ * @since 31/08/2016
  * @version 1.0
  */
-public class JFResultState extends JDialog {
+public class JFDiaryBook extends JDialog {
 
-	public static final String RANGE_MONTH = "Mensual";
+	private static final long serialVersionUID = -8645458407822046871L;
 
-	public static final String RANGE_YEAR = "Anual";
-
-	private static final long serialVersionUID = -3460235812032255314L;
+	private final Company company;
 
 	private final VoucherController voucherController;
 
-	private final ResultStateController reportController;
-
-	private Company company;
-
-	public JFResultState() {
+	public JFDiaryBook(final Company company) {
+		this.company = company;
 		this.voucherController = new VoucherController();
-		this.reportController = new ResultStateController();
 		this.initComponents();
 		final Dimension screenSize = Toolkit.getDefaultToolkit()
 				.getScreenSize();
-		this.setLocation((int) (screenSize.getWidth() / 2 - 470),
+		this.setLocation((int) (screenSize.getWidth() / 2 - 495),
 				(int) (screenSize.getHeight() / 2 - 350));
 		this.setModal(true);
-		this.setRangeModel();
 		this.setMonthModel();
 	}
 
-	public void refresh(final Company company) {
-		this.company = company;
+	public void refresh() {
 		this.jtfCompanyName.setText(this.company.getName());
 		this.jtfYear.setText(String.valueOf(Calendar.getInstance().get(
 				Calendar.YEAR)));
-		this.jcbRange.setSelectedIndex(0);
 		this.setJlsMonthToCurrentMonth();
 		this.refreshTableData();
+		this.refreshTotalSection();
 	}
 
 	public void refreshTableData() {
-		final Report report = this.buildReport();
-		this.refreshTableData(report);
-		this.jlbRangeSelected.setText(report.getFormattedDate());
-	}
-
-	private Report buildReport() {
 		final int year = this.getYear();
-		final String rangeSel = (String) this.jcbRange.getSelectedItem();
-		final int month = (rangeSel.equals(RANGE_MONTH)) ? this.jlsMonth
-				.getSelectedIndex() + 1 : -1;
-		final String monthName = this.jlsMonth.getSelectedValue();
+		final int month = this.jlsMonth.getSelectedIndex() + 1;
 		final List<Voucher> voucherList = this.voucherController.select(year,
 				month, this.company, null);
-		final String description = this.reportController
-				.getReportDateDescription(rangeSel, year, month, monthName);
-		final Report report = this.reportController.buildReport(this.company,
-				voucherList, description);
-		return report;
+		this.refreshTableData(voucherList);
 	}
 
 	private void setJlsMonthToCurrentMonth() {
@@ -98,21 +76,26 @@ public class JFResultState extends JDialog {
 		this.jlsMonth.setListData(months);
 	}
 
-	private void setRangeModel() {
-		final DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>();
-		model.addElement(RANGE_MONTH);
-		model.addElement(RANGE_YEAR);
-		this.jcbRange.setModel(model);
+	private void refreshTableData(final List<Voucher> voucherList) {
+		final TableModel model = new VoucherItemListTableModel(voucherList);
+		this.jtbVoucherList.setModel(model);
+		this.jtbVoucherList.setFillsViewportHeight(true);
+		this.setTableColumnDimensions();
 	}
 
-	private void setMonthObjectEditable(final boolean enabled) {
-		this.jlsMonth.setEnabled(enabled);
-	}
-
-	private void refreshTableData(final Report balanceReport) {
-		final TableModel model = new ReportTableModel(balanceReport);
-		this.jtbReport.setModel(model);
-		this.jtbReport.setFillsViewportHeight(true);
+	private void setTableColumnDimensions() {
+		for (int i = 0; i < 6; i++) {
+			final TableColumn column = this.jtbVoucherList.getColumnModel()
+					.getColumn(i);
+			column.setResizable(false);
+			if (i == 0 || i == 1) {
+				column.setPreferredWidth(80);
+			} else if (i == 4 || i == 5) {
+				column.setPreferredWidth(90);
+			} else {
+				column.setPreferredWidth(184);
+			}
+		}
 	}
 
 	private int getYear() {
@@ -121,9 +104,25 @@ public class JFResultState extends JDialog {
 		return Integer.parseInt(yearStr);
 	}
 
-	private Report getReportFromTableModel() {
-		final TableModel model = this.jtbReport.getModel();
-		return ((ReportTableModel) model).getBalanceReport();
+	private void refreshTotalSection() {
+		final TableModel model = this.jtbVoucherList.getModel();
+		final String totalDebt = ((VoucherItemListTableModel) model)
+				.getTotalDebt();
+		final String totalCredit = ((VoucherItemListTableModel) model)
+				.getTotalCredit();
+		this.jlbTotalDebt.setText(totalDebt);
+		this.jlbTotalCredit.setText(totalCredit);
+	}
+
+	private String getFormattedDate() {
+		final String month = this.jlsMonth.getSelectedValue();
+		final int year = this.getYear();
+		return month + " del " + year;
+	}
+
+	private List<Voucheritem> getVoucherItemListFromTableModel() {
+		final TableModel model = this.jtbVoucherList.getModel();
+		return ((VoucherItemListTableModel) model).getVoucherItemList();
 	}
 
 	/**
@@ -131,64 +130,55 @@ public class JFResultState extends JDialog {
 	 * WARNING: Do NOT modify this code. The content of this method is always
 	 * regenerated by the Form Editor.
 	 */
-	// <editor-fold defaultstate="collapsed"
-	// <editor-fold defaultstate="collapsed"
-	// <editor-fold defaultstate="collapsed"
-	// <editor-fold defaultstate="collapsed"
-	// <editor-fold defaultstate="collapsed"
-	// desc="Generated Code">//GEN-BEGIN:initComponents
+	// <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
 		jpTitle = new javax.swing.JPanel();
 		jlbTitle = new javax.swing.JLabel();
-		jpBuildReport = new javax.swing.JPanel();
+		jpSearch = new javax.swing.JPanel();
 		jlbYear = new javax.swing.JLabel();
 		jtfYear = new javax.swing.JFormattedTextField();
 		jlbMonth = new javax.swing.JLabel();
 		jspMonth = new javax.swing.JScrollPane();
 		jlsMonth = new javax.swing.JList<String>();
-		jbtGenerate = new javax.swing.JButton();
-		jcbRange = new javax.swing.JComboBox<String>();
-		jlbRange = new javax.swing.JLabel();
-		jtfCompanyName = new javax.swing.JTextField();
+		jbtSearch = new javax.swing.JButton();
 		jlbCompanyName = new javax.swing.JLabel();
-		jpReport = new javax.swing.JPanel();
-		jspReport = new javax.swing.JScrollPane();
-		jtbReport = new javax.swing.JTable();
-		jlbRangeSelected = new javax.swing.JLabel();
+		jtfCompanyName = new javax.swing.JTextField();
+		lbImage = new javax.swing.JLabel();
+		jpVoucherList = new javax.swing.JPanel();
+		jspVoucherList = new javax.swing.JScrollPane();
+		jtbVoucherList = new javax.swing.JTable();
+		jlbTotalCredit = new javax.swing.JLabel();
+		jlbTotalDebt = new javax.swing.JLabel();
 		jpAction = new javax.swing.JPanel();
 		jbtClose = new javax.swing.JButton();
 		jbtPrint = new javax.swing.JButton();
-		lbImage = new javax.swing.JLabel();
 
-		setTitle("Estado de resultado");
+		setTitle("Libro diario");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(
 				getClass().getResource("/images/accountability.png")));
 
 		jpTitle.setBackground(new java.awt.Color(255, 255, 255));
 
 		jlbTitle.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
-		jlbTitle.setText("Estado de resultado");
+		jlbTitle.setText("Libro diario");
 
 		javax.swing.GroupLayout jpTitleLayout = new javax.swing.GroupLayout(
 				jpTitle);
 		jpTitle.setLayout(jpTitleLayout);
 		jpTitleLayout.setHorizontalGroup(jpTitleLayout.createParallelGroup(
 				javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				jpTitleLayout
-						.createSequentialGroup()
-						.addContainerGap()
+				jpTitleLayout.createSequentialGroup().addContainerGap()
 						.addComponent(jlbTitle)
-						.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,
-								Short.MAX_VALUE)));
+						.addContainerGap(861, Short.MAX_VALUE)));
 		jpTitleLayout.setVerticalGroup(jpTitleLayout.createParallelGroup(
 				javax.swing.GroupLayout.Alignment.LEADING).addGroup(
 				jpTitleLayout.createSequentialGroup().addGap(32, 32, 32)
 						.addComponent(jlbTitle)
 						.addContainerGap(34, Short.MAX_VALUE)));
 
-		jpBuildReport.setBorder(javax.swing.BorderFactory.createTitledBorder(
-				null, "Generar",
+		jpSearch.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
+				"Busqueda",
 				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
 				javax.swing.border.TitledBorder.DEFAULT_POSITION,
 				new java.awt.Font("Verdana", 1, 12))); // NOI18N
@@ -211,116 +201,85 @@ public class JFResultState extends JDialog {
 		jlsMonth.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
 		jspMonth.setViewportView(jlsMonth);
 
-		jbtGenerate.setBackground(new java.awt.Color(16, 135, 221));
-		jbtGenerate.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
-		jbtGenerate.setForeground(new java.awt.Color(255, 255, 255));
-		jbtGenerate.setText("Generar");
-		jbtGenerate.setPreferredSize(new java.awt.Dimension(89, 23));
-		jbtGenerate.addActionListener(new java.awt.event.ActionListener() {
+		jbtSearch.setBackground(new java.awt.Color(16, 135, 221));
+		jbtSearch.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
+		jbtSearch.setForeground(new java.awt.Color(255, 255, 255));
+		jbtSearch.setText("Buscar");
+		jbtSearch.setPreferredSize(new java.awt.Dimension(89, 23));
+		jbtSearch.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jbtGenerateActionPerformed(evt);
+				jbtSearchActionPerformed(evt);
 			}
 		});
-
-		jcbRange.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
-		jcbRange.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jcbRangeActionPerformed(evt);
-			}
-		});
-
-		jlbRange.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
-		jlbRange.setText("Rango:");
-
-		jtfCompanyName.setEditable(false);
-		jtfCompanyName.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
 
 		jlbCompanyName.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
 		jlbCompanyName.setText("Empresa:");
 
-		javax.swing.GroupLayout jpBuildReportLayout = new javax.swing.GroupLayout(
-				jpBuildReport);
-		jpBuildReport.setLayout(jpBuildReportLayout);
-		jpBuildReportLayout
-				.setHorizontalGroup(jpBuildReportLayout
+		jtfCompanyName.setEditable(false);
+		jtfCompanyName.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+
+		javax.swing.GroupLayout jpSearchLayout = new javax.swing.GroupLayout(
+				jpSearch);
+		jpSearch.setLayout(jpSearchLayout);
+		jpSearchLayout
+				.setHorizontalGroup(jpSearchLayout
 						.createParallelGroup(
 								javax.swing.GroupLayout.Alignment.LEADING)
 						.addGroup(
-								jpBuildReportLayout
+								jpSearchLayout
 										.createSequentialGroup()
+										.addContainerGap()
 										.addGroup(
-												jpBuildReportLayout
+												jpSearchLayout
 														.createParallelGroup(
 																javax.swing.GroupLayout.Alignment.LEADING)
+														.addComponent(
+																jtfCompanyName)
 														.addGroup(
-																jpBuildReportLayout
+																jpSearchLayout
 																		.createSequentialGroup()
-																		.addContainerGap()
 																		.addGroup(
-																				jpBuildReportLayout
+																				jpSearchLayout
 																						.createParallelGroup(
 																								javax.swing.GroupLayout.Alignment.LEADING)
 																						.addComponent(
-																								jtfCompanyName)
+																								jlbYear)
 																						.addComponent(
-																								jlbCompanyName)))
-														.addGroup(
-																jpBuildReportLayout
-																		.createSequentialGroup()
-																		.addGroup(
-																				jpBuildReportLayout
-																						.createParallelGroup(
-																								javax.swing.GroupLayout.Alignment.LEADING)
+																								jtfYear,
+																								javax.swing.GroupLayout.PREFERRED_SIZE,
+																								80,
+																								javax.swing.GroupLayout.PREFERRED_SIZE)
+																						.addComponent(
+																								jlbMonth)
+																						.addComponent(
+																								jspMonth,
+																								javax.swing.GroupLayout.PREFERRED_SIZE,
+																								160,
+																								javax.swing.GroupLayout.PREFERRED_SIZE)
 																						.addGroup(
-																								jpBuildReportLayout
+																								jpSearchLayout
 																										.createSequentialGroup()
-																										.addGap(81,
-																												81,
-																												81)
+																										.addGap(71,
+																												71,
+																												71)
 																										.addComponent(
-																												jbtGenerate,
+																												jbtSearch,
 																												javax.swing.GroupLayout.PREFERRED_SIZE,
 																												javax.swing.GroupLayout.DEFAULT_SIZE,
 																												javax.swing.GroupLayout.PREFERRED_SIZE))
-																						.addGroup(
-																								jpBuildReportLayout
-																										.createSequentialGroup()
-																										.addContainerGap()
-																										.addGroup(
-																												jpBuildReportLayout
-																														.createParallelGroup(
-																																javax.swing.GroupLayout.Alignment.LEADING)
-																														.addComponent(
-																																jlbYear)
-																														.addComponent(
-																																jtfYear,
-																																javax.swing.GroupLayout.PREFERRED_SIZE,
-																																80,
-																																javax.swing.GroupLayout.PREFERRED_SIZE)
-																														.addComponent(
-																																jlbRange)
-																														.addComponent(
-																																jcbRange,
-																																javax.swing.GroupLayout.PREFERRED_SIZE,
-																																160,
-																																javax.swing.GroupLayout.PREFERRED_SIZE)
-																														.addComponent(
-																																jlbMonth)
-																														.addComponent(
-																																jspMonth,
-																																javax.swing.GroupLayout.PREFERRED_SIZE,
-																																160,
-																																javax.swing.GroupLayout.PREFERRED_SIZE))))
+																						.addComponent(
+																								jlbCompanyName))
 																		.addGap(0,
 																				0,
 																				Short.MAX_VALUE)))
 										.addContainerGap()));
-		jpBuildReportLayout
-				.setVerticalGroup(jpBuildReportLayout
+		jpSearchLayout
+				.setVerticalGroup(jpSearchLayout
 						.createParallelGroup(
 								javax.swing.GroupLayout.Alignment.LEADING)
 						.addGroup(
-								jpBuildReportLayout
+								javax.swing.GroupLayout.Alignment.TRAILING,
+								jpSearchLayout
 										.createSequentialGroup()
 										.addContainerGap()
 										.addComponent(jlbCompanyName)
@@ -343,16 +302,6 @@ public class JFResultState extends JDialog {
 												javax.swing.GroupLayout.PREFERRED_SIZE)
 										.addPreferredGap(
 												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-										.addComponent(jlbRange)
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(
-												jcbRange,
-												javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
 										.addComponent(jlbMonth)
 										.addPreferredGap(
 												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -363,69 +312,73 @@ public class JFResultState extends JDialog {
 												javax.swing.GroupLayout.PREFERRED_SIZE)
 										.addGap(18, 18, 18)
 										.addComponent(
-												jbtGenerate,
+												jbtSearch,
 												javax.swing.GroupLayout.PREFERRED_SIZE,
 												javax.swing.GroupLayout.DEFAULT_SIZE,
 												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addContainerGap(28, Short.MAX_VALUE)));
+										.addContainerGap(
+												javax.swing.GroupLayout.DEFAULT_SIZE,
+												Short.MAX_VALUE)));
 
-		jpReport.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
-				"Estado de resultado",
+		lbImage.setIcon(new javax.swing.ImageIcon(getClass().getResource(
+				"/images/soin.png"))); // NOI18N
+
+		jpVoucherList.setBorder(javax.swing.BorderFactory.createTitledBorder(
+				null, "Listado de asientos",
 				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
 				javax.swing.border.TitledBorder.DEFAULT_POSITION,
 				new java.awt.Font("Verdana", 1, 12))); // NOI18N
 
-		jtbReport.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
-		jspReport.setViewportView(jtbReport);
+		jtbVoucherList.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+		jspVoucherList.setViewportView(jtbVoucherList);
 
-		jlbRangeSelected.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
-		jlbRangeSelected.setText("Rango seleccionado + mes");
+		jlbTotalCredit.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
+		jlbTotalCredit.setText("Total credito:");
 
-		javax.swing.GroupLayout jpReportLayout = new javax.swing.GroupLayout(
-				jpReport);
-		jpReport.setLayout(jpReportLayout);
-		jpReportLayout
-				.setHorizontalGroup(jpReportLayout
+		jlbTotalDebt.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
+		jlbTotalDebt.setText("Total debito:");
+
+		javax.swing.GroupLayout jpVoucherListLayout = new javax.swing.GroupLayout(
+				jpVoucherList);
+		jpVoucherList.setLayout(jpVoucherListLayout);
+		jpVoucherListLayout.setHorizontalGroup(jpVoucherListLayout
+				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addComponent(jspVoucherList,
+						javax.swing.GroupLayout.DEFAULT_SIZE, 728,
+						Short.MAX_VALUE)
+				.addGroup(
+						javax.swing.GroupLayout.Alignment.TRAILING,
+						jpVoucherListLayout
+								.createSequentialGroup()
+								.addContainerGap(
+										javax.swing.GroupLayout.DEFAULT_SIZE,
+										Short.MAX_VALUE)
+								.addComponent(jlbTotalDebt).addGap(18, 18, 18)
+								.addComponent(jlbTotalCredit)
+								.addGap(39, 39, 39)));
+		jpVoucherListLayout
+				.setVerticalGroup(jpVoucherListLayout
 						.createParallelGroup(
 								javax.swing.GroupLayout.Alignment.LEADING)
 						.addGroup(
-								jpReportLayout
+								jpVoucherListLayout
 										.createSequentialGroup()
-										.addContainerGap()
-										.addGroup(
-												jpReportLayout
-														.createParallelGroup(
-																javax.swing.GroupLayout.Alignment.LEADING)
-														.addComponent(
-																jspReport,
-																javax.swing.GroupLayout.DEFAULT_SIZE,
-																696,
-																Short.MAX_VALUE)
-														.addGroup(
-																jpReportLayout
-																		.createSequentialGroup()
-																		.addComponent(
-																				jlbRangeSelected)
-																		.addGap(0,
-																				0,
-																				Short.MAX_VALUE)))
-										.addContainerGap()));
-		jpReportLayout
-				.setVerticalGroup(jpReportLayout
-						.createParallelGroup(
-								javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(
-								javax.swing.GroupLayout.Alignment.TRAILING,
-								jpReportLayout
-										.createSequentialGroup()
-										.addContainerGap()
-										.addComponent(jlbRangeSelected)
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 										.addComponent(
-												jspReport,
+												jspVoucherList,
 												javax.swing.GroupLayout.PREFERRED_SIZE,
-												0, Short.MAX_VALUE)));
+												300,
+												javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(
+												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+										.addGroup(
+												jpVoucherListLayout
+														.createParallelGroup(
+																javax.swing.GroupLayout.Alignment.BASELINE)
+														.addComponent(
+																jlbTotalCredit)
+														.addComponent(
+																jlbTotalDebt))
+										.addGap(0, 11, Short.MAX_VALUE)));
 
 		jpAction.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
 				"", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
@@ -465,15 +418,13 @@ public class JFResultState extends JDialog {
 						.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,
 								Short.MAX_VALUE)
 						.addComponent(jbtPrint,
-								javax.swing.GroupLayout.PREFERRED_SIZE,
-								javax.swing.GroupLayout.DEFAULT_SIZE,
+								javax.swing.GroupLayout.PREFERRED_SIZE, 97,
 								javax.swing.GroupLayout.PREFERRED_SIZE)
 						.addGap(18, 18, 18)
 						.addComponent(jbtClose,
-								javax.swing.GroupLayout.PREFERRED_SIZE,
-								javax.swing.GroupLayout.DEFAULT_SIZE,
+								javax.swing.GroupLayout.PREFERRED_SIZE, 97,
 								javax.swing.GroupLayout.PREFERRED_SIZE)
-						.addGap(22, 22, 22)));
+						.addContainerGap()));
 		jpActionLayout
 				.setVerticalGroup(jpActionLayout
 						.createParallelGroup(
@@ -500,9 +451,6 @@ public class JFResultState extends JDialog {
 												javax.swing.GroupLayout.DEFAULT_SIZE,
 												Short.MAX_VALUE)));
 
-		lbImage.setIcon(new javax.swing.ImageIcon(getClass().getResource(
-				"/images/soin.png"))); // NOI18N
-
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(
 				getContentPane());
 		getContentPane().setLayout(layout);
@@ -510,6 +458,14 @@ public class JFResultState extends JDialog {
 				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addComponent(jpTitle, javax.swing.GroupLayout.DEFAULT_SIZE,
 						javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+				.addGroup(
+						javax.swing.GroupLayout.Alignment.TRAILING,
+						layout.createSequentialGroup()
+								.addGap(0, 0, Short.MAX_VALUE)
+								.addComponent(lbImage,
+										javax.swing.GroupLayout.PREFERRED_SIZE,
+										388,
+										javax.swing.GroupLayout.PREFERRED_SIZE))
 				.addGroup(
 						layout.createSequentialGroup()
 								.addContainerGap()
@@ -519,32 +475,28 @@ public class JFResultState extends JDialog {
 												.addGroup(
 														layout.createSequentialGroup()
 																.addComponent(
-																		jpBuildReport,
+																		jpSearch,
 																		javax.swing.GroupLayout.PREFERRED_SIZE,
 																		javax.swing.GroupLayout.DEFAULT_SIZE,
 																		javax.swing.GroupLayout.PREFERRED_SIZE)
 																.addPreferredGap(
-																		javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 																.addComponent(
-																		jpReport,
+																		jpVoucherList,
 																		javax.swing.GroupLayout.DEFAULT_SIZE,
 																		javax.swing.GroupLayout.DEFAULT_SIZE,
-																		Short.MAX_VALUE))
-												.addComponent(
-														jpAction,
+																		Short.MAX_VALUE)
+																.addGap(12, 12,
+																		12))
+												.addGroup(
 														javax.swing.GroupLayout.Alignment.TRAILING,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														Short.MAX_VALUE))
-								.addContainerGap())
-				.addGroup(
-						javax.swing.GroupLayout.Alignment.TRAILING,
-						layout.createSequentialGroup()
-								.addGap(0, 0, Short.MAX_VALUE)
-								.addComponent(lbImage,
-										javax.swing.GroupLayout.PREFERRED_SIZE,
-										388,
-										javax.swing.GroupLayout.PREFERRED_SIZE)));
+														layout.createSequentialGroup()
+																.addComponent(
+																		jpAction,
+																		javax.swing.GroupLayout.DEFAULT_SIZE,
+																		javax.swing.GroupLayout.DEFAULT_SIZE,
+																		Short.MAX_VALUE)
+																.addContainerGap()))));
 		layout.setVerticalGroup(layout
 				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(
@@ -554,17 +506,17 @@ public class JFResultState extends JDialog {
 										javax.swing.GroupLayout.DEFAULT_SIZE,
 										javax.swing.GroupLayout.PREFERRED_SIZE)
 								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
 								.addGroup(
 										layout.createParallelGroup(
 												javax.swing.GroupLayout.Alignment.LEADING)
 												.addComponent(
-														jpReport,
+														jpVoucherList,
 														javax.swing.GroupLayout.DEFAULT_SIZE,
 														javax.swing.GroupLayout.DEFAULT_SIZE,
 														Short.MAX_VALUE)
 												.addComponent(
-														jpBuildReport,
+														jpSearch,
 														javax.swing.GroupLayout.DEFAULT_SIZE,
 														javax.swing.GroupLayout.DEFAULT_SIZE,
 														Short.MAX_VALUE))
@@ -574,8 +526,7 @@ public class JFResultState extends JDialog {
 										javax.swing.GroupLayout.PREFERRED_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE,
 										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addGap(30, 30, 30)
 								.addComponent(lbImage,
 										javax.swing.GroupLayout.PREFERRED_SIZE,
 										35,
@@ -584,46 +535,43 @@ public class JFResultState extends JDialog {
 		pack();
 	}// </editor-fold>//GEN-END:initComponents
 
-	private void jbtGenerateActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jbtGenerateActionPerformed
-		this.refreshTableData();
-	}// GEN-LAST:event_jbtGenerateActionPerformed
+	private void jbtPrintActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jbtPrintActionPerformed
+		final String formattedDate = this.getFormattedDate();
+		final List<Voucheritem> voucherItemList = this
+				.getVoucherItemListFromTableModel();
+		final ReportGenerator generator = new ReportGenerator(this.company,
+				formattedDate, voucherItemList);
+		generator.start();
+		this.setVisible(false);
+	}// GEN-LAST:event_jbtPrintActionPerformed
 
-	private void jcbRangeActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jcbRangeActionPerformed
-		final String valueSel = (String) this.jcbRange.getSelectedItem();
-		this.setMonthObjectEditable(valueSel.equals(RANGE_MONTH));
-	}// GEN-LAST:event_jcbRangeActionPerformed
+	private void jbtSearchActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jbtSearchActionPerformed
+		this.refreshTableData();
+		this.refreshTotalSection();
+	}// GEN-LAST:event_jbtSearchActionPerformed
 
 	private void jbtCloseActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jbtCloseActionPerformed
 		this.setVisible(false);
 	}// GEN-LAST:event_jbtCloseActionPerformed
 
-	private void jbtPrintActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jbtPrintActionPerformed
-		final Report balanceReport = this.getReportFromTableModel();
-		final ReportGenerator generator = new ReportGenerator(balanceReport,
-				false);
-		generator.start();
-		this.setVisible(false);
-	}// GEN-LAST:event_jbtPrintActionPerformed
-
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.JButton jbtClose;
-	private javax.swing.JButton jbtGenerate;
 	private javax.swing.JButton jbtPrint;
-	private javax.swing.JComboBox<String> jcbRange;
+	private javax.swing.JButton jbtSearch;
 	private javax.swing.JLabel jlbCompanyName;
 	private javax.swing.JLabel jlbMonth;
-	private javax.swing.JLabel jlbRange;
-	private javax.swing.JLabel jlbRangeSelected;
 	private javax.swing.JLabel jlbTitle;
+	private javax.swing.JLabel jlbTotalCredit;
+	private javax.swing.JLabel jlbTotalDebt;
 	private javax.swing.JLabel jlbYear;
 	private javax.swing.JList<String> jlsMonth;
 	private javax.swing.JPanel jpAction;
-	private javax.swing.JPanel jpBuildReport;
-	private javax.swing.JPanel jpReport;
+	private javax.swing.JPanel jpSearch;
 	private javax.swing.JPanel jpTitle;
+	private javax.swing.JPanel jpVoucherList;
 	private javax.swing.JScrollPane jspMonth;
-	private javax.swing.JScrollPane jspReport;
-	private javax.swing.JTable jtbReport;
+	private javax.swing.JScrollPane jspVoucherList;
+	private javax.swing.JTable jtbVoucherList;
 	private javax.swing.JTextField jtfCompanyName;
 	private javax.swing.JFormattedTextField jtfYear;
 	private javax.swing.JLabel lbImage;

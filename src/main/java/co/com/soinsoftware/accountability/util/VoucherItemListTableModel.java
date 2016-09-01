@@ -14,6 +14,7 @@ import javax.swing.text.NumberFormatter;
 import co.com.soinsoftware.accountability.entity.Uap;
 import co.com.soinsoftware.accountability.entity.Voucher;
 import co.com.soinsoftware.accountability.entity.Voucheritem;
+import co.com.soinsoftware.accountability.entity.Vouchertype;
 
 /**
  * @author Carlos Rodriguez
@@ -24,8 +25,8 @@ public class VoucherItemListTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 8408209589620109955L;
 
-	private static final String[] COLUMN_NAMES = { "Fecha", "Código", "Nombre",
-			"Concepto", "Debito", "Credito" };
+	private static final String[] COLUMN_NAMES = { "Fecha", "Comprobante", "#",
+			"Código", "Nombre", "Debito", "Credito" };
 
 	private final List<Voucher> voucherList;
 
@@ -92,13 +93,16 @@ public class VoucherItemListTableModel extends AbstractTableModel {
 			for (final Voucheritem voucherItem : this.voucherItemList) {
 				final Uap uap = voucherItem.getUap();
 				final Voucher voucher = voucherItem.getVoucher();
+				final Vouchertype voucherType = voucher
+						.getVouchertypexcompany().getVouchertype();
 				data[index][0] = this.formatDate(voucher.getVoucherdate());
-				data[index][1] = String.valueOf(uap.getCode());
-				data[index][2] = uap.getName();
-				data[index][3] = voucherItem.getConcept();
-				data[index][4] = (voucherItem.getDebtvalue() == 0) ? "" : this
+				data[index][1] = voucherType.getName();
+				data[index][2] = String.valueOf(voucher.getVouchernumber());
+				data[index][3] = String.valueOf(uap.getCode());
+				data[index][4] = uap.getName();
+				data[index][5] = (voucherItem.getDebtvalue() == 0) ? "" : this
 						.formatValue(voucherItem.getDebtvalue());
-				data[index][5] = (voucherItem.getCreditvalue() == 0) ? ""
+				data[index][6] = (voucherItem.getCreditvalue() == 0) ? ""
 						: this.formatValue(voucherItem.getCreditvalue());
 				this.totalDebt += voucherItem.getDebtvalue();
 				this.totalCredit += voucherItem.getCreditvalue();

@@ -4,6 +4,7 @@ import co.com.soinsoftware.accountability.entity.Company;
 import co.com.soinsoftware.accountability.entity.User;
 import co.com.soinsoftware.accountability.view.JFBalance;
 import co.com.soinsoftware.accountability.view.JFDailyBook;
+import co.com.soinsoftware.accountability.view.JFLedger;
 import co.com.soinsoftware.accountability.view.JFMain;
 import co.com.soinsoftware.accountability.view.JFResultState;
 import co.com.soinsoftware.accountability.view.JFUap;
@@ -16,7 +17,7 @@ import co.com.soinsoftware.accountability.view.JFVoucherTypeXCompany;
 /**
  * @author Carlos Rodriguez
  * @since 01/08/2016
- * @version 1.2
+ * @version 1.3
  */
 public class MenuController {
 
@@ -25,6 +26,8 @@ public class MenuController {
 	private final JFBalance balanceFrame;
 
 	private final JFDailyBook dailyBookFrame;
+
+	private final JFLedger ledgerFrame;
 
 	private final JFResultState resultStateFrame;
 
@@ -49,6 +52,7 @@ public class MenuController {
 		this.loggedUser = user;
 		this.balanceFrame = new JFBalance();
 		this.dailyBookFrame = new JFDailyBook(this.company);
+		this.ledgerFrame = new JFLedger(this.company);
 		this.resultStateFrame = new JFResultState();
 		this.voucherFrame = new JFVoucher(mainFrame, this.loggedUser,
 				this.company);
@@ -68,6 +72,11 @@ public class MenuController {
 	public void showDailyBookFrame() {
 		this.dailyBookFrame.refresh();
 		this.dailyBookFrame.setVisible(true);
+	}
+
+	public void showLedgerFrame() {
+		this.ledgerFrame.refresh();
+		this.ledgerFrame.setVisible(true);
 	}
 
 	public void showResultStateFrame() {

@@ -14,7 +14,7 @@ import co.com.soinsoftware.accountability.controller.MenuController;
 /**
  * @author Carlos Rodriguez
  * @since 01/08/2016
- * @version 1.2
+ * @version 1.3
  */
 public class JMBAppMenu extends JMenuBar implements ActionListener {
 
@@ -41,6 +41,8 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 	private static final String MENU_REPORTS_BALANCE = "Balance general";
 
 	private static final String MENU_REPORTS_DIARY_BOOK = "Libro diario";
+
+	private static final String MENU_REPORTS_LEDGER = "Libro mayor";
 
 	private static final String MENU_REPORTS_RESULT_STATE = "Estado de resultado";
 
@@ -81,6 +83,9 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 			break;
 		case MENU_REPORTS_DIARY_BOOK:
 			this.controller.showDailyBookFrame();
+			break;
+		case MENU_REPORTS_LEDGER:
+			this.controller.showLedgerFrame();
 			break;
 		case MENU_REPORTS_RESULT_STATE:
 			this.controller.showResultStateFrame();
@@ -147,11 +152,17 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 			miResultState.addActionListener(this);
 			menu.add(miResultState);
 			final JMenuItem miDiaryBook = ViewUtils
-					.createJMenuItem(MENU_REPORTS_DIARY_BOOK, KeyEvent.VK_L,
+					.createJMenuItem(MENU_REPORTS_DIARY_BOOK, KeyEvent.VK_D,
 							KeyStroke.getKeyStroke(KeyEvent.VK_5,
 									ActionEvent.ALT_MASK));
 			miDiaryBook.addActionListener(this);
 			menu.add(miDiaryBook);
+			final JMenuItem miLedger = ViewUtils
+					.createJMenuItem(MENU_REPORTS_LEDGER, KeyEvent.VK_M,
+							KeyStroke.getKeyStroke(KeyEvent.VK_6,
+									ActionEvent.ALT_MASK));
+			miLedger.addActionListener(this);
+			menu.add(miLedger);
 			this.add(menu);
 		}
 	}

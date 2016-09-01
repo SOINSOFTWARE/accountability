@@ -52,7 +52,7 @@ public abstract class AbstractReportController {
 
 	private static final int LEVEL_EMP_HELPER = 5;
 
-	public abstract Report buildReport(final Company company,
+	public abstract Object buildReport(final Company company,
 			final List<Voucher> voucherList, final String description);
 
 	protected abstract void addMissingReportItems(final Set<ReportItem> itemSet);

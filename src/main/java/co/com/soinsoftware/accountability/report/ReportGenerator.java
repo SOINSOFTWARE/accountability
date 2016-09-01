@@ -3,13 +3,14 @@ package co.com.soinsoftware.accountability.report;
 import java.util.List;
 
 import co.com.soinsoftware.accountability.entity.Company;
+import co.com.soinsoftware.accountability.entity.Ledger;
 import co.com.soinsoftware.accountability.entity.Report;
 import co.com.soinsoftware.accountability.entity.Voucheritem;
 
 /**
  * @author Carlos Rodriguez
  * @since 24/08/2016
- * @version 1.1
+ * @version 1.2
  */
 public class ReportGenerator extends Thread {
 
@@ -23,15 +24,13 @@ public class ReportGenerator extends Thread {
 
 	public static final String PARAM_IS_JURIDICA = "IsJuridica";
 
-	public static final String PARAM_IS_BALANCE_REPORT = "IsBalanceReport";
-
 	public static final String PARAM_REPORT_DATE = "ReportDate";
 
 	public static final String PARAM_REPORT_NAME = "ReportName";
 
-	public static final String PARAM_VALUE_PASS_PLUS_PAT = "ValuePassPat";
-
 	private AccountabilityReport accountabilityReport;
+
+	private LedgerReport ledgerReport;
 
 	private VoucherItemReport voucherItemReport;
 
@@ -55,6 +54,11 @@ public class ReportGenerator extends Thread {
 				voucherItemList);
 	}
 
+	public ReportGenerator(final Ledger report) {
+		this();
+		this.ledgerReport = new LedgerReport(report);
+	}
+
 	@Override
 	public void run() {
 		System.out.println("Starting report generation");
@@ -62,6 +66,8 @@ public class ReportGenerator extends Thread {
 			this.accountabilityReport.generate();
 		} else if (this.voucherItemReport != null) {
 			this.voucherItemReport.generate();
+		} else if (this.ledgerReport != null) {
+			this.ledgerReport.generate();
 		}
 		System.out.println("Finishing report generation");
 	}

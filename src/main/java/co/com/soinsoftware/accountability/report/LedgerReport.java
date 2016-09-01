@@ -2,11 +2,12 @@ package co.com.soinsoftware.accountability.report;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -15,36 +16,28 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
-import co.com.soinsoftware.accountability.controller.BalanceReportController;
 import co.com.soinsoftware.accountability.entity.Company;
-import co.com.soinsoftware.accountability.entity.Report;
-import co.com.soinsoftware.accountability.entity.ReportItem;
+import co.com.soinsoftware.accountability.entity.Ledger;
+import co.com.soinsoftware.accountability.entity.LedgerItem;
 
 /**
  * @author Carlos Rodriguez
- * @since 24/08/2016
- * @version 1.1
+ * @since 01/09/2016
+ * @version 1.0
  */
-public class AccountabilityReport {
+public class LedgerReport {
 
-	private static final String PARAM_IS_BALANCE_REPORT = "IsBalanceReport";
+	private static final String PARAM_TOTAL_CREDIT = "TotalCredit";
 
-	private static final String PARAM_VALUE_PASS_PLUS_PAT = "ValuePassPat";
+	private static final String PARAM_TOTAL_DEBT = "TotalDebt";
 
-	private static final String REPORT_NAME = "/reports/accountabilityReport.jasper";
+	private static final String REPORT_NAME = "/reports/ledgerReport.jasper";
 
-	private final Report report;
+	private final Ledger report;
 
-	private final boolean isBalanceReport;
-
-	private final BalanceReportController balanceReportController;
-
-	public AccountabilityReport(final Report balanceReport,
-			final boolean isBalanceReport) {
+	public LedgerReport(final Ledger report) {
 		super();
-		this.report = balanceReport;
-		this.isBalanceReport = isBalanceReport;
-		this.balanceReportController = new BalanceReportController();
+		this.report = report;
 	}
 
 	public boolean generate() {
@@ -89,51 +82,44 @@ public class AccountabilityReport {
 		}
 		parameters.put(ReportGenerator.PARAM_IS_JURIDICA, company
 				.getCompanytype().getName().equals("Persona jurídica"));
-		parameters.put(PARAM_IS_BALANCE_REPORT, this.isBalanceReport);
 		parameters.put(ReportGenerator.PARAM_CEO, nameCEO);
 		parameters.put(ReportGenerator.PARAM_DOCUMENT_CEO, documentCEO);
-		if (isBalanceReport) {
-			parameters.put(PARAM_VALUE_PASS_PLUS_PAT,
-					this.getValueForPassivePlusPatrimonio());
-		}
+		parameters.put(PARAM_TOTAL_DEBT, this.report.getTotalDebt());
+		parameters.put(PARAM_TOTAL_CREDIT, this.report.getTotalCredit());
 		return parameters;
 	}
 
-	private long getValueForPassivePlusPatrimonio() {
-		final long valueForPasivo = this.balanceReportController
-				.getReportItemValue(this.report,
-						BalanceReportController.CLASS_PASIVO);
-		final long valueForPatrimonio = this.balanceReportController
-				.getReportItemValue(this.report,
-						BalanceReportController.CLASS_PATRIMONIO);
-		return valueForPasivo + valueForPatrimonio;
-	}
-
 	private JRBeanCollectionDataSource createDataSource() {
-		final Set<ReportItem> itemSet = this.report.getReportItemSet();
-		final List<ReportItem> itemList = this.buildReportItemList(this
-				.sortReportItemSet(itemSet));
+		final Set<LedgerItem> itemSet = this.report.getLedgerItemSet();
+		final List<LedgerItem> itemList = this.buildLedgerItemList(this
+				.sortLedgerItemSet(itemSet));
 		return new JRBeanCollectionDataSource(itemList);
 	}
 
-	private List<ReportItem> buildReportItemList(
-			final List<ReportItem> childrenItemList) {
-		final List<ReportItem> itemList = new ArrayList<ReportItem>();
-		for (final ReportItem item : childrenItemList) {
+	private List<LedgerItem> buildLedgerItemList(
+			final List<LedgerItem> childrenItemList) {
+		final List<LedgerItem> itemList = new ArrayList<LedgerItem>();
+		for (final LedgerItem item : childrenItemList) {
 			itemList.add(item);
-			itemList.addAll(this.buildReportItemList(this
-					.sortReportItemSet(item.getReportItemSet())));
+			itemList.addAll(item.getLedgerItemList());
 		}
 		return itemList;
 	}
 
-	private List<ReportItem> sortReportItemSet(
-			final Set<ReportItem> reportItemSet) {
-		List<ReportItem> reportItemList = new ArrayList<>();
-		if (reportItemSet != null && reportItemSet.size() > 0) {
-			reportItemList = new ArrayList<>(reportItemSet);
-			Collections.sort(reportItemList);
+	private List<LedgerItem> sortLedgerItemSet(
+			final Set<LedgerItem> ledgerItemSet) {
+		List<LedgerItem> sortLedgerItemList = new ArrayList<>();
+		if (ledgerItemSet != null && ledgerItemSet.size() > 0) {
+			final List<LedgerItem> ledgerItemList = new ArrayList<>(
+					ledgerItemSet);
+			final Comparator<LedgerItem> byCode = (item1, item2) -> Long
+					.compare(item1.getCode(), item2.getCode());
+			final Comparator<LedgerItem> byDate = (item1, item2) -> item1
+					.getDate().compareTo(item2.getDate());
+			sortLedgerItemList = ledgerItemList.stream()
+					.sorted(byCode.thenComparing(byDate))
+					.collect(Collectors.toCollection(ArrayList::new));
 		}
-		return reportItemList;
+		return sortLedgerItemList;
 	}
 }

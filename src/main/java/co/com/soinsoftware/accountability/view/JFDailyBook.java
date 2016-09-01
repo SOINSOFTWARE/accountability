@@ -27,7 +27,7 @@ import co.com.soinsoftware.accountability.util.VoucherItemListTableModel;
  * @since 31/08/2016
  * @version 1.0
  */
-public class JFDiaryBook extends JDialog {
+public class JFDailyBook extends JDialog {
 
 	private static final long serialVersionUID = -8645458407822046871L;
 
@@ -35,7 +35,7 @@ public class JFDiaryBook extends JDialog {
 
 	private final VoucherController voucherController;
 
-	public JFDiaryBook(final Company company) {
+	public JFDailyBook(final Company company) {
 		this.company = company;
 		this.voucherController = new VoucherController();
 		this.initComponents();

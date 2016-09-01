@@ -80,7 +80,7 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 			this.controller.showBalanceFrame();
 			break;
 		case MENU_REPORTS_DIARY_BOOK:
-			this.controller.showDiaryBookFrame();
+			this.controller.showDailyBookFrame();
 			break;
 		case MENU_REPORTS_RESULT_STATE:
 			this.controller.showResultStateFrame();

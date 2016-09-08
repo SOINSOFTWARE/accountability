@@ -128,13 +128,13 @@ public class JFLedger extends JDialog {
 			final TableColumn column = columnModel.getColumn(columnIndex);
 			column.setResizable(false);
 			if (columnIndex == 3) {
-				column.setPreferredWidth(80);
+				column.setPreferredWidth(100);
 			} else if (columnIndex >= 4) {
 				column.setPreferredWidth(100);
 			} else if (columnIndex == 0 || columnIndex == 2) {
 				column.setPreferredWidth(50);
 			} else if (columnIndex == 1) {
-				column.setPreferredWidth(228);
+				column.setPreferredWidth(208);
 			}
 		}
 	}

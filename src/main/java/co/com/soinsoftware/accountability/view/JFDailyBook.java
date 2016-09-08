@@ -91,14 +91,14 @@ public class JFDailyBook extends JDialog {
 		for (int columnIndex = 0; columnIndex < columnCount; columnIndex++) {
 			final TableColumn column = columnModel.getColumn(columnIndex);
 			column.setResizable(false);
-			if (columnIndex == 0 || columnIndex == 3) {
+			if (columnIndex == 3) {
 				column.setPreferredWidth(80);
-			} else if (columnIndex == 1 || columnIndex == 5 || columnIndex == 6) {
+			} else if (columnIndex == 0 || columnIndex == 1 || columnIndex == 5 || columnIndex == 6) {
 				column.setPreferredWidth(90);
 			} else if (columnIndex == 2) {
 				column.setPreferredWidth(50);
 			} else if (columnIndex == 4) {
-				column.setPreferredWidth(228);
+				column.setPreferredWidth(218);
 			}
 		}
 	}

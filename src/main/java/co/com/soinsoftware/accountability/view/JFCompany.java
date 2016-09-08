@@ -304,7 +304,9 @@ public class JFCompany extends JDialog {
 				uapXCompSet.add(uapXComp);
 			}
 			this.uapController.saveUapXCompanySet(uapXCompSet);
-			defaultUapXCompSet.addAll(uapXCompSet);
+			if (defaultUapXCompSet != null) {
+				defaultUapXCompSet.addAll(uapXCompSet);
+			}
 		}
 	}
 

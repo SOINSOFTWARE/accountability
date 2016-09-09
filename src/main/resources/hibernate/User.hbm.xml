@@ -26,6 +26,12 @@
         <property name="password" type="string">
             <column name="password" length="10" not-null="true" />
         </property>
+        <property name="validator" type="string">
+            <column name="validator" length="60" />
+        </property>
+        <property name="finaldate" type="timestamp">
+            <column name="finaldate" length="19" />
+        </property>
         <property name="creation" type="timestamp">
             <column name="creation" length="19" not-null="true" />
         </property>

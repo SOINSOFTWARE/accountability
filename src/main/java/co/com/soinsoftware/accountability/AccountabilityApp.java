@@ -1,11 +1,15 @@
 package co.com.soinsoftware.accountability;
 
+import java.awt.EventQueue;
+
+import javax.swing.UIManager;
+
+import net.sf.jasperreports.engine.DefaultJasperReportsContext;
+import co.com.soinsoftware.accountability.controller.LicenseController;
 import co.com.soinsoftware.accountability.dao.SessionController;
+import co.com.soinsoftware.accountability.view.JFLicense;
 import co.com.soinsoftware.accountability.view.JFLogin;
 import co.com.soinsoftware.accountability.view.JFLogo;
-import java.awt.EventQueue;
-import javax.swing.UIManager;
-import net.sf.jasperreports.engine.DefaultJasperReportsContext;
 
 /**
  * @author Carlos Rodriguez
@@ -18,6 +22,7 @@ public class AccountabilityApp {
 
 	public static void main(String[] args) {
 		final JFLogo logo = new JFLogo();
+		final LicenseController controller = new LicenseController();
 		logo.setVisible(true);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -28,9 +33,15 @@ public class AccountabilityApp {
 					System.out
 							.println("Finalizing initialization of jasper report context");
 					UIManager.setLookAndFeel(LOOK_AND_FEEL);
-					final JFLogin login = new JFLogin();
+					if (controller.isEmptyLicense()
+							|| controller.isExpiredLicense()) {
+						final JFLicense license = new JFLicense();
+						license.setVisible(true);
+					} else {
+						final JFLogin login = new JFLogin();
+						login.setVisible(true);
+					}
 					logo.setVisible(false);
-					login.setVisible(true);
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}

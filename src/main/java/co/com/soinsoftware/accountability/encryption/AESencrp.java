@@ -14,6 +14,11 @@ import javax.crypto.spec.SecretKeySpec;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
+/**
+ * @author Carlos Rodriguez
+ * @since 08/09/2016
+ * @version 1.0
+ */
 @SuppressWarnings("restriction")
 public class AESencrp {
 

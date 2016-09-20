@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package co.com.soinsoftware.accountability.view;
+package co.com.soinsoftware.accountability.view.accountability;
 
 import java.awt.Toolkit;
 import java.util.ArrayList;
@@ -21,6 +21,8 @@ import co.com.soinsoftware.accountability.entity.Uap;
 import co.com.soinsoftware.accountability.entity.User;
 import co.com.soinsoftware.accountability.entity.Voucheritem;
 import co.com.soinsoftware.accountability.util.VoucherItemUapTableModel;
+import co.com.soinsoftware.accountability.view.JFCompany;
+import co.com.soinsoftware.accountability.view.JMBAppMenu;
 
 /**
  *

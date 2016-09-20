@@ -2,17 +2,17 @@ package co.com.soinsoftware.accountability.controller;
 
 import co.com.soinsoftware.accountability.entity.Company;
 import co.com.soinsoftware.accountability.entity.User;
-import co.com.soinsoftware.accountability.view.JFBalance;
-import co.com.soinsoftware.accountability.view.JFDailyBook;
-import co.com.soinsoftware.accountability.view.JFLedger;
-import co.com.soinsoftware.accountability.view.JFMain;
-import co.com.soinsoftware.accountability.view.JFResultState;
-import co.com.soinsoftware.accountability.view.JFUap;
 import co.com.soinsoftware.accountability.view.JFUser;
-import co.com.soinsoftware.accountability.view.JFVoucher;
-import co.com.soinsoftware.accountability.view.JFVoucherList;
-import co.com.soinsoftware.accountability.view.JFVoucherType;
-import co.com.soinsoftware.accountability.view.JFVoucherTypeXCompany;
+import co.com.soinsoftware.accountability.view.accountability.JFBalance;
+import co.com.soinsoftware.accountability.view.accountability.JFDailyBook;
+import co.com.soinsoftware.accountability.view.accountability.JFLedger;
+import co.com.soinsoftware.accountability.view.accountability.JFMain;
+import co.com.soinsoftware.accountability.view.accountability.JFResultState;
+import co.com.soinsoftware.accountability.view.accountability.JFUap;
+import co.com.soinsoftware.accountability.view.accountability.JFVoucher;
+import co.com.soinsoftware.accountability.view.accountability.JFVoucherList;
+import co.com.soinsoftware.accountability.view.accountability.JFVoucherType;
+import co.com.soinsoftware.accountability.view.accountability.JFVoucherTypeXCompany;
 
 /**
  * @author Carlos Rodriguez

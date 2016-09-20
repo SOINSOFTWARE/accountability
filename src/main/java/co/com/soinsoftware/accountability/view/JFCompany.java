@@ -24,6 +24,7 @@ import co.com.soinsoftware.accountability.entity.Uapxcompany;
 import co.com.soinsoftware.accountability.entity.User;
 import co.com.soinsoftware.accountability.util.CompanyListTableModel;
 import co.com.soinsoftware.accountability.util.CompanyTableModel;
+import co.com.soinsoftware.accountability.view.accountability.JFMain;
 
 /*
  * To change this license header, choose License Headers in Project Properties.

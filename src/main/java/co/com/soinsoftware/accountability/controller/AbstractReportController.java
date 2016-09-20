@@ -13,7 +13,7 @@ import co.com.soinsoftware.accountability.entity.ReportItem;
 import co.com.soinsoftware.accountability.entity.Uap;
 import co.com.soinsoftware.accountability.entity.Voucher;
 import co.com.soinsoftware.accountability.entity.Voucheritem;
-import co.com.soinsoftware.accountability.view.JFBalance;
+import co.com.soinsoftware.accountability.view.accountability.JFBalance;
 
 /**
  * @author Carlos Rodriguez

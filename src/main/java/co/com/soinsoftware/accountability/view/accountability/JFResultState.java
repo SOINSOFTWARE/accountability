@@ -3,36 +3,31 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package co.com.soinsoftware.accountability.view;
+package co.com.soinsoftware.accountability.view.accountability;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
-import javax.swing.text.NumberFormatter;
 
-import co.com.soinsoftware.accountability.controller.LedgerReportController;
+import co.com.soinsoftware.accountability.controller.ResultStateController;
 import co.com.soinsoftware.accountability.controller.VoucherController;
 import co.com.soinsoftware.accountability.entity.Company;
-import co.com.soinsoftware.accountability.entity.Ledger;
+import co.com.soinsoftware.accountability.entity.Report;
 import co.com.soinsoftware.accountability.entity.Voucher;
 import co.com.soinsoftware.accountability.report.ReportGenerator;
-import co.com.soinsoftware.accountability.util.LedgerTableModel;
+import co.com.soinsoftware.accountability.util.ReportTableModel;
 
 /**
  * @author Carlos Rodriguez
- * @since 01/09/2016
+ * @since 23/08/2016
  * @version 1.0
  */
-public class JFLedger extends JDialog {
+public class JFResultState extends JDialog {
 
 	public static final String RANGE_MONTH = "Mensual";
 
@@ -40,27 +35,27 @@ public class JFLedger extends JDialog {
 
 	private static final long serialVersionUID = -3460235812032255314L;
 
-	private final Company company;
-
 	private final VoucherController voucherController;
 
-	private final LedgerReportController ledgerReportController;
+	private final ResultStateController reportController;
 
-	public JFLedger(final Company company) {
-		this.company = company;
+	private Company company;
+
+	public JFResultState() {
 		this.voucherController = new VoucherController();
-		this.ledgerReportController = new LedgerReportController();
+		this.reportController = new ResultStateController();
 		this.initComponents();
 		final Dimension screenSize = Toolkit.getDefaultToolkit()
 				.getScreenSize();
-		this.setLocation((int) (screenSize.getWidth() / 2 - 515),
+		this.setLocation((int) (screenSize.getWidth() / 2 - 470),
 				(int) (screenSize.getHeight() / 2 - 350));
 		this.setModal(true);
 		this.setRangeModel();
 		this.setMonthModel();
 	}
 
-	public void refresh() {
+	public void refresh(final Company company) {
+		this.company = company;
 		this.jtfCompanyName.setText(this.company.getName());
 		this.jtfYear.setText(String.valueOf(Calendar.getInstance().get(
 				Calendar.YEAR)));
@@ -70,12 +65,12 @@ public class JFLedger extends JDialog {
 	}
 
 	public void refreshTableData() {
-		final Ledger ledgerReport = this.builReport();
-		this.refreshTableData(ledgerReport);
-		this.setTotalValuesAndDescription();
+		final Report report = this.buildReport();
+		this.refreshTableData(report);
+		this.jlbRangeSelected.setText(report.getFormattedDate());
 	}
 
-	private Ledger builReport() {
+	private Report buildReport() {
 		final int year = this.getYear();
 		final String rangeSel = (String) this.jcbRange.getSelectedItem();
 		final int month = (rangeSel.equals(RANGE_MONTH)) ? this.jlsMonth
@@ -83,10 +78,10 @@ public class JFLedger extends JDialog {
 		final String monthName = this.jlsMonth.getSelectedValue();
 		final List<Voucher> voucherList = this.voucherController.select(year,
 				month, this.company, null);
-		final String description = this.ledgerReportController
+		final String description = this.reportController
 				.getReportDateDescription(rangeSel, year, month, monthName);
-		final Ledger report = this.ledgerReportController.buildReport(
-				this.company, voucherList, description);
+		final Report report = this.reportController.buildReport(this.company,
+				voucherList, description);
 		return report;
 	}
 
@@ -114,29 +109,10 @@ public class JFLedger extends JDialog {
 		this.jlsMonth.setEnabled(enabled);
 	}
 
-	private void refreshTableData(final Ledger report) {
-		final TableModel model = new LedgerTableModel(report);
+	private void refreshTableData(final Report balanceReport) {
+		final TableModel model = new ReportTableModel(balanceReport);
 		this.jtbReport.setModel(model);
 		this.jtbReport.setFillsViewportHeight(true);
-		this.setTableColumnDimensions();
-	}
-
-	private void setTableColumnDimensions() {
-		final TableColumnModel columnModel = this.jtbReport.getColumnModel();
-		final int columnCount = columnModel.getColumnCount();
-		for (int columnIndex = 0; columnIndex < columnCount; columnIndex++) {
-			final TableColumn column = columnModel.getColumn(columnIndex);
-			column.setResizable(false);
-			if (columnIndex == 3) {
-				column.setPreferredWidth(100);
-			} else if (columnIndex >= 4) {
-				column.setPreferredWidth(100);
-			} else if (columnIndex == 0 || columnIndex == 2) {
-				column.setPreferredWidth(50);
-			} else if (columnIndex == 1) {
-				column.setPreferredWidth(208);
-			}
-		}
 	}
 
 	private int getYear() {
@@ -145,27 +121,9 @@ public class JFLedger extends JDialog {
 		return Integer.parseInt(yearStr);
 	}
 
-	private void setTotalValuesAndDescription() {
-		final Ledger report = this.getLedgerFromTableModel();
-		this.jlbTotalDebt.setText(this.formatValue(report.getTotalDebt()));
-		this.jlbTotalCredit.setText(this.formatValue(report.getTotalCredit()));
-		this.jlbReportRange.setText(report.getFormattedDate());
-	}
-
-	private String formatValue(final long value) {
-		final NumberFormatter formatter = new NumberFormatter(
-				new DecimalFormat("$#,##0"));
-		try {
-			return formatter.valueToString(value);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return String.valueOf(value);
-	}
-
-	private Ledger getLedgerFromTableModel() {
+	private Report getReportFromTableModel() {
 		final TableModel model = this.jtbReport.getModel();
-		return ((LedgerTableModel) model).getLedgerReport();
+		return ((ReportTableModel) model).getBalanceReport();
 	}
 
 	/**
@@ -175,12 +133,15 @@ public class JFLedger extends JDialog {
 	 */
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
+	// <editor-fold defaultstate="collapsed"
+	// <editor-fold defaultstate="collapsed"
+	// <editor-fold defaultstate="collapsed"
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
 		jpTitle = new javax.swing.JPanel();
 		jlbTitle = new javax.swing.JLabel();
-		jpBuild = new javax.swing.JPanel();
+		jpBuildReport = new javax.swing.JPanel();
 		jlbYear = new javax.swing.JLabel();
 		jtfYear = new javax.swing.JFormattedTextField();
 		jlbMonth = new javax.swing.JLabel();
@@ -194,22 +155,20 @@ public class JFLedger extends JDialog {
 		jpReport = new javax.swing.JPanel();
 		jspReport = new javax.swing.JScrollPane();
 		jtbReport = new javax.swing.JTable();
-		jlbReportRange = new javax.swing.JLabel();
-		jlbTotalDebt = new javax.swing.JLabel();
-		jlbTotalCredit = new javax.swing.JLabel();
+		jlbRangeSelected = new javax.swing.JLabel();
 		jpAction = new javax.swing.JPanel();
 		jbtClose = new javax.swing.JButton();
 		jbtPrint = new javax.swing.JButton();
 		lbImage = new javax.swing.JLabel();
 
-		setTitle("Libro mayor");
+		setTitle("Estado de resultado");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(
 				getClass().getResource("/images/accountability.png")));
 
 		jpTitle.setBackground(new java.awt.Color(255, 255, 255));
 
 		jlbTitle.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
-		jlbTitle.setText("Libro mayor");
+		jlbTitle.setText("Estado de resultado");
 
 		javax.swing.GroupLayout jpTitleLayout = new javax.swing.GroupLayout(
 				jpTitle);
@@ -228,8 +187,8 @@ public class JFLedger extends JDialog {
 						.addComponent(jlbTitle)
 						.addContainerGap(34, Short.MAX_VALUE)));
 
-		jpBuild.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
-				"Generar",
+		jpBuildReport.setBorder(javax.swing.BorderFactory.createTitledBorder(
+				null, "Generar",
 				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
 				javax.swing.border.TitledBorder.DEFAULT_POSITION,
 				new java.awt.Font("Verdana", 1, 12))); // NOI18N
@@ -279,26 +238,26 @@ public class JFLedger extends JDialog {
 		jlbCompanyName.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
 		jlbCompanyName.setText("Empresa:");
 
-		javax.swing.GroupLayout jpBuildLayout = new javax.swing.GroupLayout(
-				jpBuild);
-		jpBuild.setLayout(jpBuildLayout);
-		jpBuildLayout
-				.setHorizontalGroup(jpBuildLayout
+		javax.swing.GroupLayout jpBuildReportLayout = new javax.swing.GroupLayout(
+				jpBuildReport);
+		jpBuildReport.setLayout(jpBuildReportLayout);
+		jpBuildReportLayout
+				.setHorizontalGroup(jpBuildReportLayout
 						.createParallelGroup(
 								javax.swing.GroupLayout.Alignment.LEADING)
 						.addGroup(
-								jpBuildLayout
+								jpBuildReportLayout
 										.createSequentialGroup()
 										.addGroup(
-												jpBuildLayout
+												jpBuildReportLayout
 														.createParallelGroup(
 																javax.swing.GroupLayout.Alignment.LEADING)
 														.addGroup(
-																jpBuildLayout
+																jpBuildReportLayout
 																		.createSequentialGroup()
 																		.addContainerGap()
 																		.addGroup(
-																				jpBuildLayout
+																				jpBuildReportLayout
 																						.createParallelGroup(
 																								javax.swing.GroupLayout.Alignment.LEADING)
 																						.addComponent(
@@ -306,14 +265,14 @@ public class JFLedger extends JDialog {
 																						.addComponent(
 																								jlbCompanyName)))
 														.addGroup(
-																jpBuildLayout
+																jpBuildReportLayout
 																		.createSequentialGroup()
 																		.addGroup(
-																				jpBuildLayout
+																				jpBuildReportLayout
 																						.createParallelGroup(
 																								javax.swing.GroupLayout.Alignment.LEADING)
 																						.addGroup(
-																								jpBuildLayout
+																								jpBuildReportLayout
 																										.createSequentialGroup()
 																										.addGap(81,
 																												81,
@@ -324,11 +283,11 @@ public class JFLedger extends JDialog {
 																												javax.swing.GroupLayout.DEFAULT_SIZE,
 																												javax.swing.GroupLayout.PREFERRED_SIZE))
 																						.addGroup(
-																								jpBuildLayout
+																								jpBuildReportLayout
 																										.createSequentialGroup()
 																										.addContainerGap()
 																										.addGroup(
-																												jpBuildLayout
+																												jpBuildReportLayout
 																														.createParallelGroup(
 																																javax.swing.GroupLayout.Alignment.LEADING)
 																														.addComponent(
@@ -356,12 +315,12 @@ public class JFLedger extends JDialog {
 																				0,
 																				Short.MAX_VALUE)))
 										.addContainerGap()));
-		jpBuildLayout
-				.setVerticalGroup(jpBuildLayout
+		jpBuildReportLayout
+				.setVerticalGroup(jpBuildReportLayout
 						.createParallelGroup(
 								javax.swing.GroupLayout.Alignment.LEADING)
 						.addGroup(
-								jpBuildLayout
+								jpBuildReportLayout
 										.createSequentialGroup()
 										.addContainerGap()
 										.addComponent(jlbCompanyName)
@@ -411,7 +370,7 @@ public class JFLedger extends JDialog {
 										.addContainerGap(28, Short.MAX_VALUE)));
 
 		jpReport.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
-				"Libro mayor",
+				"Estado de resultado",
 				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
 				javax.swing.border.TitledBorder.DEFAULT_POSITION,
 				new java.awt.Font("Verdana", 1, 12))); // NOI18N
@@ -419,14 +378,8 @@ public class JFLedger extends JDialog {
 		jtbReport.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
 		jspReport.setViewportView(jtbReport);
 
-		jlbReportRange.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
-		jlbReportRange.setText("Rango seleccionado + mes");
-
-		jlbTotalDebt.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
-		jlbTotalDebt.setText("Total debito:");
-
-		jlbTotalCredit.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
-		jlbTotalCredit.setText("Total credito:");
+		jlbRangeSelected.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
+		jlbRangeSelected.setText("Rango seleccionado + mes");
 
 		javax.swing.GroupLayout jpReportLayout = new javax.swing.GroupLayout(
 				jpReport);
@@ -446,28 +399,17 @@ public class JFLedger extends JDialog {
 														.addComponent(
 																jspReport,
 																javax.swing.GroupLayout.DEFAULT_SIZE,
-																766,
+																696,
 																Short.MAX_VALUE)
 														.addGroup(
 																jpReportLayout
 																		.createSequentialGroup()
 																		.addComponent(
-																				jlbReportRange)
+																				jlbRangeSelected)
 																		.addGap(0,
 																				0,
 																				Short.MAX_VALUE)))
-										.addContainerGap())
-						.addGroup(
-								javax.swing.GroupLayout.Alignment.TRAILING,
-								jpReportLayout
-										.createSequentialGroup()
-										.addContainerGap(
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												Short.MAX_VALUE)
-										.addComponent(jlbTotalDebt)
-										.addGap(18, 18, 18)
-										.addComponent(jlbTotalCredit)
-										.addGap(234, 234, 234)));
+										.addContainerGap()));
 		jpReportLayout
 				.setVerticalGroup(jpReportLayout
 						.createParallelGroup(
@@ -477,22 +419,13 @@ public class JFLedger extends JDialog {
 								jpReportLayout
 										.createSequentialGroup()
 										.addContainerGap()
-										.addComponent(jlbReportRange)
+										.addComponent(jlbRangeSelected)
 										.addPreferredGap(
 												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 										.addComponent(
 												jspReport,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												293, Short.MAX_VALUE)
-										.addGap(17, 17, 17)
-										.addGroup(
-												jpReportLayout
-														.createParallelGroup(
-																javax.swing.GroupLayout.Alignment.BASELINE)
-														.addComponent(
-																jlbTotalCredit)
-														.addComponent(
-																jlbTotalDebt))));
+												javax.swing.GroupLayout.PREFERRED_SIZE,
+												0, Short.MAX_VALUE)));
 
 		jpAction.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
 				"", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
@@ -586,7 +519,7 @@ public class JFLedger extends JDialog {
 												.addGroup(
 														layout.createSequentialGroup()
 																.addComponent(
-																		jpBuild,
+																		jpBuildReport,
 																		javax.swing.GroupLayout.PREFERRED_SIZE,
 																		javax.swing.GroupLayout.DEFAULT_SIZE,
 																		javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -631,7 +564,7 @@ public class JFLedger extends JDialog {
 														javax.swing.GroupLayout.DEFAULT_SIZE,
 														Short.MAX_VALUE)
 												.addComponent(
-														jpBuild,
+														jpBuildReport,
 														javax.swing.GroupLayout.DEFAULT_SIZE,
 														javax.swing.GroupLayout.DEFAULT_SIZE,
 														Short.MAX_VALUE))
@@ -665,8 +598,9 @@ public class JFLedger extends JDialog {
 	}// GEN-LAST:event_jbtCloseActionPerformed
 
 	private void jbtPrintActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jbtPrintActionPerformed
-		final Ledger report = this.getLedgerFromTableModel();
-		final ReportGenerator generator = new ReportGenerator(report);
+		final Report balanceReport = this.getReportFromTableModel();
+		final ReportGenerator generator = new ReportGenerator(balanceReport,
+				false);
 		generator.start();
 		this.setVisible(false);
 	}// GEN-LAST:event_jbtPrintActionPerformed
@@ -679,14 +613,12 @@ public class JFLedger extends JDialog {
 	private javax.swing.JLabel jlbCompanyName;
 	private javax.swing.JLabel jlbMonth;
 	private javax.swing.JLabel jlbRange;
-	private javax.swing.JLabel jlbReportRange;
+	private javax.swing.JLabel jlbRangeSelected;
 	private javax.swing.JLabel jlbTitle;
-	private javax.swing.JLabel jlbTotalCredit;
-	private javax.swing.JLabel jlbTotalDebt;
 	private javax.swing.JLabel jlbYear;
 	private javax.swing.JList<String> jlsMonth;
 	private javax.swing.JPanel jpAction;
-	private javax.swing.JPanel jpBuild;
+	private javax.swing.JPanel jpBuildReport;
 	private javax.swing.JPanel jpReport;
 	private javax.swing.JPanel jpTitle;
 	private javax.swing.JScrollPane jspMonth;

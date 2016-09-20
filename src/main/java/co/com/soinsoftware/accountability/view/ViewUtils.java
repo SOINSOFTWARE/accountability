@@ -29,46 +29,46 @@ import javax.swing.text.NumberFormatter;
  */
 public class ViewUtils {
 	
-	protected static final String TITLE_REQUIRED_FIELDS = "Campos requeridos";
+	public static final String TITLE_REQUIRED_FIELDS = "Campos requeridos";
 	
-	protected static final String TITLE_SAVED = "Guardar";
+	public static final String TITLE_SAVED = "Guardar";
 	
-	protected static final String MSG_DELETE_QUESTION = "¿Está seguro que desea eliminar los datos seleccionados?";
+	public static final String MSG_DELETE_QUESTION = "¿Está seguro que desea eliminar los datos seleccionados?";
 	
-	protected static final String MSG_DELETED = "¡Datos eliminados con exito!";
+	public static final String MSG_DELETED = "¡Datos eliminados con exito!";
 	
-	protected static final String MSG_SAVE_QUESTION = "¿Está seguro que desea guardar los datos?";
+	public static final String MSG_SAVE_QUESTION = "¿Está seguro que desea guardar los datos?";
 
-	protected static final String MSG_SAVED = "¡Datos guardados con exito!";
+	public static final String MSG_SAVED = "¡Datos guardados con exito!";
 	
-	protected static final String MSG_UNEDITED = "No hay datos editados";
+	public static final String MSG_UNEDITED = "No hay datos editados";
 	
-	protected static final String MSG_UNSELECTED = "No hay datos seleccionados";
+	public static final String MSG_UNSELECTED = "No hay datos seleccionados";
 	
-	protected static final String MSG_UPDATE_QUESTION = "¿Está seguro que desea actualizar los datos?";
+	public static final String MSG_UPDATE_QUESTION = "¿Está seguro que desea actualizar los datos?";
 	
-	protected static final String MSG_UPDATED = "¡Datos actualizados con exito!";
+	public static final String MSG_UPDATED = "¡Datos actualizados con exito!";
 
-	protected static final Color GREY = new Color(249, 249, 249);
+	public static final Color GREY = new Color(249, 249, 249);
 
-	protected static final Color BLUE = new Color(16, 135, 221);
+	public static final Color BLUE = new Color(16, 135, 221);
 
-	protected static final Font VERDANA_BOLD = new Font("Verdana", Font.BOLD,
+	public static final Font VERDANA_BOLD = new Font("Verdana", Font.BOLD,
 			12);
 
-	protected static final Font VERDANA_PLAIN = new Font("Verdana", Font.PLAIN,
+	public static final Font VERDANA_PLAIN = new Font("Verdana", Font.PLAIN,
 			12);
 
 	private ViewUtils() {
 		super();
 	}
 
-	protected static void showMessage(final Component component,
+	public static void showMessage(final Component component,
 			final Object message, final String title, final int type) {
 		JOptionPane.showMessageDialog(component, message, title, type);
 	}
 
-	protected static int showConfirmDialog(final Component component,
+	public static int showConfirmDialog(final Component component,
 			final Object message, final String title) {
 		return JOptionPane.showConfirmDialog(component, message, title,
 				JOptionPane.OK_CANCEL_OPTION);

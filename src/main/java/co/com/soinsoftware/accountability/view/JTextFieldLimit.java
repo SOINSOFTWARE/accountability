@@ -15,12 +15,12 @@ public class JTextFieldLimit extends PlainDocument {
 
 	private final int limit;
 
-	JTextFieldLimit(final int limit) {
+	public JTextFieldLimit(final int limit) {
 		super();
 		this.limit = limit;
 	}
 
-	JTextFieldLimit(final int limit, final boolean upper) {
+	public JTextFieldLimit(final int limit, final boolean upper) {
 		super();
 		this.limit = limit;
 	}

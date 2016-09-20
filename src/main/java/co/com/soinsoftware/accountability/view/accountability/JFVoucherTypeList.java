@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package co.com.soinsoftware.accountability.view;
+package co.com.soinsoftware.accountability.view.accountability;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -18,6 +18,7 @@ import co.com.soinsoftware.accountability.controller.VoucherTypeController;
 import co.com.soinsoftware.accountability.entity.Company;
 import co.com.soinsoftware.accountability.entity.Vouchertypexcompany;
 import co.com.soinsoftware.accountability.util.VoucherTypeListTableModel;
+import co.com.soinsoftware.accountability.view.ViewUtils;
 
 /**
  * @author Carlos Rodriguez

@@ -9,7 +9,7 @@ import javax.swing.text.NumberFormatter;
 
 import co.com.soinsoftware.accountability.entity.Uap;
 import co.com.soinsoftware.accountability.entity.Voucheritem;
-import co.com.soinsoftware.accountability.view.JFVoucher;
+import co.com.soinsoftware.accountability.view.accountability.JFVoucher;
 
 /**
  * @author Carlos Rodriguez

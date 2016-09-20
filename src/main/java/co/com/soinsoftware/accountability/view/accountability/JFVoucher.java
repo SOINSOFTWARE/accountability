@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package co.com.soinsoftware.accountability.view;
+package co.com.soinsoftware.accountability.view.accountability;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -31,6 +31,7 @@ import co.com.soinsoftware.accountability.entity.Voucheritem;
 import co.com.soinsoftware.accountability.entity.Vouchertype;
 import co.com.soinsoftware.accountability.entity.Vouchertypexcompany;
 import co.com.soinsoftware.accountability.util.VoucherItemTableModel;
+import co.com.soinsoftware.accountability.view.ViewUtils;
 
 import com.toedter.calendar.JTextFieldDateEditor;
 

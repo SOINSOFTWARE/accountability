@@ -17,5 +17,8 @@
     <mapping resource="hibernate/Uap.hbm.xml"/>
     <mapping resource="hibernate/Vouchertypexcompany.hbm.xml"/>
     <mapping resource="hibernate/Uapxcompany.hbm.xml"/>
+    <mapping resource="hibernate/App.hbm.xml"/>
+    <mapping resource="hibernate/Module.hbm.xml"/>
+    <mapping resource="hibernate/Appxmodule.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

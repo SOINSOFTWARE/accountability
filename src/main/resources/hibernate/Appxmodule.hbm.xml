@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20-sep-2016 15:41:35 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="co.com.soinsoftware.accountability.entity.Appxmodule" table="appxmodule" catalog="accountability" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="app" class="co.com.soinsoftware.accountability.entity.App" fetch="select">
+            <column name="idapp" not-null="true" />
+        </many-to-one>
+        <many-to-one name="module" class="co.com.soinsoftware.accountability.entity.Module" fetch="select">
+            <column name="idmodule" not-null="true" />
+        </many-to-one>
+        <property name="creation" type="timestamp">
+            <column name="creation" length="19" not-null="true" />
+        </property>
+        <property name="updated" type="timestamp">
+            <column name="updated" length="19" not-null="true" />
+        </property>
+        <property name="enabled" type="boolean">
+            <column name="enabled" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

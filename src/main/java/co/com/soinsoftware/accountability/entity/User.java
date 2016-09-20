@@ -26,10 +26,6 @@ public class User implements Serializable, Comparable<User> {
 
 	private String password;
 
-	private String validator;
-
-	private Date finaldate;
-
 	private Date creation;
 
 	private Date updated;
@@ -58,24 +54,6 @@ public class User implements Serializable, Comparable<User> {
 		this.lastname = lastname;
 		this.login = login;
 		this.password = password;
-		this.creation = creation;
-		this.updated = updated;
-		this.enabled = enabled;
-		this.delete = false;
-	}
-
-	public User(final Rol rol, final long identification, final String name,
-			final String lastname, final String login, final String password,
-			final String validator, final Date finaldate, final Date creation,
-			final Date updated, final boolean enabled) {
-		this.rol = rol;
-		this.identification = identification;
-		this.name = name;
-		this.lastname = lastname;
-		this.login = login;
-		this.password = password;
-		this.validator = validator;
-		this.finaldate = finaldate;
 		this.creation = creation;
 		this.updated = updated;
 		this.enabled = enabled;
@@ -136,22 +114,6 @@ public class User implements Serializable, Comparable<User> {
 
 	public void setPassword(final String password) {
 		this.password = password;
-	}
-
-	public String getValidator() {
-		return validator;
-	}
-
-	public void setValidator(String validator) {
-		this.validator = validator;
-	}
-
-	public Date getFinaldate() {
-		return finaldate;
-	}
-
-	public void setFinaldate(Date finaldate) {
-		this.finaldate = finaldate;
 	}
 
 	public Date getCreation() {

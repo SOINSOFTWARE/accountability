@@ -25,7 +25,7 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 	private static final String MENU_ACTION_NEW_VOUCHER = "Nuevo asiento";
 
 	private static final String MENU_ACTION_VIEW_VOUCHER = "Ver asientos";
-	
+
 	private static final String MENU_ACTION_ACCOUNT_MONTH = "Cuentas mes actual";
 
 	private static final String MENU_CONFIGURATION = "Configuración";
@@ -115,11 +115,14 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 				KeyStroke.getKeyStroke(KeyEvent.VK_2, ActionEvent.ALT_MASK));
 		miViewVoucher.addActionListener(this);
 		menu.add(miViewVoucher);
-		final JMenuItem miViewAccountability = ViewUtils.createJMenuItem(
-				MENU_ACTION_ACCOUNT_MONTH, KeyEvent.VK_M,
-				KeyStroke.getKeyStroke(KeyEvent.VK_3, ActionEvent.ALT_MASK));
-		miViewAccountability.addActionListener(this);
-		menu.add(miViewAccountability);
+		if (!this.controller.isAuxRol()) {
+			final JMenuItem miViewAccountability = ViewUtils
+					.createJMenuItem(MENU_ACTION_ACCOUNT_MONTH, KeyEvent.VK_M,
+							KeyStroke.getKeyStroke(KeyEvent.VK_3,
+									ActionEvent.ALT_MASK));
+			miViewAccountability.addActionListener(this);
+			menu.add(miViewAccountability);
+		}
 		this.add(menu);
 	}
 

@@ -31,7 +31,7 @@ public class MenuController {
 	private final Set<Appxmodule> appXModuleSet;
 
 	private final Company company;
-	
+
 	private final JFAccountability accountabilityFrame;
 
 	private final JFBalance balanceFrame;
@@ -74,7 +74,7 @@ public class MenuController {
 		this.voucherTypeXCompFrame = new JFVoucherTypeXCompany(this.loggedUser,
 				this.company);
 	}
-	
+
 	public void showAccountabilityFrame() {
 		this.accountabilityFrame.refresh();
 		this.accountabilityFrame.setVisible(true);

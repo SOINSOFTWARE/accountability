@@ -58,8 +58,6 @@ public class JFVoucher extends JDialog {
 
 	private static final String MSG_VOUCHER_TYPE_COMPANY_REQUIRED = "Seleccione un comprobante usando el boton buscar";
 
-	private final JFMain mainFrame;
-
 	private final JFUapList uapListFrame;
 
 	private final JFVoucherTypeList voucherTypeListFrame;
@@ -80,9 +78,7 @@ public class JFVoucher extends JDialog {
 
 	private Vouchertypexcompany voucherTypeXCompany;
 
-	public JFVoucher(final JFMain mainFrame, final User loggedUser,
-			final Company company) {
-		this.mainFrame = mainFrame;
+	public JFVoucher(final User loggedUser, final Company company) {
 		this.company = company;
 		this.loggedUser = loggedUser;
 		this.voucherController = new VoucherController();
@@ -1083,7 +1079,6 @@ public class JFVoucher extends JDialog {
 				this.voucher.setEnabled(false);
 				this.voucherController.saveVoucher(this.voucher);
 				this.voucherListFrame.refreshTableData();
-				this.mainFrame.refresh();
 				this.setVisible(false);
 			}
 		}
@@ -1143,7 +1138,6 @@ public class JFVoucher extends JDialog {
 				ViewUtils.showMessage(this, ViewUtils.MSG_SAVED,
 						ViewUtils.TITLE_SAVED, JOptionPane.INFORMATION_MESSAGE);
 				this.refresh(null);
-				this.mainFrame.refresh();
 			} else {
 				this.addVoucherItem();
 			}

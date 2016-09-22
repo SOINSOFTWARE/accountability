@@ -24,7 +24,6 @@ import co.com.soinsoftware.accountability.entity.Uapxcompany;
 import co.com.soinsoftware.accountability.entity.User;
 import co.com.soinsoftware.accountability.util.CompanyListTableModel;
 import co.com.soinsoftware.accountability.util.CompanyTableModel;
-import co.com.soinsoftware.accountability.view.accountability.JFMain;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -1040,7 +1039,7 @@ public class JFCompany extends JDialog {
 	private void jbtSelectActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jbtSelectActionPerformed
 		final Company company = this.getSelectedCompany();
 		if (company != null) {
-			final JFMain mainFrame = new JFMain(this, company, loggedUser);
+			final JFMain mainFrame = new JFMain(this, company, this.loggedUser);
 			mainFrame.setVisible(true);
 			this.setVisible(false);
 			this.loginFrame.setVisible(false);

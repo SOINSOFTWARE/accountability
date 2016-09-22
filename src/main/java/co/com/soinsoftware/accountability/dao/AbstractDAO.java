@@ -17,6 +17,7 @@ public abstract class AbstractDAO {
 	protected static final String COLUMN_NAME = "name";
 
 	protected static final String TABLE_APP = "App";
+	protected static final String TABLE_APP_MODULE = "Appxmodule";
 	protected static final String TABLE_COMPANY = "Company";
 	protected static final String TABLE_COMPANY_TYPE = "Companytype";
 	protected static final String TABLE_DOCUMENT_TYPE = "Documenttype";

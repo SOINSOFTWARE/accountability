@@ -25,6 +25,8 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 	private static final String MENU_ACTION_NEW_VOUCHER = "Nuevo asiento";
 
 	private static final String MENU_ACTION_VIEW_VOUCHER = "Ver asientos";
+	
+	private static final String MENU_ACTION_ACCOUNT_MONTH = "Cuentas mes actual";
 
 	private static final String MENU_CONFIGURATION = "Configuración";
 
@@ -51,9 +53,13 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 	public JMBAppMenu(final MenuController controller) {
 		super();
 		this.controller = controller;
-		this.addMenuAction();
-		this.addMenuReports();
-		this.addMenuConfiguration();
+		final boolean hasAccountabilityMod = this.controller
+				.hasAccountabilityModule();
+		if (hasAccountabilityMod) {
+			this.addMenuAction();
+			this.addMenuReports();
+		}
+		this.addMenuConfiguration(hasAccountabilityMod);
 	}
 
 	@Override
@@ -65,6 +71,9 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 			break;
 		case MENU_ACTION_VIEW_VOUCHER:
 			this.controller.showVoucherListFrame();
+			break;
+		case MENU_ACTION_ACCOUNT_MONTH:
+			this.controller.showAccountabilityFrame();
 			break;
 		case MENU_CONFIGURATION_UNIQUE_ACCOUNT_PLAN:
 			this.controller.showUapFrame();
@@ -106,26 +115,35 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 				KeyStroke.getKeyStroke(KeyEvent.VK_2, ActionEvent.ALT_MASK));
 		miViewVoucher.addActionListener(this);
 		menu.add(miViewVoucher);
+		final JMenuItem miViewAccountability = ViewUtils.createJMenuItem(
+				MENU_ACTION_ACCOUNT_MONTH, KeyEvent.VK_M,
+				KeyStroke.getKeyStroke(KeyEvent.VK_3, ActionEvent.ALT_MASK));
+		miViewAccountability.addActionListener(this);
+		menu.add(miViewAccountability);
 		this.add(menu);
 	}
 
-	private void addMenuConfiguration() {
+	private void addMenuConfiguration(final boolean hasAccountabilityMod) {
 		final JMenu menu = new JMenu(MENU_CONFIGURATION);
 		menu.setMnemonic(KeyEvent.VK_C);
-		if (!this.controller.isAuxRol()) {
-			final JMenuItem miVoucherType = ViewUtils.createJMenuItem(
-					MENU_CONFIGURATION_VOUCHER_TYPE, KeyEvent.VK_C, null);
-			miVoucherType.addActionListener(this);
-			menu.add(miVoucherType);
+		if (hasAccountabilityMod) {
+			if (!this.controller.isAuxRol()) {
+				final JMenuItem miVoucherType = ViewUtils.createJMenuItem(
+						MENU_CONFIGURATION_VOUCHER_TYPE, KeyEvent.VK_C, null);
+				miVoucherType.addActionListener(this);
+				menu.add(miVoucherType);
+			}
+			final JMenuItem miVoucherTypeXComp = ViewUtils.createJMenuItem(
+					MENU_CONFIGURATION_VOUCHER_TYPE_COMPANY, KeyEvent.VK_X,
+					null);
+			miVoucherTypeXComp.addActionListener(this);
+			menu.add(miVoucherTypeXComp);
+			final JMenuItem miUap = ViewUtils
+					.createJMenuItem(MENU_CONFIGURATION_UNIQUE_ACCOUNT_PLAN,
+							KeyEvent.VK_P, null);
+			miUap.addActionListener(this);
+			menu.add(miUap);
 		}
-		final JMenuItem miVoucherTypeXComp = ViewUtils.createJMenuItem(
-				MENU_CONFIGURATION_VOUCHER_TYPE_COMPANY, KeyEvent.VK_X, null);
-		miVoucherTypeXComp.addActionListener(this);
-		menu.add(miVoucherTypeXComp);
-		final JMenuItem miUap = ViewUtils.createJMenuItem(
-				MENU_CONFIGURATION_UNIQUE_ACCOUNT_PLAN, KeyEvent.VK_P, null);
-		miUap.addActionListener(this);
-		menu.add(miUap);
 		if (this.controller.isAdminRol()) {
 			final JMenuItem miUser = ViewUtils.createJMenuItem(
 					MENU_CONFIGURATION_USER, KeyEvent.VK_U, null);
@@ -141,25 +159,25 @@ public class JMBAppMenu extends JMenuBar implements ActionListener {
 			menu.setMnemonic(KeyEvent.VK_I);
 			final JMenuItem miBalance = ViewUtils
 					.createJMenuItem(MENU_REPORTS_BALANCE, KeyEvent.VK_B,
-							KeyStroke.getKeyStroke(KeyEvent.VK_3,
+							KeyStroke.getKeyStroke(KeyEvent.VK_4,
 									ActionEvent.ALT_MASK));
 			miBalance.addActionListener(this);
 			menu.add(miBalance);
 			final JMenuItem miResultState = ViewUtils
 					.createJMenuItem(MENU_REPORTS_RESULT_STATE, KeyEvent.VK_E,
-							KeyStroke.getKeyStroke(KeyEvent.VK_4,
+							KeyStroke.getKeyStroke(KeyEvent.VK_5,
 									ActionEvent.ALT_MASK));
 			miResultState.addActionListener(this);
 			menu.add(miResultState);
 			final JMenuItem miDiaryBook = ViewUtils
 					.createJMenuItem(MENU_REPORTS_DIARY_BOOK, KeyEvent.VK_D,
-							KeyStroke.getKeyStroke(KeyEvent.VK_5,
+							KeyStroke.getKeyStroke(KeyEvent.VK_6,
 									ActionEvent.ALT_MASK));
 			miDiaryBook.addActionListener(this);
 			menu.add(miDiaryBook);
 			final JMenuItem miLedger = ViewUtils
 					.createJMenuItem(MENU_REPORTS_LEDGER, KeyEvent.VK_M,
-							KeyStroke.getKeyStroke(KeyEvent.VK_6,
+							KeyStroke.getKeyStroke(KeyEvent.VK_7,
 									ActionEvent.ALT_MASK));
 			miLedger.addActionListener(this);
 			menu.add(miLedger);
